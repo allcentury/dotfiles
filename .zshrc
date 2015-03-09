@@ -45,21 +45,23 @@ DISABLE_AUTO_TITLE="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git ruby rails go bundler common-aliases git-extras)
-export EDITOR='vim -fi'
+plugins=(git ruby rails go bundler common-aliases git-extras zsh-syntax-highlighting)
+export EDITOR='/usr/local/bin/vim'
 
 source $ZSH/oh-my-zsh.sh
-source ~/.shell_prompt.sh
+
+# change this based on promptline
+# source ~/.shell_prompt.sh
 
 # User configuration
 
-export PATH="/Users/anthonyross/.rvm/gems/ruby-2.1.2/bin:/Users/anthonyross/.rvm/gems/ruby-2.1.2@global/bin:/Users/anthonyross/.rvm/rubies/ruby-2.1.2/bin:/usr/local/heroku/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:/usr/local/git/bin:/Users/anthonyross/Code/go/bin:/Users/anthonyross/.rvm/bin"
-# export MANPATH="/usr/local/man:$MANPATH"
+export PATH="$PATH:/usr/local/bin:/Users/anthonyross/.rvm/bin:opt/X11/bin:/usr/local/git/bin:/Users/anthonyross/Code/go/bin"
+export MANPATH="/usr/local/man:$MANPATH"
 
-#completion
+# completion
 autoload -U compinit
 compinit
-
+#
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
@@ -77,6 +79,11 @@ compinit
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+# aliases
+alias ll="~/exa/target/exa -bghHliS"
+alias cheatsheet="less ~/cheat_sheet.org.sh"
+
 #
 #Go setup
 export GOPATH=$HOME/Code/go
@@ -88,3 +95,14 @@ export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 unalias run-help
 autoload run-help
 HELPDIR=/usr/local/share/zsh/help
+
+
+alias bower='noglob bower'
+alias mrm='rake db:migrate && rake db:rollback && rake db:migrate'
+ctags=/usr/local/bin/ctags
+
+PERL_MB_OPT="--install_base \"/Users/anthonyross/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/Users/anthonyross/perl5"; export PERL_MM_OPT;
+export DOCKER_HOST=tcp://192.168.59.103:2376
+export DOCKER_CERT_PATH=/Users/anthonyross/.boot2docker/certs/boot2docker-vm
+export DOCKER_TLS_VERIFY=1

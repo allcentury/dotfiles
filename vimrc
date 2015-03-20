@@ -37,7 +37,7 @@ runtime macros/matchit.vim        " use % to jump between start/end of methods
 "
 " " set dark background and color scheme
 set background=dark
-colorscheme vimbrant
+colorscheme thayer
 
 " set up some custom colors
 highlight clear SignColumn

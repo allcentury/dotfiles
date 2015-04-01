@@ -19,6 +19,7 @@ echo "|     |     | |  |      |  |   |  ||     |     \    |"
 echo "|_____|\___/  |__|      |__|  |____|_____|_____|\___|"
 
 echo "==> Here we go..."
+echo "==> Thanks to Chris Hunt and others for making these files so great!"
 cd ~
 
 echo "  > Updating homebrew..."

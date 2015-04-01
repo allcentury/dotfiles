@@ -102,7 +102,7 @@ vnoremap <leader>h :s/:\(\w*\) *=>/\1:/g<cr>
 " map markdown preview
 map <leader>m :!open -a Marked %<cr><cr>
 
-" map git commands
+" map git commands -- requires vim-fugitive
 map <leader>b :Gblame<cr>
 map <leader>l :!clear && git log -p %<cr>
 map <leader>d :!clear && git diff %<cr>
@@ -250,10 +250,10 @@ map <leader>T :call RunNearestTest()<cr>
 "toggle insert and normal mode
 imap ii <C-[>
 
-"
+"ctag everything in current directory and gems
 map <leader>rt :!ctags -R --languages=ruby --exclude=.git --exclude=log . $(bundle list --paths)<cr>
 
-" remove trailing white space
+" remove trailing white space before save
 autocmd BufWritePre * :%s/\s\+$//e
 
 " for Go

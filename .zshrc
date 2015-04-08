@@ -55,7 +55,7 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-export PATH="/usr/local/bin:/$PATH:Users/anthonyross/.rvm/bin:opt/X11/bin:/usr/local/git/bin:/Users/anthonyross/Code/go/bin"
+export PATH="/usr/local/bin:$PATH:Users/anthonyross/.rvm/bin:opt/X11/bin:/usr/local/git/bin:/Users/anthonyross/Code/go/bin"
 export MANPATH="/usr/local/man:$MANPATH"
 
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
@@ -85,7 +85,7 @@ compinit
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # aliases
-alias ll="~/exa/target/exa -abghHliS"
+alias ll="~/dotfiles/exa/target/exa -abghHliS"
 alias cheatsheet="less ~/cheat_sheet.org.sh"
 
 #

@@ -148,9 +148,6 @@
 [submodule ".vim/bundle/vim-slim"]
 	path = .vim/bundle/vim-slim
 	url = https://github.com/slim-template/vim-slim.git
-[submodule ".vim/bundle/oh-my-zsh"]
-	path = oh-my-zsh
-	url = http://github.com/robbyrussell/oh-my-zsh.git
 [submodule "exa"]
 	path = exa
   url = https://github.com/ogham/exa.git

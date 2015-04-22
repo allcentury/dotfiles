@@ -87,6 +87,7 @@ compinit
 # aliases
 alias ll="~/dotfiles/exa/target/exa -abghHliS"
 alias cheatsheet="less ~/cheat_sheet.org.sh"
+alias vi=$EDITOR
 
 #
 #Go setup

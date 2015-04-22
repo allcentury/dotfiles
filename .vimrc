@@ -29,6 +29,8 @@ set nofoldenable                  " disable code folding
 set clipboard=unnamed             " use the system clipboard
 set wildmenu                      " enable bash style tab completion
 set wildmode=list:longest,full
+set backspace=indent,eol,start    " adding this to solve when backspace stops working
+
 
 runtime macros/matchit.vim        " use % to jump between start/end of methods
 

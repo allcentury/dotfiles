@@ -146,6 +146,8 @@ function! ExecuteFile(filename)
     exec ":!node " . a:filename
   elseif match(a:filename, '\.sh$') != -1
     exec ":!bash " . a:filename
+  elseif match(a:filename, '\.c$') != -1
+    exec ":!gcc " . a:filename . " ; ./a.out"
   else
     exec ":!echo \"Don't know how to execute: \"" . a:filename
   end

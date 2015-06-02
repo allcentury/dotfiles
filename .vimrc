@@ -91,6 +91,10 @@ let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 "move to last file
 nnoremap <leader><leader> <c-^>
 
+" write files
+
+nnoremap <leader>w :w<CR>
+
 " unmap F1 help
 nmap <F1> :echo<CR>
 imap <F1> <C-o>:echo<CR>

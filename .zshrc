@@ -89,6 +89,10 @@ alias ll="~/dotfiles/exa/target/exa -abghHliS"
 alias cheatsheet="less ~/cheat_sheet.org.sh"
 alias vi=$EDITOR
 
+# docker
+alias staging-logs="export DOCKER_TLS_VERIFY=1 export DOCKER_HOST=tcp://50.23.35.47:3376 export DOCKER_CERT_PATH=~/validic/certs/ ; docker ps"
+alias dl="docker logs"
+
 #
 #Go setup
 export GOPATH=$HOME/Code/go

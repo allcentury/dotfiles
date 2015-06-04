@@ -93,6 +93,13 @@ alias vi=$EDITOR
 alias staging-logs="export DOCKER_TLS_VERIFY=1 export DOCKER_HOST=tcp://50.23.35.47:3376 export DOCKER_CERT_PATH=~/validic/certs/ ; docker ps"
 alias dl="docker logs"
 
+#ruby alias
+alias b="bundle"
+
+# docke alias
+alias dcb="docker-compose build"
+alias dcu="docker-compose up"
+
 #
 #Go setup
 export GOPATH=$HOME/Code/go

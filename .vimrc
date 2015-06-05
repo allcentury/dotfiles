@@ -44,19 +44,22 @@ colorscheme thayer
 " set up some custom colors
 highlight clear SignColumn
 highlight VertSplit    ctermbg=236
-highlight ColorColumn  ctermbg=7
-highlight ColorColumn  guibg=Gray
 highlight LineNr       ctermbg=236 ctermfg=240
 highlight CursorLineNr ctermbg=236 ctermfg=240
 highlight CursorLine   ctermbg=236
-" highlight StatusLineNC ctermbg=238 ctermfg=0
-" highlight StatusLine   ctermbg=240 ctermfg=12
 highlight IncSearch    ctermbg=3   ctermfg=1
 highlight Search       ctermbg=1   ctermfg=3
 highlight Visual       ctermbg=3   ctermfg=0
 highlight Pmenu        ctermbg=240 ctermfg=12
 highlight PmenuSel     ctermbg=3   ctermfg=1
 highlight SpellBad     ctermbg=0   ctermfg=1
+
+" set up color column to onyl call out lines that are greater than 80
+" characters
+highlight ColorColumn  ctermbg=7
+highlight ColorColumn  guibg=Gray
+call matchadd('ColorColumn', '\%81v', 100)
+
 
 " highlight the status bar when in insert mode
 if version >= 700
@@ -131,11 +134,6 @@ imap <F5> <ESC>:setlocal spell! spelllang=en_us<cr>
 
 " add :Plain command for converting text to plaintext
 command! Plain execute "%s/â€™/'/ge | %s/[â€œâ€]/\"/ge | %s/â€”/-/ge"
-
-" hint to keep lines short
-if exists('+colorcolumn')
-  set colorcolumn=80
-endif
 
 " execute current file
 map <leader>e :call ExecuteFile(expand("%"))<cr>

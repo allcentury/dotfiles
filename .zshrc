@@ -96,9 +96,12 @@ alias dl="docker logs"
 #ruby alias
 alias b="bundle"
 
-# docke alias
+# docker alias
 alias dcb="docker-compose build"
 alias dcu="docker-compose up"
+
+# server alias
+alias shipyard="ssh root@10.142.59.201"
 
 #
 #Go setup

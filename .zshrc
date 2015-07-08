@@ -55,11 +55,10 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-export PATH="/usr/local/bin:$PATH:Users/anthonyross/.rvm/bin:opt/X11/bin:/usr/local/git/bin:/Users/anthonyross/Code/go/bin"
+export PATH="/usr/local/bin:$PATH:opt/X11/bin:/usr/local/git/bin:/Users/anthonyross/Code/go/bin"
 export MANPATH="/usr/local/man:$MANPATH"
 
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
 # completion

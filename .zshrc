@@ -13,12 +13,6 @@ ZSH_THEME="robbyrussell"
 # Uncomment the following line to disable bi-weekly auto-update checks.
 # DISABLE_AUTO_UPDATE="true"
 
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
 # Uncomment the following line to disable auto-setting terminal title.
 DISABLE_AUTO_TITLE="true"
 
@@ -78,15 +72,12 @@ compinit
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # aliases
 alias ll="~/dotfiles/exa/target/exa -abghHliS"
 alias cheatsheet="less ~/cheat_sheet.org.sh"
 alias vi=$EDITOR
+alias v=$EDITOR
 
 # docker
 alias staging-logs="export DOCKER_TLS_VERIFY=1 export DOCKER_HOST=tcp://50.23.35.47:3376 export DOCKER_CERT_PATH=~/validic/certs/ ; docker ps"
@@ -102,22 +93,16 @@ alias dcu="docker-compose up"
 # server alias
 alias shipyard="ssh root@10.142.59.201"
 
-#
 #Go setup
 export GOPATH=$HOME/Code/go
 PATH=$PATH:$GOPATH/bin
-#
-
-# export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
 unalias run-help
 autoload run-help
 HELPDIR=/usr/local/share/zsh/help
 
-
 alias bower='noglob bower'
 alias mrm='rake db:migrate && rake db:rollback && rake db:migrate'
-# ctags=/usr/local/bin/ctags
 
 PERL_MB_OPT="--install_base \"/Users/anthonyross/perl5\""; export PERL_MB_OPT;
 PERL_MM_OPT="INSTALL_BASE=/Users/anthonyross/perl5"; export PERL_MM_OPT;

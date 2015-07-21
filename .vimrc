@@ -324,3 +324,6 @@ function! s:Repl()
   return "p@=RestoreRegister()\<cr>"
 endfunction
 vmap <silent> <expr> p <sid>Repl()
+
+" Rubocop with syntastic
+" let g:syntastic_ruby_checkers = ['rubocop', 'mri']

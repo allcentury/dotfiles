@@ -58,7 +58,7 @@ highlight SpellBad     ctermbg=0   ctermfg=1
 " characters
 highlight ColorColumn  ctermbg=7
 highlight ColorColumn  guibg=Gray
-call matchadd('ColorColumn', '\%81v', 100)
+call matchadd('ColorColumn', '\%121v', 100)
 
 
 " highlight the status bar when in insert mode

@@ -1,8 +1,8 @@
 set encoding=utf-8
 
 " load up pathogen and all bundles
-call pathogen#infect()
-call pathogen#helptags()
+execute pathogen#infect()
+execute pathogen#helptags()
 
 syntax on                         " show syntax highlighting
 filetype plugin indent on
@@ -54,11 +54,11 @@ highlight Pmenu        ctermbg=240 ctermfg=12
 highlight PmenuSel     ctermbg=3   ctermfg=1
 highlight SpellBad     ctermbg=0   ctermfg=1
 
-" set up color column to onyl call out lines that are greater than 80
+" set up color column to onyl call out lines that are greater than 100
 " characters
 highlight ColorColumn  ctermbg=7
 highlight ColorColumn  guibg=Gray
-call matchadd('ColorColumn', '\%121v', 100)
+call matchadd('ColorColumn', '\%101v', 100)
 
 
 " highlight the status bar when in insert mode
@@ -191,7 +191,7 @@ function! RunTests(filename)
   :silent !clear
   if match(a:filename, '\.feature$') != -1
     exec ":!bundle exec cucumber " . a:filename
-  elseif match(a:filename, '_test.rb') != -1
+  elseif match(a:filename, '_test\.rb') != -1
     exec ":!ruby " . a:filename
   elseif match(a:filename, '_test\.rb$') != -1
     if filereadable("bin/testrb")
@@ -199,10 +199,12 @@ function! RunTests(filename)
     else
       exec ":!ruby -Itest " . a:filename
     end
-  elseif match(a:filename, '_test.go$') != -1
+  elseif match(a:filename, '_test\.go$') != -1
     exec ":!go test "
-  elseif match(a:filename, '.spec.js') != -1
+  elseif match(a:filename, '\.spec\.js') != -1
     exec ":!jasmine-node " . a:filename
+  elseif match(a:filename, '\.scala$') != -1
+    exec ":!sbt test"
   else
     if filereadable("Gemfile")
       exec ":!bundle exec rspec --color " . a:filename
@@ -225,7 +227,7 @@ function! RunTestFile(...)
   endif
 
   " run the tests for the previously-marked file.
-  let in_test_file = match(expand("%"), '\(.feature\|_spec.rb\|_test.rb\|_test.go\|.spec.js\)$') != -1
+  let in_test_file = match(expand("%"), '\(.feature\|_spec.rb\|_test.rb\|_test.go\|.spec.js\|.scala\)$') != -1
   if in_test_file
     call SetTestFile()
   elseif !exists("t:grb_test_file")

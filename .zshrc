@@ -79,8 +79,27 @@ alias cheatsheet="less ~/cheat_sheet.org.sh"
 alias vi=$EDITOR
 alias v=$EDITOR
 
+# display staging containers and let user input dictate logs shown
+function staging_logs {
+answer=""
+  while [ "$answer" != "exit" ]
+  do
+    export DOCKER_TLS_VERIFY=1
+    export DOCKER_HOST=tcp://50.23.35.47:3376
+    export DOCKER_CERT_PATH=~/validic/certs/
+    echo "Looking up containers..."
+    echo "------------------------------------------------------------------------"
+    docker ps "$@"
+    echo "------------------------------------------------------------------------"
+    vared -p "Enter the container id to see the logs (or type exit) " -c answer
+    if [[ $answer != "exit" ]]
+    then
+      docker logs "$answer"
+      answer=""
+    fi
+  done
+}
 # docker
-alias staging-logs="export DOCKER_TLS_VERIFY=1 export DOCKER_HOST=tcp://50.23.35.47:3376 export DOCKER_CERT_PATH=~/validic/certs/ ; docker ps"
 alias dl="docker logs"
 
 #ruby alias

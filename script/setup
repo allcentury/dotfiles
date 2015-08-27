@@ -1,5 +1,29 @@
 #!/bin/sh
 
+function install_for_osx {
+  echo "  > Updating homebrew..."
+  brew update &> /dev/null
+
+  echo "  > Installing reattach-to-user-namespace..."
+  if command -v reattach-to-user-namespace >/dev/null 2>&1; then
+    echo "    > (Skipping) Already installed."
+  else
+    brew install reattach-to-user-namespace &> /dev/null
+  fi
+}
+
+function install_for_linux {
+  echo "Linux detected, updating pacakges..."
+  sudo apt-get update        # Fetches the list of available updates
+  sudo apt-get upgrade       # Strictly upgrades the current packages
+  sudo apt-get dist-upgrade  # Installs updates (new ones)
+  echo "Installing Git..."
+  sudo apt-get install git-core
+  echo "Removing system vim and replacing it with gtk"
+  sudo apt-get purge vim gvim vim-gtk
+  sudo apt-get install vim-gtk
+}
+
 set -e
 
 echo "  ____ ____  ______ __ __  ___  ____  __ __ __  _____"
@@ -22,18 +46,11 @@ echo "==> Here we go..."
 echo "==> Thanks to Chris Hunt and others for making these files so great!"
 cd ~
 
-echo "  > Updating homebrew..."
-brew update &> /dev/null
-
-echo "  > Installing reattach-to-user-namespace..."
-if command -v reattach-to-user-namespace >/dev/null 2>&1; then
-  echo "    > (Skipping) Already installed."
-else
-  brew install reattach-to-user-namespace &> /dev/null
-fi
-
-echo "  > Pulling latest dot-files..."
-git pull &> /dev/null
+case "$OSTYPE" in
+  darwin*)  install_for_osx ;;
+  linux*)   install_for_linux ;;
+  *)        echo "unknown: $OSTYPE" ;;
+esac
 
 echo "  > Updating all git submodules..."
 git submodule init &> /dev/null

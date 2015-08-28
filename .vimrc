@@ -1,5 +1,6 @@
 set encoding=utf-8
 
+runtime bundle/vim-pathogen/autoload/pathogen.vim
 " load up pathogen and all bundles
 execute pathogen#infect()
 execute pathogen#helptags()

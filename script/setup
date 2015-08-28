@@ -44,9 +44,12 @@ install_for_linux(){
   echo "Removing system vim and replacing it with gtk"
   sudo apt-get purge vim gvim vim-gtk
   sudo apt-get install vim-gtk
+  echo "Installing tmux..."
+  sudo apt-get install tmux
   echo "Symlinking dot files"
   ln -s ~/dotfiles/.vimrc ~/.vimrc
   ln -s ~/dotfiles/.oh-my-zsh ~/.oh-my-zsh
+  ln -s ~/dotfiles/.vim ~/.vim
   ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
   ln -s ~/dotfiles/.zshrc ~/.zshrc
 }
@@ -62,5 +65,6 @@ cd ~/dotfiles
 echo "  > Updating all git submodules..."
 git submodule init &> /dev/null
 git submodule update &> /dev/null
+git config alias.supdate ;git submodule update --remote --merge;
 
 echo "==> Done with setup."

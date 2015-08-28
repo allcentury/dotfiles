@@ -48,7 +48,6 @@ install_for_linux(){
   ln -s ~/dotfiles/.vimrc ~/.vimrc
   ln -s ~/dotfiles/.oh-my-zsh ~/.oh-my-zsh
   ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
-  ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
   ln -s ~/dotfiles/.zshrc ~/.zshrc
 }
 
@@ -58,6 +57,8 @@ case "$OSTYPE" in
   *)        echo "unknown: $OSTYPE" ;;
 esac
 
+# move into dotfiles and pull down vim and oh-my-zsh
+cd ~/dotfiles
 echo "  > Updating all git submodules..."
 git submodule init &> /dev/null
 git submodule update &> /dev/null

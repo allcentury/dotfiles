@@ -22,7 +22,7 @@ echo "==> Here we go..."
 echo "==> Thanks to Chris Hunt and others for making these files so great!"
 cd ~
 
-function install_for_osx {
+function install_for_osx(){
   echo "  > Updating homebrew..."
   brew update &> /dev/null
 
@@ -34,7 +34,7 @@ function install_for_osx {
   fi
 }
 
-function install_for_linux {
+function install_for_linux(){
   echo "Linux detected, updating pacakges..."
   sudo apt-get update        # Fetches the list of available updates
   sudo apt-get upgrade       # Strictly upgrades the current packages

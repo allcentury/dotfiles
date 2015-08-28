@@ -22,6 +22,12 @@ function install_for_linux {
   echo "Removing system vim and replacing it with gtk"
   sudo apt-get purge vim gvim vim-gtk
   sudo apt-get install vim-gtk
+  echo "Symlinking dot files"
+  ln -s ~/dotfiles/.vimrc ~/.vimrc
+  ln -s ~/dotfiles/.oh-my-zsh ~/.oh-my-zsh
+  ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
+  ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
+  ln -s ~/dotfiles/.zshrc ~/.zshrc
 }
 
 set -e

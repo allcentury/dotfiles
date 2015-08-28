@@ -76,8 +76,27 @@ compinit
 # aliases
 alias ll="~/dotfiles/exa/target/exa -abghHliS"
 alias cheatsheet="less ~/cheat_sheet.org.sh"
-alias vi=$EDITOR
-alias v=$EDITOR
+
+# determine vim based on OS
+case "$OSTYPE" in
+  darwin*)
+    export EDITOR=/usr/local/bin/mvim
+    mac_vim="$EDITOR -v"
+    alias vi=$mac_vim
+    alias vim=$mac_vim
+    alias v=$mac_vim
+    ;;
+  linux*)
+    # Assumes gtk is installed.  See script/setup for install instructions
+    gtk_vim="vim -v"
+    alias vi=$gtk_vim
+    alias vim=$gtk_vim
+    alias v=$gtk_vim
+    ;;
+  *)
+    echo "unknown: $OSTYPE"
+    ;;
+esac
 
 # display staging containers and let user input dictate logs shown
 function staging_logs {

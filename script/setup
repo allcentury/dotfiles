@@ -51,6 +51,8 @@ install_for_linux(){
   sudo apt-get install vim-gtk
   c_echo "Installing tmux..."
   sudo apt-get install tmux
+  c_echo "Installing silver searcher"
+  apt-get install silversearcher-ag
   c_echo "Installing zsh"
   sudo apt-get install zsh
   c_echo "Setting zsh as default shell"
@@ -59,10 +61,10 @@ install_for_linux(){
   sh -c "$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -0 -)"
   c_echo "Symlinking dot files"
   files=( ".vimrc" ".vim" ".tmux.conf" ".zshrc" ".gitconfig" ".gitmessage" )
-  for i in "${#array[@]}"
+  for file in "${#array[@]}"
   do
-    c_echo "Linking $i"
-    ln -s ~/dotfiles/"$i" ~/"$i"
+    c_echo "Linking $file"
+    ln -s ~/dotfiles/"$file" ~/"$file"
   done
 }
 

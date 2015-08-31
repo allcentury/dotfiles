@@ -56,8 +56,6 @@ install_for_linux(){
   ln -s ~/dotfiles/.vim ~/.vim
   ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
   ln -s ~/dotfiles/.zshrc ~/.zshrc
-  echo "Reloading shell"
-  source ~/.zshrc
 }
 
 case "$OSTYPE" in
@@ -73,4 +71,6 @@ git submodule init &> /dev/null
 git submodule update &> /dev/null
 git config alias.supdate ;git submodule update --remote --merge;
 
+echo "Reloading shell"
+source ~/.zshrc
 echo "==> Done with setup."

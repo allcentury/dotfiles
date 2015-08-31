@@ -55,12 +55,15 @@ install_for_linux(){
   sudo apt-get install zsh
   c_echo "Setting zsh as default shell"
   chsh -s /bin/zsh
+  c_echo "Installing oh-my-zsh"
+  sh -c "$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -0 -)"
   c_echo "Symlinking dot files"
-  ln -s ~/dotfiles/.vimrc ~/.vimrc
-  ln -s ~/dotfiles/.oh-my-zsh ~/.oh-my-zsh
-  ln -s ~/dotfiles/.vim ~/.vim
-  ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
-  ln -s ~/dotfiles/.zshrc ~/.zshrc
+  files=( ".vimrc" ".vim" ".tmux.conf" ".zshrc" ".gitconfig" ".gitmessage" )
+  for i in "${#array[@]}"
+  do
+    c_echo "Linking $i"
+    ln -s ~/dotfiles/"$i" ~/"$i"
+  done
 }
 
 case "$OSTYPE" in

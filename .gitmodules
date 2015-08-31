@@ -30,7 +30,7 @@
   url = https://github.com/tpope/vim-liquid
 [submodule ".oh-my-zsh"]
   path = .oh-my-zsh
-  url =t/github.com:robbyrussell/oh-my-zsh
+  url = https://github.com:robbyrussell/oh-my-zsh
 [submodule ".vim/bundle/colors-base16"]
   path = .vim/bundle/colors-base16
   url = https://github.com/chriskempson/base16-vim
@@ -39,10 +39,10 @@
   url = https://github.com/kien/ctrlp.vim
 [submodule ".vim/bundle/ag-vim"]
   path = .vim/bundle/ag-vim
-  url =://github.com/epmatsw/ag.vim
+  url = https://github.com/epmatsw/ag.vim
 [submodule ".vim/bundle/vim-javascript"]
   path = .vim/bundle/vim-javascript
-  url =://github.com/jelera/vim-javascript-syntax
+  url = https://github.com/jelera/vim-javascript-syntax
 [submodule ".vim/bundle/xterm-color-table"]
   path = .vim/bundle/xterm-color-table
   url = https://github.com/chrishunt/xterm-color-table.vim
@@ -81,7 +81,7 @@
   url = https://github.com/edsono/vim-matchit.git
 [submodule ".vim/bundle/mustache"]
   path = .vim/bundle/mustache
-  url =://github.com/mustache/vim-mustache-handlebars
+  url = https://github.com/mustache/vim-mustache-handlebars
 [submodule ".vim/bundle/promptline.vim"]
   path = .vim/bundle/promptline.vim
   url = https://github.com/edkolev/promptline.vim
@@ -120,7 +120,7 @@
   url = https://github.com/fatih/vim-go
 [submodule ".vim/bundle/vim-haml"]
   path = .vim/bundle/vim-haml
-  url =://github.com/tpope/vim-haml
+  url = https://github.com/tpope/vim-haml
 [submodule ".vim/bundle/vim-instant-markdown"]
   path = .vim/bundle/vim-instant-markdown
   url = https://github.com/suan/vim-instant-markdown

@@ -3,6 +3,8 @@
 set -e
 c_echo() {
   tput setaf 3; echo $1
+  # set back to normal color
+  tput sgr0
 }
 
 c_echo "  ____ ____  ______ __ __  ___  ____  __ __ __  _____"
@@ -70,10 +72,10 @@ esac
 # move into dotfiles and pull down vim and oh-my-zsh
 cd ~/dotfiles
 c_echo "  > Updating all git submodules..."
-git submodule init &> /dev/null
-git submodule update &> /dev/null
-git config alias.supdate ;git submodule update --remote --merge;
+git submodule init
+git submodule update
+git config alias.supdate; git submodule update --remote --merge;
 
-c_echo "Reloading shell"
+c_echo "Reloading shell.."
 source ~/.zshrc
 c_echo "==> Done with setup."

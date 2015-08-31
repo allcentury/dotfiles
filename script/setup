@@ -1,56 +1,59 @@
 #!/bin/bash
 
 set -e
+c_echo() {
+  tput setaf 3; echo $1
+}
 
-echo "  ____ ____  ______ __ __  ___  ____  __ __ __  _____"
-echo " /    |    \|      |  |  |/   \|    \|  |  |  |/ ___/"
-echo "|  o  |  _  |      |  |  |     |  _  |  |  |_ (   \_ "
-echo "|     |  |  |_|  |_|  _  |  O  |  |  |  ~  | \|\__  |"
-echo "|  _  |  |  | |  | |  |  |     |  |  |___, |   /  \ |"
-echo "|  |  |  |  | |  | |  |  |     |  |  |     |   \    |"
-echo "|__|__|__|__| |__| |__|__|\___/|__|__|____/     \___|"
-echo "                                                     "
-echo " ___    ___  ______      _____ ____ _       ___ _____"
-echo "|   \  /   \|      |    |     |    | |     /  _] ___/"
-echo "|    \|     |      |    |   __||  || |    /  [(   \_ "
-echo "|  D  |  O  |_|  |_|    |  |_  |  || |___|    _]__  |"
-echo "|     |     | |  |      |   _] |  ||     |   [_/  \ |"
-echo "|     |     | |  |      |  |   |  ||     |     \    |"
-echo "|_____|\___/  |__|      |__|  |____|_____|_____|\___|"
+c_echo "  ____ ____  ______ __ __  ___  ____  __ __ __  _____"
+c_echo " /    |    \|      |  |  |/   \|    \|  |  |  |/ ___/"
+c_echo "|  o  |  _  |      |  |  |     |  _  |  |  |_ (   \_ "
+c_echo "|     |  |  |_|  |_|  _  |  O  |  |  |  ~  | \|\__  |"
+c_echo "|  _  |  |  | |  | |  |  |     |  |  |___, |   /  \ |"
+c_echo "|  |  |  |  | |  | |  |  |     |  |  |     |   \    |"
+c_echo "|__|__|__|__| |__| |__|__|\___/|__|__|____/     \___|"
+c_echo "                                                     "
+c_echo " ___    ___  ______      _____ ____ _       ___ _____"
+c_echo "|   \  /   \|      |    |     |    | |     /  _] ___/"
+c_echo "|    \|     |      |    |   __||  || |    /  [(   \_ "
+c_echo "|  D  |  O  |_|  |_|    |  |_  |  || |___|    _]__  |"
+c_echo "|     |     | |  |      |   _] |  ||     |   [_/  \ |"
+c_echo "|     |     | |  |      |  |   |  ||     |     \    |"
+c_echo "|_____|\___/  |__|      |__|  |____|_____|_____|\___|"
 
-echo "==> Here we go..."
-echo "==> Thanks to Chris Hunt and others for making these files so great!"
+c_echo "==> Here we go..."
+c_echo "==> Thanks to Chris Hunt and others for making these files so great!"
 cd ~
 
 install_for_osx(){
-  echo "  > Updating homebrew..."
+  c_c_echo "  > Updating homebrew..."
   brew update &> /dev/null
 
-  echo "  > Installing reattach-to-user-namespace..."
+  c_echo "  > Installing reattach-to-user-namespace..."
   if command -v reattach-to-user-namespace >/dev/null 2>&1; then
-    echo "    > (Skipping) Already installed."
+    c_echo "    > (Skipping) Already installed."
   else
     brew install reattach-to-user-namespace &> /dev/null
   fi
 }
 
 install_for_linux(){
-  echo "Linux detected, updating pacakges..."
+  c_echo "Linux detected, updating pacakges..."
   sudo apt-get update        # Fetches the list of available updates
   sudo apt-get upgrade       # Strictly upgrades the current packages
   sudo apt-get dist-upgrade  # Installs updates (new ones)
-  echo "Installing Git..."
+  c_echo "Installing Git..."
   sudo apt-get install git-core
-  echo "Removing system vim and replacing it with gtk"
+  c_echo "Removing system vim and replacing it with gtk"
   sudo apt-get purge vim gvim vim-gtk
   sudo apt-get install vim-gtk
-  echo "Installing tmux..."
+  c_echo "Installing tmux..."
   sudo apt-get install tmux
-  echo "Installing zsh"
+  c_echo "Installing zsh"
   sudo apt-get install zsh
-  echo "Setting zsh as default shell"
+  c_echo "Setting zsh as default shell"
   chsh -s /bin/zsh
-  echo "Symlinking dot files"
+  c_echo "Symlinking dot files"
   ln -s ~/dotfiles/.vimrc ~/.vimrc
   ln -s ~/dotfiles/.oh-my-zsh ~/.oh-my-zsh
   ln -s ~/dotfiles/.vim ~/.vim
@@ -61,16 +64,16 @@ install_for_linux(){
 case "$OSTYPE" in
   darwin*)  install_for_osx ;;
   linux*)   install_for_linux ;;
-  *)        echo "unknown: $OSTYPE" ;;
+  *)        c_echo "unknown: $OSTYPE" ;;
 esac
 
 # move into dotfiles and pull down vim and oh-my-zsh
 cd ~/dotfiles
-echo "  > Updating all git submodules..."
+c_echo "  > Updating all git submodules..."
 git submodule init &> /dev/null
 git submodule update &> /dev/null
 git config alias.supdate ;git submodule update --remote --merge;
 
-echo "Reloading shell"
+c_echo "Reloading shell"
 source ~/.zshrc
-echo "==> Done with setup."
+c_echo "==> Done with setup."

@@ -46,12 +46,18 @@ install_for_linux(){
   sudo apt-get install vim-gtk
   echo "Installing tmux..."
   sudo apt-get install tmux
+  echo "Installing zsh"
+  sudo apt-get install zsh
+  echo "Setting zsh as default shell"
+  chsh -s /bin/zsh
   echo "Symlinking dot files"
   ln -s ~/dotfiles/.vimrc ~/.vimrc
   ln -s ~/dotfiles/.oh-my-zsh ~/.oh-my-zsh
   ln -s ~/dotfiles/.vim ~/.vim
   ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
   ln -s ~/dotfiles/.zshrc ~/.zshrc
+  echo "Reloading shell"
+  source ~/.zshrc
 }
 
 case "$OSTYPE" in

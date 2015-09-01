@@ -41,23 +41,24 @@ install_for_osx(){
 
 install_for_linux(){
   c_echo "Linux detected, updating pacakges..."
-  apt-get -y update        # Fetches the list of available updates
-  apt-get -y upgrade       # Strictly upgrades the current packages
-  apt-get -y dist-upgrade  # Installs updates (new ones)
+  sudo apt-get -y update        # Fetches the list of available updates
+  sudo apt-get -y upgrade       # Strictly upgrades the current packages
+  sudo apt-get -y dist-upgrade  # Installs updates (new ones)
   c_echo "Installing Git..."
-  apt-get -y install git-core
+  sudo apt-get -y install git-core
   c_echo "Removing system vim and replacing it with gtk"
-  apt-get -y purge vim gvim vim-gtk
-  apt-get -y install vim-gtk
+  sudo apt-get -y purge vim gvim vim-gtk
+  sudo apt-get -y install vim-gtk
   c_echo "Installing tmux..."
-  apt-get -y install tmux
+  sudo apt-get -y install tmux
   c_echo "Installing silver searcher"
-  apt-get -y install silversearcher-ag
+  sudo apt-get -y install silversearcher-ag
   c_echo "Installing zsh"
-  apt-get -y install zsh
+  sudo apt-get -y install zsh
   c_echo "Setting zsh as default shell"
   chsh -s /bin/zsh
   c_echo "Installing oh-my-zsh"
+  sudo apt-get -y install wget
   ( exec wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O - )
   c_echo "Symlinking dot files"
   for file in ".vimrc" ".vim" ".tmux.conf" ".zshrc" ".gitconfig" ".gitmessage"
@@ -74,7 +75,6 @@ case "$OSTYPE" in
 esac
 
 # move into dotfiles and pull down vim and oh-my-zsh
-cd ~/dotfiles
 c_echo "  > Updating all git submodules..."
 git submodule init
 git submodule update

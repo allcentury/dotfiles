@@ -142,6 +142,3 @@ alias mrm='rake db:migrate && rake db:rollback && rake db:migrate'
 
 PERL_MB_OPT="--install_base \"/Users/anthonyross/perl5\""; export PERL_MB_OPT;
 PERL_MM_OPT="INSTALL_BASE=/Users/anthonyross/perl5"; export PERL_MM_OPT;
-export DOCKER_HOST=tcp://192.168.59.103:2376
-export DOCKER_CERT_PATH=/Users/anthonyross/.boot2docker/certs/boot2docker-vm
-export DOCKER_TLS_VERIFY=1

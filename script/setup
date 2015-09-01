@@ -58,10 +58,9 @@ install_for_linux(){
   c_echo "Setting zsh as default shell"
   chsh -s /bin/zsh
   c_echo "Installing oh-my-zsh"
-  sh -c "$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -0 -)"
+  wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O - | sh
   c_echo "Symlinking dot files"
-  files=( ".vimrc" ".vim" ".tmux.conf" ".zshrc" ".gitconfig" ".gitmessage" )
-  for file in "${#array[@]}"
+  for file in ".vimrc" ".vim" ".tmux.conf" ".zshrc" ".gitconfig" ".gitmessage"
   do
     c_echo "Linking $file"
     ln -s ~/dotfiles/"$file" ~/"$file"

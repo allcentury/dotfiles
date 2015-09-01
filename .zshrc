@@ -75,6 +75,7 @@ compinit
 alias ll="~/dotfiles/exa/target/exa -abghHliS"
 alias cheatsheet="less ~/cheat_sheet.org.sh"
 
+export VISUAL="vim -v"
 # determine vim based on OS
 case "$OSTYPE" in
   darwin*)

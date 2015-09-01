@@ -41,20 +41,20 @@ install_for_osx(){
 
 install_for_linux(){
   c_echo "Linux detected, updating pacakges..."
-  sudo apt-get update        # Fetches the list of available updates
-  sudo apt-get upgrade       # Strictly upgrades the current packages
-  sudo apt-get dist-upgrade  # Installs updates (new ones)
+  sudo apt-get -y update        # Fetches the list of available updates
+  sudo apt-get -y upgrade       # Strictly upgrades the current packages
+  sudo apt-get -y dist-upgrade  # Installs updates (new ones)
   c_echo "Installing Git..."
-  sudo apt-get install git-core
+  sudo apt-get -y install git-core
   c_echo "Removing system vim and replacing it with gtk"
-  sudo apt-get purge vim gvim vim-gtk
-  sudo apt-get install vim-gtk
+  sudo apt-get -y purge vim gvim vim-gtk
+  sudo apt-get -y install vim-gtk
   c_echo "Installing tmux..."
-  sudo apt-get install tmux
+  sudo apt-get -y install tmux
   c_echo "Installing silver searcher"
-  apt-get install silversearcher-ag
+  apt-get -y install silversearcher-ag
   c_echo "Installing zsh"
-  sudo apt-get install zsh
+  sudo apt-get -y install zsh
   c_echo "Setting zsh as default shell"
   chsh -s /bin/zsh
   c_echo "Installing oh-my-zsh"

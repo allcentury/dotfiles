@@ -141,5 +141,18 @@ HELPDIR=/usr/local/share/zsh/help
 alias bower='noglob bower'
 alias mrm='rake db:migrate && rake db:rollback && rake db:migrate'
 
+# use ctrl + z again instead of having to use fg to get back into vim
+fancy-ctrl-z () {
+  if [[ $#BUFFER -eq 0 ]]; then
+    BUFFER="fg"
+    zle accept-line
+  else
+    zle push-input
+    zle clear-screen
+  fi
+}
+zle -N fancy-ctrl-z
+bindkey '^Z' fancy-ctrl-z
+
 PERL_MB_OPT="--install_base \"/Users/anthonyross/perl5\""; export PERL_MB_OPT;
 PERL_MM_OPT="INSTALL_BASE=/Users/anthonyross/perl5"; export PERL_MM_OPT;

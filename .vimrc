@@ -117,11 +117,11 @@ map <leader>l :!clear && git log -p %<cr>
 map <leader>d :!clear && git diff %<cr>
 
 " add a require 'pry' and binding.pry at current cursor location
-map <leader>bp :s/\(^.*\n\)/require 'pry'\rbinding.pry\r\1/g<cr>:noh<cr>3k==2.2j
+map <leader>bp :s/\(^.*\n\)/require 'pry'\rbinding.pry\r\1/g<cr>:noh<cr>3k==2.2j<cr>:w<cr>
 
 " clean up require 'pry' and binding.pry in file mapped to undo-binding-pry ie
 " ubp
-map <leader>ubp :%s/require 'pry'\_s\+binding.pry\_s\+//g<cr>
+map <leader>ubp :g/require 'pry'\_s\+binding.pry\_s\+/,+1d<cr>
 
 " open gist after it's been created
 let g:gist_open_browser_after_post = 1

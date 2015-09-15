@@ -73,7 +73,6 @@ compinit
 
 # aliases
 alias ll="~/dotfiles/exa/target/exa -abghHliS"
-alias cheatsheet="less ~/cheat_sheet.org.sh"
 
 export VISUAL="vim -v"
 # determine vim based on OS
@@ -129,6 +128,9 @@ alias dcu="docker-compose up"
 
 # server alias
 alias shipyard="ssh root@10.142.59.201"
+
+# video -> gif converter
+alias vtog="~/dotfiles/scripts/video-to-gif-osx.sh"
 
 #Go setup
 export GOPATH=$HOME/Code/go

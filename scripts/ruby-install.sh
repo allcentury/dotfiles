@@ -1,5 +1,23 @@
 #1 bin/bash
 
+echo "Updating packages"
+sudo apt-get -y update        # Fetches the list of available updates
+sudo apt-get -y upgrade       # Strictly upgrades the current packages
+sudo apt-get -y dist-upgrade  # Installs updates (new ones)
+sudo apt-get install make
+sudo apt-get -y update        # Fetches the list of available updates
+sudo apt-get -y upgrade       # Strictly upgrades the current packages
+sudo apt-get -y dist-upgrade  # Installs updates (new ones)
+echo "Installing Git..."
+sudo apt-get -y install git-core
+echo "Removing system vim and replacing it with gtk"
+sudo apt-get -y purge vim gvim vim-gtk
+sudo apt-get -y install vim-gtk
+echo "Installing tmux..."
+sudo apt-get -y install tmux
+echo "Installing silver searcher"
+sudo apt-get -y install silversearcher-ag
+
 # install chruby
 echo "Installing chruby"
 cd ~

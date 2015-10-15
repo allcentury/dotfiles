@@ -39,5 +39,5 @@ ruby-install ruby 2.2.3
 
 echo "Adding chruby alias' to .bashrc"
 
-"source /usr/local/share/chruby/chruby.sh" >> ~/.bashrc
-"source /usr/local/share/chruby/auto.sh" >> ~/.bashrc
+echo "source /usr/local/share/chruby/chruby.sh" >> ~/.bashrc
+echo "source /usr/local/share/chruby/auto.sh" >> ~/.bashrc

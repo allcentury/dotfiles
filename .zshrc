@@ -1,6 +1,10 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/dotfiles/.oh-my-zsh
 
+# CHRUBY
+source /usr/local/share/chruby/chruby.sh
+source /usr/local/share/chruby/auto.sh
+
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
@@ -46,12 +50,12 @@ source $ZSH/oh-my-zsh.sh
 # source ~/.shell_prompt.sh
 
 # User configuration
-
-export PATH="/usr/local/bin:$PATH:opt/X11/bin:/usr/local/git/bin:/Users/anthonyross/Code/go/bin"
+/usr/local/opt/go/libexec/bin
+export PATH="/usr/local/bin::$PATH:opt/X11/bin:/usr/local/git/bin"
 export MANPATH="/usr/local/man:$MANPATH"
 
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+# PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+# [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
 # completion
 autoload -U compinit
@@ -158,3 +162,5 @@ bindkey '^Z' fancy-ctrl-z
 
 PERL_MB_OPT="--install_base \"/Users/anthonyross/perl5\""; export PERL_MB_OPT;
 PERL_MM_OPT="INSTALL_BASE=/Users/anthonyross/perl5"; export PERL_MM_OPT;
+
+RUBY_CONFIGURE_OPTS="--llvm-config=/path/to/llvm-config"

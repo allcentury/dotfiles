@@ -22,6 +22,7 @@
   gpull = !git pull
   tree = log --graph --abbrev-commit --decorate --date=relative --all
   edit = !vim `git ls-files -m` -p
+  log-author = "!f() { git log --date=short --pretty=format:\"%ad:%an:%d:%B\" --branches --since=1.months.ago --author=$1; }; f "
 [core]
 	excludesfile = /Users/anthonyross/.gitignore_global
   autocrlf = input

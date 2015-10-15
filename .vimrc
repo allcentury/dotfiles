@@ -26,6 +26,7 @@ set ruler                         " show row and column in footer
 set scrolloff=2                   " minimum lines above/below cursor
 set laststatus=2                  " always show status bar
 " set list listchars=tab:Â»Â·,trail:Â· " show extra space characters
+set re=1
 set nofoldenable                  " disable code folding
 set clipboard=unnamed             " use the system clipboard
 set wildmenu                      " enable bash style tab completion
@@ -60,6 +61,8 @@ highlight SpellBad     ctermbg=0   ctermfg=1
 highlight ColorColumn  ctermbg=7
 highlight ColorColumn  guibg=Gray
 call matchadd('ColorColumn', '\%101v', 100)
+
+map <leader>no noh<cr> matchadd('ColorColumn', '\%101v', 100)
 
 
 " highlight the status bar when in insert mode
@@ -341,3 +344,19 @@ vmap <C-v> <Plug>(expand_region_shrink)
 
 " Rubocop with syntastic
 " let g:syntastic_ruby_checkers = ['rubocop', 'mri']
+"
+"
+" this is slightly destructive and should only be used when the JSON
+" *has_not_already_been_formmatted/indented*
+function! IndentJSON()
+     " add new line after comma
+     %s/\(,\)/\1\r/g
+     " add new line after open bracket
+     %s/\({\)/\1\r/g
+     " add new line before closing bracket
+     %s/\(}\)/\r\1/g
+     " indent the file
+     norm gg=G
+endfunction
+
+map <leader>js :call IndentJSON() <cr>

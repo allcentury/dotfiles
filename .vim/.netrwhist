@@ -1,8 +1,4 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =6
-let g:netrw_dirhist_1='/Users/anthonyross/Library'
-let g:netrw_dirhist_2='/Users/anthonyross'
-let g:netrw_dirhist_3='/Users'
-let g:netrw_dirhist_4='/'
-let g:netrw_dirhist_5='/.DocumentRevisions-V100'
-let g:netrw_dirhist_6='/Users/anthonyross/validic/HealthBase/spec'
+let g:netrw_dirhist_cnt =2
+let g:netrw_dirhist_1='/Users/anthonyross/.gem/ruby/2.2.3/gems/yard-0.8.7.3'
+let g:netrw_dirhist_2='/Users/anthonyross/.gem/ruby/2.2.3/gems/yard-0.8.7.3/docs'

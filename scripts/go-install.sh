@@ -41,8 +41,3 @@ echo "Adding chruby alias' to .bashrc"
 
 echo "source /usr/local/share/chruby/chruby.sh" >> ~/.bashrc
 echo "source /usr/local/share/chruby/auto.sh" >> ~/.bashrc
-source ~/.bashrc
-
-echo "Installing bundler"
-chruby 2.2.3
-gem install bundler

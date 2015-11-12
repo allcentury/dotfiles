@@ -160,6 +160,8 @@ function! ExecuteFile(filename)
     exec ":!bash " . a:filename
   elseif match(a:filename, '\.c$') != -1
     exec ":!gcc " . a:filename . " ; ./a.out"
+  elseif match(a:filename, '\.go$') != -1
+    exec ":!go run " . a:filename
   else
     exec ":!echo \"Don't know how to execute: \"" . a:filename
   end
@@ -211,13 +213,19 @@ function! RunTests(filename)
     end
   elseif match(a:filename, '_test\.go$') != -1
     exec ":!go test "
+  elseif match(a:filename, '\.go$') != -1
+    exec ":!go test"
   elseif match(a:filename, '\.spec\.js') != -1
     exec ":!jasmine-node " . a:filename
   elseif match(a:filename, '\.scala$') != -1
     exec ":!sbt test"
   else
     if filereadable("Gemfile")
-      exec ":!bundle exec rspec --color " . a:filename
+      " this use to include bundle exec but
+      " I'm only getting the benefits of spring by using
+      " rspec on it's own, ie rspec some_file
+      " temp leaving this for now
+      exec ":!rspec --color " . a:filename
     else
       exec ":!rspec --color " . a:filename
     end
@@ -237,7 +245,7 @@ function! RunTestFile(...)
   endif
 
   " run the tests for the previously-marked file.
-  let in_test_file = match(expand("%"), '\(.feature\|_spec.rb\|_test.rb\|_test.go\|.spec.js\|.scala\)$') != -1
+  let in_test_file = match(expand("%"), '\(.feature\|_spec.rb\|_test.rb\|_test.go\|.spec.js\|.scala\|.go\)$') != -1
   if in_test_file
     call SetTestFile()
   elseif !exists("t:grb_test_file")
@@ -269,7 +277,17 @@ map <leader>T :call RunNearestTest()<cr>
 imap ii <C-[>
 
 "ctag everything in current directory and gems
-map <leader>rt :!ctags -R --languages=ruby --exclude=.git --exclude=log . $(bundle list --paths)<cr>
+
+function! Ctag()
+  let ruby = match(expand("%"), ".rb")
+  let go = match(expand("%"), ".go")
+  if ruby != -1
+    exec ":!ctags -R --languages=ruby --exclude=.git --exclude=log . $(bundle list --paths)"
+  endif
+endfunction
+
+map <leader>rt :call Ctag()<cr>
+" map <leader>rt :!ctags -R --languages=ruby --exclude=.git --exclude=log . $(bundle list --paths)<cr>
 
 " remove trailing white space before save
 autocmd BufWritePre * :%s/\s\+$//e

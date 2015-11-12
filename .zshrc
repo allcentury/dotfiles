@@ -50,7 +50,6 @@ source $ZSH/oh-my-zsh.sh
 # source ~/.shell_prompt.sh
 
 # User configuration
-/usr/local/opt/go/libexec/bin
 export PATH="/usr/local/bin::$PATH:opt/X11/bin:/usr/local/git/bin"
 export MANPATH="/usr/local/man:$MANPATH"
 
@@ -164,3 +163,9 @@ PERL_MB_OPT="--install_base \"/Users/anthonyross/perl5\""; export PERL_MB_OPT;
 PERL_MM_OPT="INSTALL_BASE=/Users/anthonyross/perl5"; export PERL_MM_OPT;
 
 RUBY_CONFIGURE_OPTS="--llvm-config=/path/to/llvm-config"
+
+# add Java export for RDS cli
+export JAVA_HOME="$(/usr/libexec/java_home)"
+export AWS_RDS_HOME="/Users/anthonyross/projects/rds-cli/RDSCli-1.19.004"
+export PATH=$PATH:$AWS_RDS_HOME/bin
+export AWS_CREDENTIAL_FILE="~/projects/rds-cli/RDSCli-1.19.004/credential-file-path.template"

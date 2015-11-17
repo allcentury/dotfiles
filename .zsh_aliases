@@ -1,0 +1,36 @@
+alias ll="~/dotfiles/exa/target/exa -abghHliS"
+alias bower='noglob bower'
+alias mrm='rake db:migrate && rake db:rollback && rake db:migrate'
+export VISUAL="vim -v"
+# determine vim based on OS
+case "$OSTYPE" in
+  darwin*)
+    export EDITOR=/usr/local/bin/mvim
+    mac_vim="$EDITOR -v"
+    alias vi=$mac_vim
+    alias vim=$mac_vim
+    alias v=$mac_vim
+    ;;
+  linux*)
+    # Assumes gtk is installed.  See script/setup for install instructions
+    gtk_vim="vim -v"
+    alias vi=$gtk_vim
+    alias vim=$gtk_vim
+    alias v=$gtk_vim
+    ;;
+  *)
+    echo "unknown: $OSTYPE"
+    ;;
+esac
+
+# docker
+alias dl="docker logs"
+
+#ruby alias
+alias b="bundle"
+
+# docker alias
+alias dcb="docker-compose build"
+alias dcu="docker-compose up"
+
+

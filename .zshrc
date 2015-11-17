@@ -72,39 +72,7 @@ compinit
 # For a full list of active aliases, run `alias`.
 
 # aliases
-alias ll="~/dotfiles/exa/target/exa -abghHliS"
-
-export VISUAL="vim -v"
-# determine vim based on OS
-case "$OSTYPE" in
-  darwin*)
-    export EDITOR=/usr/local/bin/mvim
-    mac_vim="$EDITOR -v"
-    alias vi=$mac_vim
-    alias vim=$mac_vim
-    alias v=$mac_vim
-    ;;
-  linux*)
-    # Assumes gtk is installed.  See script/setup for install instructions
-    gtk_vim="vim -v"
-    alias vi=$gtk_vim
-    alias vim=$gtk_vim
-    alias v=$gtk_vim
-    ;;
-  *)
-    echo "unknown: $OSTYPE"
-    ;;
-esac
-
-# docker
-alias dl="docker logs"
-
-#ruby alias
-alias b="bundle"
-
-# docker alias
-alias dcb="docker-compose build"
-alias dcu="docker-compose up"
+source ~/.zsh_aliases
 
 # Go setup
 export GOPATH=$HOME/Code/go
@@ -114,8 +82,6 @@ unalias run-help
 autoload run-help
 HELPDIR=/usr/local/share/zsh/help
 
-alias bower='noglob bower'
-alias mrm='rake db:migrate && rake db:rollback && rake db:migrate'
 
 # use ctrl + z again instead of having to use fg to get back into vim
 fancy-ctrl-z () {

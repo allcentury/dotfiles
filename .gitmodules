@@ -133,9 +133,6 @@
 [submodule ".vim/bundle/vim-multiple-cursors"]
   path = .vim/bundle/vim-multiple-cursors
   url = https://github.com/terryma/vim-multiple-cursors
-[submodule ".vim/bundle/vim-notes"]
-  path = .vim/bundle/vim-notes
-  url = https://github.com/xolox/vim-notes
 [submodule ".vim/bundle/vim-rspec"]
   path = .vim/bundle/vim-rspec
   url = https://github.com/thoughtbot/vim-rspec
@@ -161,5 +158,5 @@
   path = .vim/bundle/vim-fugitive
   url = https://github.com/tpope/vim-fugitive.git
 [submodule ".vim/bundle/vim-expand-region"]
-  path = .vim/bundle/vim-expand-region
-  url = https://github.com/terryma/vim-expand-region.git
+	path = .vim/bundle/vim-expand-region
+	url = https://github.com/terryma/vim-expand-region.git

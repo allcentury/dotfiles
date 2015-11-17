@@ -1,3 +1,6 @@
+[submodule ".oh-my-zsh"]
+  path = .oh-my-zsh
+  url = https://github.com/robbyrussell/oh-my-zsh
 [submodule ".vim/bundle/command-t"]
   path = .vim/bundle/command-t
   url = https://github.com/wincent/Command-T

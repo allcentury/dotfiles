@@ -9,7 +9,7 @@ source /usr/local/share/chruby/auto.sh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="robbyrussell"
+ZSH_THEME="avit"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -52,9 +52,6 @@ source $ZSH/oh-my-zsh.sh
 # User configuration
 export PATH="/usr/local/bin::$PATH:opt/X11/bin:/usr/local/git/bin"
 export MANPATH="/usr/local/man:$MANPATH"
-
-# PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-# [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
 # completion
 autoload -U compinit
@@ -99,26 +96,6 @@ case "$OSTYPE" in
     ;;
 esac
 
-# display staging containers and let user input dictate logs shown
-function staging_logs {
-answer=""
-  while [ "$answer" != "exit" ]
-  do
-    export DOCKER_TLS_VERIFY=1
-    export DOCKER_HOST=tcp://50.23.35.47:3376
-    export DOCKER_CERT_PATH=~/validic/certs/
-    echo "Looking up containers..."
-    echo "------------------------------------------------------------------------"
-    docker ps "$@"
-    echo "------------------------------------------------------------------------"
-    vared -p "Enter the container id to see the logs (or type exit) " -c answer
-    if [[ $answer != "exit" ]]
-    then
-      docker logs "$answer"
-      answer=""
-    fi
-  done
-}
 # docker
 alias dl="docker logs"
 
@@ -129,13 +106,7 @@ alias b="bundle"
 alias dcb="docker-compose build"
 alias dcu="docker-compose up"
 
-# server alias
-alias shipyard="ssh root@10.142.59.201"
-
-# video -> gif converter
-alias vtog="~/dotfiles/scripts/video-to-gif-osx.sh"
-
-#Go setup
+# Go setup
 export GOPATH=$HOME/Code/go
 PATH=$PATH:$GOPATH/bin
 
@@ -169,3 +140,4 @@ export JAVA_HOME="$(/usr/libexec/java_home)"
 export AWS_RDS_HOME="/Users/anthonyross/projects/rds-cli/RDSCli-1.19.004"
 export PATH=$PATH:$AWS_RDS_HOME/bin
 export AWS_CREDENTIAL_FILE="~/projects/rds-cli/RDSCli-1.19.004/credential-file-path.template"
+export FCEDIT=$mac_vim

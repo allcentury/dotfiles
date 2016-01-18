@@ -373,6 +373,8 @@ function! IndentJSON()
      %s/\({\)/\1\r/g
      " add new line before closing bracket
      %s/\(}\)/\r\1/g
+     " remove blank lines
+     g/^\s*$/d
      " indent the file
      norm gg=G
 endfunction

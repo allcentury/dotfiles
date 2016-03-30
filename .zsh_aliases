@@ -5,7 +5,7 @@ export VISUAL="vim -v"
 # determine vim based on OS
 case "$OSTYPE" in
   darwin*)
-    export EDITOR=/usr/local/bin/mvim
+    export EDITOR="/usr/local/bin/mvim"
     mac_vim="$EDITOR -v"
     alias vi=$mac_vim
     alias vim=$mac_vim
@@ -26,7 +26,7 @@ esac
 # docker
 alias dl="docker logs"
 
-#ruby alias
+# ruby alias
 alias b="bundle"
 
 # docker alias

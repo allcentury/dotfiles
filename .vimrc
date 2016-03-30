@@ -153,7 +153,7 @@ function! ExecuteFile(filename)
   :w
   :silent !clear
   if match(a:filename, '\.rb$') != -1
-    exec ":!ruby " . a:filename
+    exec ":!bundle exec ruby " . a:filename
   elseif match(a:filename, '\.js$') != -1
     exec ":!node " . a:filename
   elseif match(a:filename, '\.sh$') != -1

@@ -33,4 +33,8 @@ alias b="bundle"
 alias dcb="docker-compose build"
 alias dcu="docker-compose up"
 
+# weather
+alias weather="curl http://wttr.in/Durham"
 
+# open github
+alias github=scripts/github

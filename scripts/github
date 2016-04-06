@@ -1,0 +1,8 @@
+#! /bin/bash
+
+# currently only works for SSH remotes
+remote="`cat ./.git/config | grep -A 1 'remote "origin"' | sed -n 2p`"
+if [[ $remote == *@* ]]; then
+  name="`echo $remote | sed  's/^.*:\(.*\)\.git/\1/g'`"
+  open "https://github.com/$name"
+fi

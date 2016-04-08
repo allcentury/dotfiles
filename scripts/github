@@ -1,8 +1,44 @@
 #! /bin/bash
 
-# currently only works for SSH remotes
-remote="`cat ./.git/config | grep -A 1 'remote "origin"' | sed -n 2p`"
-if [[ $remote == *@* ]]; then
-  name="`echo $remote | sed  's/^.*:\(.*\)\.git/\1/g'`"
-  open "https://github.com/$name"
-fi
+endpoint=$1
+
+get_ext() {
+  case $1 in
+    *github*)
+      case $endpoint in
+        pr)
+          echo "/pulls";;
+        issues)
+          echo "/issues";;
+        *)
+          echo "";;
+      esac;;
+    *bitbucket*)
+      case $endpoint in
+        pr)
+          echo "/pull-requests";;
+        issues)
+          # issues doesn't exist for bitbucket
+          echo "";;
+        *)
+          echo "";;
+      esac;;
+  esac
+}
+
+open_site() {
+  # currently only works for SSH addresses
+  if [[ $remote == *@* ]]; then
+    name=$(echo $remote | sed  "s/^.*:\(.*\)\.git/\1/g")
+    ext=$(get_ext $1)
+    open "$1/${name}${ext}"
+  fi
+}
+remote=$(grep -A 1 "remote \"origin\"" $(pwd)/.git/config | sed -n 2p)
+
+case $remote in
+  *github*)
+    open_site "https://github.com";;
+  *bitbucket*)
+    open_site "https://bitbucket.org";;
+esac

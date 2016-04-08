@@ -1,4 +1,5 @@
-alias ll="~/dotfiles/exa/target/exa -abghHliS"
+dotPath="~/dotfiles"
+alias ll="$dotPath/exa/target/exa -abghHliS"
 alias bower='noglob bower'
 alias mrm='rake db:migrate && rake db:rollback && rake db:migrate'
 export VISUAL="vim -v"
@@ -37,4 +38,4 @@ alias dcu="docker-compose up"
 alias weather="curl http://wttr.in/Durham"
 
 # open github
-alias github=scripts/github
+alias github="$dotPath/scripts/github"

@@ -1,6 +1,8 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/dotfiles/.oh-my-zsh
 
+bindkey '^r' history-incremental-search-backward
+
 # CHRUBY
 source /usr/local/share/chruby/chruby.sh
 source /usr/local/share/chruby/auto.sh
@@ -43,7 +45,7 @@ DISABLE_AUTO_TITLE="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git ruby go bundler common-aliases git-extras zsh-syntax-highlighting)
+plugins=(git ruby go bundler common-aliases git-extras zsh-syntax-highlighting vi-mode)
 source $ZSH/oh-my-zsh.sh
 
 # change this based on promptline
@@ -73,6 +75,9 @@ compinit
 
 # aliases
 source ~/.zsh_aliases
+
+# validic project
+source ~/.validic_project_profile
 
 # Go setup
 export GOPATH=$HOME/Code/go
@@ -110,7 +115,7 @@ export FCEDIT=$mac_vim
 
 
 # Docker
-export DOCKER_HOST=tcp://192.168.99.100:2376
+export DOCKER_HOST="tcp://192.168.99.100:2376"
 export DOCKER_IP=192.168.99.100
 export DOCKER_MACHINE_NAME=default
 export DOCKER_TLS_VERIFY=1

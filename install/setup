@@ -2,7 +2,7 @@
 
 set -e
 c_echo() {
-  tput setaf 3; echo $1
+  tput setaf 3; echo "$1"
   # set back to normal color
   tput sgr0
 }
@@ -74,7 +74,7 @@ case "$OSTYPE" in
   *)        c_echo "unknown: $OSTYPE" ;;
 esac
 
-# move into dotfiles and pull down vim and oh-my-zsh
+# move into dotfiles and pull down vim, oh-my-zsh, exa etc
 c_echo "  > Updating all git submodules..."
 git submodule init
 git submodule update

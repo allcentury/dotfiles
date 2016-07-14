@@ -95,6 +95,10 @@ let g:ctrlp_show_hidden = 1
 " use silver searcher for ctrlp
 let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
+"easily add new line in normal mode
+nmap <S-Enter> O<Esc>
+nmap <CR> o<Esc>
+
 "move to last file
 nnoremap <leader><leader> <c-^>
 
@@ -204,7 +208,11 @@ function! RunTests(filename)
   if match(a:filename, '\.feature$') != -1
     exec ":!bundle exec cucumber " . a:filename
   elseif match(a:filename, '_test\.rb') != -1
-    exec ":!ruby " . a:filename
+    if filereadable("Rakefile")
+      exec "!bundle exec rake test TEST=" . a:filename
+    else
+      exec ":!ruby " . a:filename
+    end
   elseif match(a:filename, '_test\.rb$') != -1
     if filereadable("bin/testrb")
       exec ":!bin/testrb " . a:filename
@@ -225,7 +233,7 @@ function! RunTests(filename)
       " I'm only getting the benefits of spring by using
       " rspec on it's own, ie rspec some_file
       " temp leaving this for now
-      exec ":!rspec --color " . a:filename
+      exec ":!bundle exec rspec --color " . a:filename
     else
       exec ":!rspec --color " . a:filename
     end
@@ -367,16 +375,20 @@ vmap <C-v> <Plug>(expand_region_shrink)
 " this is slightly destructive and should only be used when the JSON
 " *has_not_already_been_formmatted/indented*
 function! IndentJSON()
-     " add new line after comma
-     %s/\(,\)/\1\r/g
-     " add new line after open bracket
-     %s/\({\)/\1\r/g
-     " add new line before closing bracket
-     %s/\(}\)/\r\1/g
-     " remove blank lines
-     g/^\s*$/d
-     " indent the file
-     norm gg=G
+  " add new line after comma
+  %s/\(,\)/\1\r/g
+  " add new line after open brace
+  %s/\({\)/\1\r/g
+  " add new line before closing brace
+  %s/\(}\)/\r\1/g
+  " add new line after open bracket
+  %s/\(\[\)/\1\r/g
+  " add new line before closing bracket
+  %s/\(\]\)/\r\1/g
+  " remove blank lines
+  g/^\s*$/d
+  " indent the file
+  norm gg=G
 endfunction
 
 map <leader>js :call IndentJSON() <cr>

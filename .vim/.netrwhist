@@ -1,9 +1,3 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =7
-let g:netrw_dirhist_1='/Users/anthonyross/.gem/ruby/2.3.1/gems/oauth-0.4.7/lib/oauth'
-let g:netrw_dirhist_2='/Users/anthonyross/.gem/ruby/2.3.1/gems/oauth-0.4.7/lib/oauth/tokens'
-let g:netrw_dirhist_3='/Users/anthonyross/.gem/ruby/2.3.1/gems/oauth-0.4.7'
-let g:netrw_dirhist_4='/Users/anthonyross/.gem/ruby/2.3.1/gems/oauth-0.4.7/lib'
-let g:netrw_dirhist_5='/Users/anthonyross/.gem/ruby/2.3.1/gems/oauth-0.4.7/lib/oauth'
-let g:netrw_dirhist_6='/Users/anthonyross/.gem/ruby/2.3.1/gems/oauth-0.4.7/lib/oauth/request_proxy'
-let g:netrw_dirhist_7='/Users/anthonyross/validic/validic/lib/integrations/schedulers'
+let g:netrw_dirhist_cnt =1
+let g:netrw_dirhist_1='/Users/anthonyross/validic/jawbone_up/.yardoc'

@@ -83,7 +83,6 @@ source ~/.validic_project_profile
 export GOPATH=$HOME/Code/go
 PATH=$PATH:$GOPATH/bin
 
-unalias run-help
 autoload run-help
 HELPDIR=/usr/local/share/zsh/help
 
@@ -112,13 +111,3 @@ export AWS_RDS_HOME="/Users/anthonyross/projects/rds-cli/RDSCli-1.19.004"
 export PATH=$PATH:$AWS_RDS_HOME/bin
 export AWS_CREDENTIAL_FILE="~/projects/rds-cli/RDSCli-1.19.004/credential-file-path.template"
 export FCEDIT=$mac_vim
-
-
-# Docker
-export DOCKER_HOST="tcp://192.168.99.100:2376"
-export DOCKER_IP=192.168.99.100
-export DOCKER_MACHINE_NAME=default
-export DOCKER_TLS_VERIFY=1
-export DOCKER_CERT_PATH=/Users/anthonyross/.docker/machine/machines/default
-alias docker-create='docker-machine create -d virtualbox default'
-alias docker-start='docker-machine start default'

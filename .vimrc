@@ -371,6 +371,9 @@ vmap <C-v> <Plug>(expand_region_shrink)
 " Rubocop with syntastic
 " let g:syntastic_ruby_checkers = ['rubocop', 'mri']
 "
+" JavaScript
+let g:syntastic_javascript_checkers = ['jshint']
+"
 "
 " this is slightly destructive and should only be used when the JSON
 " *has_not_already_been_formmatted/indented*

@@ -45,7 +45,7 @@ DISABLE_AUTO_TITLE="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git ruby go bundler common-aliases git-extras zsh-syntax-highlighting vi-mode)
+plugins=(git ruby go bundler common-aliases git-extras zsh-syntax-highlighting docker)
 source $ZSH/oh-my-zsh.sh
 
 # change this based on promptline
@@ -55,9 +55,9 @@ source $ZSH/oh-my-zsh.sh
 export PATH="/usr/local/bin::$PATH:opt/X11/bin:/usr/local/git/bin"
 export MANPATH="/usr/local/man:$MANPATH"
 
+fpath=(~/dotfiles/.zsh/completion $fpath)
 # completion
-autoload -U compinit
-compinit
+autoload -Uz compinit && compinit -i
 #
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -76,9 +76,6 @@ compinit
 # aliases
 source ~/.zsh_aliases
 
-# validic project
-source ~/.validic_project_profile
-
 # Go setup
 export GOPATH=$HOME/Code/go
 PATH=$PATH:$GOPATH/bin
@@ -86,19 +83,6 @@ PATH=$PATH:$GOPATH/bin
 autoload run-help
 HELPDIR=/usr/local/share/zsh/help
 
-
-# use ctrl + z again instead of having to use fg to get back into vim
-fancy-ctrl-z () {
-  if [[ $#BUFFER -eq 0 ]]; then
-    BUFFER="fg"
-    zle accept-line
-  else
-    zle push-input
-    zle clear-screen
-  fi
-}
-zle -N fancy-ctrl-z
-bindkey '^Z' fancy-ctrl-z
 
 PERL_MB_OPT="--install_base \"/Users/anthonyross/perl5\""; export PERL_MB_OPT;
 PERL_MM_OPT="INSTALL_BASE=/Users/anthonyross/perl5"; export PERL_MM_OPT;
@@ -111,3 +95,4 @@ export AWS_RDS_HOME="/Users/anthonyross/projects/rds-cli/RDSCli-1.19.004"
 export PATH=$PATH:$AWS_RDS_HOME/bin
 export AWS_CREDENTIAL_FILE="~/projects/rds-cli/RDSCli-1.19.004/credential-file-path.template"
 export FCEDIT=$mac_vim
+

@@ -62,7 +62,7 @@ highlight ColorColumn  ctermbg=7
 highlight ColorColumn  guibg=Gray
 call matchadd('ColorColumn', '\%101v', 100)
 
-map <leader>no noh<cr> matchadd('ColorColumn', '\%101v', 100)
+" map <leader>no noh<cr> matchadd('ColorColumn', '\%101v', 100)
 
 
 " highlight the status bar when in insert mode
@@ -93,7 +93,7 @@ let g:ctrlp_match_window_reversed = 0
 let g:ctrlp_show_hidden = 1
 
 " use silver searcher for ctrlp
-let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+let g:ctrlp_user_command = 'ag %s -l --nocolor -g "" --ignore-dir "node_modules"'
 
 "easily add new line in normal mode
 nmap <S-Enter> O<Esc>
@@ -124,7 +124,13 @@ map <leader>l :!clear && git log -p %<cr>
 map <leader>d :!clear && git diff %<cr>
 
 " add a require 'pry' and binding.pry at current cursor location
-map <leader>bp :s/\(^.*\n\)/require 'pry'\rbinding.pry\r\1/g<cr>:noh<cr>3k==2.2j<cr>:w<cr>
+map <leader>bp :s/\(^.*\n\)/require 'pry'\rbinding.pry\r\1/g<cr>:noh<cr>3k==2.2j:w<cr>
+
+" easy pop in for showing javascript methods
+map <leader>jsm :s/\(^.*\n\)/this.logger.debug(`Available methods: ${Object.getOwnPropertyNames(someObj)}`);\r\1/g<cr>:noh<cr>3k==2.2j:w<cr>
+
+" replace function(*args) with fat arrows =>
+map <leader>jsf :%s/(\(.*\)function\(.*)\)/(\1\2 =>/g<cr>
 
 " clean up require 'pry' and binding.pry in file mapped to undo-binding-pry ie
 " ubp
@@ -372,8 +378,11 @@ vmap <C-v> <Plug>(expand_region_shrink)
 " let g:syntastic_ruby_checkers = ['rubocop', 'mri']
 "
 " JavaScript
-let g:syntastic_javascript_checkers = ['jshint']
-"
+let g:syntastic_javascript_checkers = ['eslint']
+
+" Allow jsx syntax highlighting for .js files
+let g:jsx_ext_required = 0
+
 "
 " this is slightly destructive and should only be used when the JSON
 " *has_not_already_been_formmatted/indented*

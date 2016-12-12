@@ -1,11 +1,4 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =9
-let g:netrw_dirhist_1='/Users/anthonyross/.gem/ruby/2.3.1/gems/activerecord-5.0.0.1'
-let g:netrw_dirhist_2='/Users/anthonyross/.gem/ruby/2.3.1/gems/activerecord-5.0.0.1/lib'
-let g:netrw_dirhist_3='/Users/anthonyross/.gem/ruby/2.3.1/gems/activerecord-5.0.0.1/lib/active_record'
-let g:netrw_dirhist_4='/Users/anthonyross/.gem/ruby/2.3.1/gems/activerecord-5.0.0.1/lib/active_record/attribute'
-let g:netrw_dirhist_5='/Users/anthonyross/.gem/ruby/2.3.1/gems/activerecord-5.0.0.1/lib/active_record'
-let g:netrw_dirhist_6='/Users/anthonyross/.gem/ruby/2.3.1/gems/activerecord-5.0.0.1/lib/active_record/attribute_set'
-let g:netrw_dirhist_7='/Users/anthonyross/.gem/ruby/2.3.1/gems/activerecord-5.0.0.1/lib/active_record'
-let g:netrw_dirhist_8='/Users/anthonyross/.gem/ruby/2.3.1/gems/activerecord-5.0.0.1/lib/active_record/validations'
-let g:netrw_dirhist_9='/Users/anthonyross/commercetools/Kohler-Orders-Updater/.git'
+let g:netrw_dirhist_cnt =2
+let g:netrw_dirhist_1='/Users/anthonyross/commercetools/kohler-orders-to-sap/spec/helpers'
+let g:netrw_dirhist_2='/Users/anthonyross/commercetools/kohler-orders-to-sap/spec/helpers/jasmine_examples'

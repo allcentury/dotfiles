@@ -11,30 +11,39 @@ get_ext() {
         issues)
           echo "/issues";;
         *)
-          echo "";;
+          echo ;;
       esac;;
     *bitbucket*)
       case $endpoint in
         pr)
           echo "/pull-requests";;
         issues)
-          # issues doesn't exist for bitbucket
-          echo "";;
+          # issues aren't enabled by default for bb repos
+          # so this might not always work
+          echo "/issues";;
         *)
-          echo "";;
+          echo ;;
       esac;;
   esac
 }
 
 open_site() {
-  # currently only works for SSH addresses
+  ext=$(get_ext $1)
+  url=""
   if [[ $remote == *@* ]]; then
-    name=$(echo $remote | sed  "s/^.*:\(.*\)\.git/\1/g")
-    ext=$(get_ext $1)
-    open "$1/${name}${ext}"
+    # extract path from ssh
+    name=$(echo "$remote" | sed  "s/^.*:\(.*\)\.git/\1/g")
+    url="$1/${name}${ext}"
+  else
+    # extract uri from http
+    name=$(echo "$remote" | sed "s/^.*: \(.*\).git/\1/g")
+    url="${name}${ext}"
   fi
+  open "$url"
 }
-remote=$(grep -A 1 "remote \"origin\"" $(pwd)/.git/config | sed -n 2p)
+
+# get remote from origin
+remote=$(git remote show -n origin | grep Fetch.URL)
 
 case $remote in
   *github*)

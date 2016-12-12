@@ -230,7 +230,7 @@ function! RunTests(filename)
   elseif match(a:filename, '\.go$') != -1
     exec ":!go test"
   elseif match(a:filename, '\.spec\.js') != -1
-    exec ":!jasmine-node " . a:filename
+    exec ":!gulp test"
   elseif match(a:filename, '\.scala$') != -1
     exec ":!sbt test"
   else

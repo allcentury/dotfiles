@@ -76,9 +76,9 @@
 [submodule ".vim/bundle/lightline.vim"]
   path = .vim/bundle/lightline.vim
   url = https://github.com/itchyny/lightline.vim
-[submodule ".vim/bundle/vim-matchit"]
-  path = .vim/bundle/vim-matchit
-  url = https://github.com/edsono/vim-matchit.git
+[submodule ".vim/bundle/matchit.zip"]
+  path = .vim/bundle/matchit.zip
+  url = https://github.com/benjifisher/matchit.zip.git
 [submodule ".vim/bundle/mustache"]
   path = .vim/bundle/mustache
   url = https://github.com/mustache/vim-mustache-handlebars
@@ -165,4 +165,10 @@
 	url = https://github.com/xolox/vim-notes.git
 [submodule ".vim/bundle/vim-expand-region"]
 	path = .vim/bundle/vim-expand-region
-  url = https://github.com/terryma/vim-expand-region.git
+	url = https://github.com/terryma/vim-expand-region.git
+[submodule ".vim/bundle/vim-jsx"]
+	path = .vim/bundle/vim-jsx
+	url = https://github.com/mxw/vim-jsx.git
+[submodule ".vim/bundle/vim-stylus"]
+	path = .vim/bundle/vim-stylus
+	url = https://github.com/wavded/vim-stylus.git

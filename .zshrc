@@ -4,8 +4,8 @@ export ZSH=$HOME/dotfiles/.oh-my-zsh
 bindkey '^r' history-incremental-search-backward
 
 # CHRUBY
-source /usr/local/share/chruby/chruby.sh
-source /usr/local/share/chruby/auto.sh
+source /usr/local/opt/chruby/share/chruby/chruby.sh
+source /usr/local/opt/chruby/share/chruby/auto.sh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -74,11 +74,14 @@ autoload -Uz compinit && compinit -i
 # For a full list of active aliases, run `alias`.
 
 # aliases
-source ~/.zsh_aliases
+source ~/dotfiles/.zsh_aliases
 
 # Go setup
 export GOPATH=$HOME/Code/go
 PATH=$PATH:$GOPATH/bin
+
+# Rust
+PATH=$PATH:$HOME/.cargo/bin
 
 autoload run-help
 HELPDIR=/usr/local/share/zsh/help
@@ -89,10 +92,4 @@ PERL_MM_OPT="INSTALL_BASE=/Users/anthonyross/perl5"; export PERL_MM_OPT;
 
 RUBY_CONFIGURE_OPTS="--llvm-config=/path/to/llvm-config"
 
-# add Java export for RDS cli
-export JAVA_HOME="$(/usr/libexec/java_home)"
-export AWS_RDS_HOME="/Users/anthonyross/projects/rds-cli/RDSCli-1.19.004"
-export PATH=$PATH:$AWS_RDS_HOME/bin
-export AWS_CREDENTIAL_FILE="~/projects/rds-cli/RDSCli-1.19.004/credential-file-path.template"
-export FCEDIT=$mac_vim
-
+export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  # Added by n-install (see http://git.io/n-install-repo).

@@ -28,7 +28,7 @@ c_echo "==> Thanks to Chris Hunt and others for making these files so great!"
 cd ~
 
 install_for_osx(){
-  c_c_echo "  > Updating homebrew..."
+  c_echo "  > Updating homebrew..."
   brew update &> /dev/null
 
   c_echo "  > Installing reattach-to-user-namespace..."

@@ -33,11 +33,10 @@ set wildmenu                      " enable bash style tab completion
 set wildmode=list:longest,full
 set backspace=indent,eol,start    " adding this to solve when backspace stops working
 
-
 runtime macros/matchit.vim        " use % to jump between start/end of methods
 
 " put git status, column/row number, total lines, and percentage in status
-" set statusline=%F%m%r%h%w\ %{fugitive#statusline()}\ [%l,%c]\ [%L,%p%%]
+set statusline=%F%m%r%h%w\ %{fugitive#statusline()}\ [%l,%c]\ [%L,%p%%]
 "
 " " set dark background and color scheme
 set background=dark
@@ -341,7 +340,7 @@ let g:go_fmt_autosave = 0
 nmap <F8> :TagbarToggle<CR>
 "airline
 let g:airline_powerline_fonts = 1
-let g:airline_theme="murmur"
+let g:airline_theme="bubblegum"
 
 " Get rid of handlebars incorrect syntax errors
 let g:syntastic_filetype_map = { 'html.handlebars': 'handlebars' }

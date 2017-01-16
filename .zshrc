@@ -93,3 +93,13 @@ PERL_MM_OPT="INSTALL_BASE=/Users/anthonyross/perl5"; export PERL_MM_OPT;
 RUBY_CONFIGURE_OPTS="--llvm-config=/path/to/llvm-config"
 
 export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  # Added by n-install (see http://git.io/n-install-repo).
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f /Users/anthonyross/Downloads/google-cloud-sdk/path.zsh.inc ]; then
+  source '/Users/anthonyross/Downloads/google-cloud-sdk/path.zsh.inc'
+fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f /Users/anthonyross/Downloads/google-cloud-sdk/completion.zsh.inc ]; then
+  source '/Users/anthonyross/Downloads/google-cloud-sdk/completion.zsh.inc'
+fi

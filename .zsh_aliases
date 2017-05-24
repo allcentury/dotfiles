@@ -6,8 +6,8 @@ export VISUAL="vim -v"
 # determine vim based on OS
 case "$OSTYPE" in
   darwin*)
-    export EDITOR="/usr/local/bin/mvim"
-    mac_vim="$EDITOR -v"
+    export EDITOR="/usr/local/bin/mvim -v"
+    mac_vim="$EDITOR"
     alias vi=$mac_vim
     alias vim=$mac_vim
     alias v=$mac_vim
@@ -77,3 +77,7 @@ bindkey '^Z' fancy-ctrl-z
 ## google cloud
 #
 alias cloud_sql_proxy=/Users/anthonyross/binaries/cloud_sql_proxy
+
+
+### kubernetes
+alias k=kubectl

@@ -376,6 +376,9 @@ vmap <C-v> <Plug>(expand_region_shrink)
 " Rubocop with syntastic
 " let g:syntastic_ruby_checkers = ['rubocop', 'mri']
 "
+" Ruby
+let g:ruby_indent_block_style = 'do'
+"
 " JavaScript
 let g:syntastic_javascript_checkers = ['eslint']
 

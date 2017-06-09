@@ -162,7 +162,11 @@ function! ExecuteFile(filename)
   :w
   :silent !clear
   if match(a:filename, '\.rb$') != -1
-    exec ":!bundle exec ruby " . a:filename
+    if filereadable("Gemfile")
+      exec ":!bundle exec ruby " . a:filename
+    else
+      exec ":!ruby " . a:filename
+    end
   elseif match(a:filename, '\.js$') != -1
     exec ":!node " . a:filename
   elseif match(a:filename, '\.sh$') != -1

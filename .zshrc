@@ -103,3 +103,6 @@ fi
 if [ -f /Users/anthonyross/Downloads/google-cloud-sdk/completion.zsh.inc ]; then
   source '/Users/anthonyross/Downloads/google-cloud-sdk/completion.zsh.inc'
 fi
+
+# completion for kubectl
+source <(kubectl completion zsh)

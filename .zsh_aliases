@@ -1,5 +1,5 @@
 dotPath="~/dotfiles"
-alias ll="exa -abghHliS"
+# alias ll="exa -abghHliS"
 alias bower='noglob bower'
 alias mrm='rake db:migrate && rake db:rollback && rake db:migrate'
 export VISUAL="vim -v"

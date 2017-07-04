@@ -40,7 +40,7 @@ set statusline=%F%m%r%h%w\ %{fugitive#statusline()}\ [%l,%c]\ [%L,%p%%]
 "
 " " set dark background and color scheme
 set background=dark
-colorscheme thayer
+colorscheme vimbrant
 
 " set up some custom colors
 highlight clear SignColumn

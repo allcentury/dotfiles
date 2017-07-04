@@ -1,4 +1,5 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =2
+let g:netrw_dirhist_cnt =3
 let g:netrw_dirhist_1='/Users/anthonyross/commercetools/kohler-orders-to-sap/spec/helpers'
 let g:netrw_dirhist_2='/Users/anthonyross/commercetools/kohler-orders-to-sap/spec/helpers/jasmine_examples'
+let g:netrw_dirhist_3='/Users/anthonyross/dotfiles/install'

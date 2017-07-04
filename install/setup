@@ -37,6 +37,29 @@ install_for_osx(){
   else
     brew install reattach-to-user-namespace &> /dev/null
   fi
+
+  brew install macvim
+  brew install zsh
+  # install exa
+  curl -sSf https://static.rust-lang.org/rustup.sh | sh
+  cargo install --git https://github.com/ogham/exa
+  brew install ruby-install
+  brew install chruby
+  brew install tmux
+
+  # install oh-my-zsh
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+
+  symlink_files
+}
+
+symlink_files() {
+  c_echo "Symlinking dot files"
+  for file in ".vimrc" ".tmux.conf" ".zshrc" ".gitconfig" ".gitmessage" ".vim"
+  do
+    c_echo "Linking $file"
+    ln -s ~/dotfiles/"$file" ~/"$file"
+  done
 }
 
 install_for_linux(){
@@ -60,12 +83,9 @@ install_for_linux(){
   c_echo "Installing oh-my-zsh"
   sudo apt-get -y install wget
   ( exec wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O - )
-  c_echo "Symlinking dot files"
-  for file in ".vimrc" ".vim" ".tmux.conf" ".zshrc" ".gitconfig" ".gitmessage"
-  do
-    c_echo "Linking $file"
-    ln -s ~/dotfiles/"$file" ~/"$file"
-  done
+
+
+  symlink_files
 }
 
 case "$OSTYPE" in

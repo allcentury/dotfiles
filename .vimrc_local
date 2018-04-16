@@ -1,0 +1,140 @@
+set autoindent                    " set auto indent
+set ts=2                          " set indent to 2 spaces
+set shiftwidth=2
+set expandtab                     " use spaces, not tab characters
+set relativenumber                " show relative line numbers
+set showmatch                     " show bracket matches
+set ignorecase                    " ignore case in search
+set hlsearch                      " highlight all search matches
+set cursorline                    " highlight current line
+set smartcase                     " pay attention to case when caps are used
+set incsearch                     " show search results as I type
+set ttimeoutlen=100               " decrease timeout for faster insert with 'O'
+set vb                            " enable visual bell (disable audio bell)
+set ruler                         " show row and column in footer
+set scrolloff=2                   " minimum lines above/below cursor
+set laststatus=2                  " always show status bar
+set nofoldenable                  " disable code folding
+"
+" " set dark background and color scheme
+set background=dark
+colorscheme vimbrant
+
+"easily add new line in normal mode
+nmap <S-Enter> O<Esc>
+nmap <CR> o<Esc>
+
+"move to last file
+nnoremap <leader><leader> <c-^>
+
+" write files
+nnoremap <leader>w :w<CR>
+
+" unmap F1 help
+nmap <F1> :echo<CR>
+imap <F1> <C-o>:echo<CR>
+
+" map . in visual mode
+vnoremap . :norm.<cr>
+
+" die hash rockets, die!
+vnoremap <leader>h :s/:\(\w*\) *=>/\1:/g<cr>
+
+" add a require 'pry' and binding.pry at current cursor location
+map <leader>bp :s/\(^.*\n\)/require 'pry'\rbinding.pry\r\1/g<cr>:noh<cr>3k==2.2j:w<cr>
+
+" clean up require 'pry' and binding.pry in file mapped to undo-binding-pry ie
+" ubp
+map <leader>ubp :g/require 'pry'\_s\+binding.pry\_s\+/,+1d<cr>
+
+" clear the command line and search highlighting
+noremap <C-l> :nohlsearch<CR>
+
+" toggle spell check with <F5>
+map <F5> :setlocal spell! spelllang=en_us<cr>
+imap <F5> <ESC>:setlocal spell! spelllang=en_us<cr>
+
+" execute current file
+map <leader>e :call ExecuteFile(expand("%"))<cr>
+
+" execute file if we know how
+function! ExecuteFile(filename)
+  :w
+  :silent !clear
+  if match(a:filename, '\.rb$') != -1
+    if filereadable("Gemfile")
+      exec ":!bundle exec ruby " . a:filename
+    else
+      exec ":!ruby " . a:filename
+    end
+  elseif match(a:filename, '\.js$') != -1
+    exec ":!node " . a:filename
+  elseif match(a:filename, '\.sh$') != -1
+    exec ":!bash " . a:filename
+  elseif match(a:filename, '\.c$') != -1
+    exec ":!gcc " . a:filename . " ; ./a.out"
+  elseif match(a:filename, '\.go$') != -1
+    exec ":!go run " . a:filename
+  else
+    exec ":!echo \"Don't know how to execute: \"" . a:filename
+  end
+endfunction
+
+" jump to last position in file
+autocmd BufReadPost *
+      \ if line("'\"") > 0 && line("'\"") <= line("$") |
+      \   exe "normal g`\"" |
+      \ endif
+
+" rename current file, via Gary Bernhardt
+function! RenameFile()
+  let old_name = expand('%')
+  let new_name = input('New file name: ', expand('%'))
+  if new_name != '' && new_name != old_name
+    exec ':saveas ' . new_name
+    exec ':silent !rm ' . old_name
+    redraw!
+  endif
+endfunction
+map <leader>rn :call RenameFile()<cr>
+
+"toggle insert and normal mode
+imap ii <C-[>
+
+"ctag everything in current directory and gems
+function! Ctag()
+  let ruby = match(expand("%"), ".rb")
+  let go = match(expand("%"), ".go")
+  if ruby != -1
+    exec ":!ctags -R --languages=ruby --exclude=.git --exclude=log . $(bundle list --paths)"
+  endif
+endfunction
+
+map <leader>rt :call Ctag()<cr>
+
+" remove trailing white space before save
+autocmd BufWritePre * :%s/\s\+$//e
+
+" Rubocop with syntastic
+let g:syntastic_ruby_checkers = ['rubocop', 'mri']
+"
+" this is slightly destructive and should only be used when the JSON
+" *has_not_already_been_formmatted/indented*
+function! IndentJSON()
+  " add new line after comma
+  %s/\(,\)/\1\r/g
+  " add new line after open brace
+  %s/\({\)/\1\r/g
+  " add new line before closing brace
+  %s/\(}\)/\r\1/g
+  " add new line after open bracket
+  %s/\(\[\)/\1\r/g
+  " add new line before closing bracket
+  %s/\(\]\)/\r\1/g
+  " remove blank lines
+  g/^\s*$/d
+  " indent the file
+  norm gg=G
+endfunction
+
+map <leader>js :call IndentJSON() <cr>

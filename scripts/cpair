@@ -1,1 +1,2 @@
 ln -s /home/admin/dotfiles/.vimrc_local  /home/admin/.vimrc_local
+ln -s /home/admin/dotfiles/colors/vimbrant.vim  /home/admin/.vim/colors/vimbrant.vim

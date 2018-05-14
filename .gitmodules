@@ -148,6 +148,7 @@
 [submodule "exa"]
   path = exa
   url = https://github.com/ogham/exa
+  branch = master
 [submodule ".vim/bundle/vim-scala"]
   path = .vim/bundle/vim-scala
   url = https://github.com/derekwyatt/vim-scala

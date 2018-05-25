@@ -20,10 +20,6 @@ set nofoldenable                  " disable code folding
 set background=dark
 colorscheme vimbrant
 
-"easily add new line in normal mode
-nmap <S-Enter> O<Esc>
-nmap <CR> o<Esc>
-
 "move to last file
 nnoremap <leader><leader> <c-^>
 

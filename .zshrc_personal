@@ -1,0 +1,4 @@
+dotPath="~/dotfiles"
+
+alias fzf=/home/admin/.fzf/bin/fzf
+alias weather="curl http://wttr.in/Durham"

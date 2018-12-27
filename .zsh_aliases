@@ -72,8 +72,6 @@ fancy-ctrl-z () {
 zle -N fancy-ctrl-z
 bindkey '^Z' fancy-ctrl-z
 
-
-
 ## google cloud
 #
 alias cloud_sql_proxy=/Users/anthonyross/binaries/cloud_sql_proxy

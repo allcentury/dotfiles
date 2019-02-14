@@ -1,4 +1,5 @@
 dotPath="~/dotfiles"
 
 alias fzf=/home/admin/.fzf/bin/fzf
-alias weather="curl http://wttr.in/Durham"
+alias weather="curl http://wttr.in/San+Diego"
+alias drakeme="drake down && drake build && drake start && drake exec"

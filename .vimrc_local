@@ -36,22 +36,12 @@ vnoremap . :norm.<cr>
 " die hash rockets, die!
 vnoremap <leader>h :s/:\(\w*\) *=>/\1:/g<cr>
 
-" add a require 'pry' and binding.pry at current cursor location
-map <leader>bp :s/\(^.*\n\)/require 'pry'\rbinding.pry\r\1/g<cr>:noh<cr>3k==2.2j:w<cr>
-
-" clean up require 'pry' and binding.pry in file mapped to undo-binding-pry ie
-" ubp
-map <leader>ubp :g/require 'pry'\_s\+binding.pry\_s\+/,+1d<cr>
-
 " clear the command line and search highlighting
 noremap <C-l> :nohlsearch<CR>
 
 " toggle spell check with <F5>
-map <F5> :setlocal spell! spelllang=en_us<cr>
-imap <F5> <ESC>:setlocal spell! spelllang=en_us<cr>
-
-" execute current file
-map <leader>e :call ExecuteFile(expand("%"))<cr>
+map <F9> :setlocal spell! spelllang=en_us<cr>
+imap <F9> <ESC>:setlocal spell! spelllang=en_us<cr>
 
 " execute file if we know how
 function! ExecuteFile(filename)
@@ -113,24 +103,3 @@ autocmd BufWritePre * :%s/\s\+$//e
 
 " Rubocop with syntastic
 let g:syntastic_ruby_checkers = ['rubocop', 'mri']
-"
-" this is slightly destructive and should only be used when the JSON
-" *has_not_already_been_formmatted/indented*
-function! IndentJSON()
-  " add new line after comma
-  %s/\(,\)/\1\r/g
-  " add new line after open brace
-  %s/\({\)/\1\r/g
-  " add new line before closing brace
-  %s/\(}\)/\r\1/g
-  " add new line after open bracket
-  %s/\(\[\)/\1\r/g
-  " add new line before closing bracket
-  %s/\(\]\)/\r\1/g
-  " remove blank lines
-  g/^\s*$/d
-  " indent the file
-  norm gg=G
-endfunction
-
-map <leader>js :call IndentJSON() <cr>

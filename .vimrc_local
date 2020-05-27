@@ -103,3 +103,8 @@ autocmd BufWritePre * :%s/\s\+$//e
 
 " Rubocop with syntastic
 let g:syntastic_ruby_checkers = ['rubocop', 'mri']
+let g:ale_fix_on_save = 1
+if filereadable(expand(".rubocop.yml"))
+  let g:ale_linters['ruby'] = ['rubocop']
+  let g:ale_fixers['ruby'] = ['rubocop']
+endif

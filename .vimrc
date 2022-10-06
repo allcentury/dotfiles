@@ -389,28 +389,11 @@ let g:syntastic_javascript_checkers = ['eslint']
 " Allow jsx syntax highlighting for .js files
 let g:jsx_ext_required = 0
 
-"
-" this is slightly destructive and should only be used when the JSON
-" *has_not_already_been_formmatted/indented*
 function! IndentJSON()
-  " add new line after comma
-  %s/\(,\)/\1\r/g
-  " add new line after open brace
-  %s/\({\)/\1\r/g
-  " add new line before closing brace
-  %s/\(}\)/\r\1/g
-  " add new line after open bracket
-  %s/\(\[\)/\1\r/g
-  " add new line before closing bracket
-  %s/\(\]\)/\r\1/g
-  " remove blank lines
-  g/^\s*$/d
-  " indent the file
-  norm gg=G
+  :%!jq
 endfunction
 
 map <leader>js :call IndentJSON() <cr>
-
 
 " nginx
 au BufRead,BufNewFile *.nginx set ft=nginx

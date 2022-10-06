@@ -1,5 +1,8 @@
 [init]
   templatedir = ~/.git_template
+	defaultBranch = main
+[pull]
+  ff = only
 [push]
 	default = current
 [color]
@@ -36,3 +39,5 @@
 [user]
 	name = Anthony Ross
 	email = anthony.s.ross@gmail.com
+[url "ssh://git@github.com/"]
+	insteadOf = https://github.com/

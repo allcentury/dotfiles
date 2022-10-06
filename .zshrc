@@ -4,8 +4,8 @@ export ZSH=$HOME/dotfiles/.oh-my-zsh
 bindkey '^r' history-incremental-search-backward
 
 # CHRUBY
-source /usr/local/opt/chruby/share/chruby/chruby.sh
-source /usr/local/opt/chruby/share/chruby/auto.sh
+source /usr/local/share/chruby/chruby.sh
+source /usr/local/share/chruby/auto.sh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -45,7 +45,7 @@ DISABLE_AUTO_TITLE="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git ruby go bundler common-aliases git-extras zsh-syntax-highlighting docker)
+plugins=(git ruby go bundler common-aliases git-extras)
 source $ZSH/oh-my-zsh.sh
 
 # change this based on promptline
@@ -76,33 +76,65 @@ autoload -Uz compinit && compinit -i
 # aliases
 source ~/dotfiles/.zsh_aliases
 
-# Go setup
-export GOPATH=$HOME/Code/go
-PATH=$PATH:$GOPATH/bin
-
 # Rust
 PATH=$PATH:$HOME/.cargo/bin
+
+#GO
+PATH=$PATH:$(go env GOPATH)/bin
+GOPATH=$(go env GOPATH)
+
+
+PATH=$PATH:$HOME/Library/Android/sdk
+PATH=$PATH:$HOME/Library/Android/sdk/platform-tools
+PATH=/usr/local/opt/libxml2/bin:$PATH
 
 autoload run-help
 HELPDIR=/usr/local/share/zsh/help
 
-
-PERL_MB_OPT="--install_base \"/Users/anthonyross/perl5\""; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=/Users/anthonyross/perl5"; export PERL_MM_OPT;
+# PERL_MB_OPT="--install_base \"/Users/anthonyross/perl5\""; export PERL_MB_OPT;
+# PERL_MM_OPT="INSTALL_BASE=/Users/anthonyross/perl5"; export PERL_MM_OPT;
 
 RUBY_CONFIGURE_OPTS="--llvm-config=/path/to/llvm-config"
 
 export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  # Added by n-install (see http://git.io/n-install-repo).
 
+# completion for kubectl
+# source <(kubectl completion zsh)
+
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f /Users/anthonyross/Downloads/google-cloud-sdk/path.zsh.inc ]; then
-  source '/Users/anthonyross/Downloads/google-cloud-sdk/path.zsh.inc'
-fi
+if [ -f '/Users/anthonyross/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/anthonyross/Downloads/google-cloud-sdk/path.zsh.inc'; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f /Users/anthonyross/Downloads/google-cloud-sdk/completion.zsh.inc ]; then
-  source '/Users/anthonyross/Downloads/google-cloud-sdk/completion.zsh.inc'
-fi
+if [ -f '/Users/anthonyross/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/anthonyross/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-# completion for kubectl
-source <(kubectl completion zsh)
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/Users/anthonyross/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/Users/anthonyross/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/anthonyross/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/Users/anthonyross/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# tabtab source for packages
+# uninstall by removing these lines
+[[ -f ~/.config/tabtab/__tabtab.zsh ]] && . ~/.config/tabtab/__tabtab.zsh || true
+
+eval "$(pyenv init -)"
+
+# java
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home
+
+export EDITOR=vim

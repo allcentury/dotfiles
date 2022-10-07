@@ -1,9 +1,14 @@
-set encoding=utf-8
+call plug#begin()
 
-runtime bundle/vim-pathogen/autoload/pathogen.vim
-" load up pathogen and all bundles
-execute pathogen#infect()
-execute pathogen#helptags()
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'tpope/vim-fugitive'
+Plug 'vimoutliner/vimoutliner'
+
+call plug#end()
+
+
+set encoding=utf-8
 
 syntax on                         " show syntax highlighting
 filetype plugin indent on
@@ -16,7 +21,6 @@ set relativenumber                " show relative line numbers
 set showmatch                     " show bracket matches
 set ignorecase                    " ignore case in search
 set hlsearch                      " highlight all search matches
-set cursorline                    " highlight current line
 set smartcase                     " pay attention to case when caps are used
 set incsearch                     " show search results as I type
 set mouse=a                       " enable mouse support
@@ -38,10 +42,6 @@ runtime macros/matchit.vim        " use % to jump between start/end of methods
 " put git status, column/row number, total lines, and percentage in status
 set statusline=%F%m%r%h%w\ %{fugitive#statusline()}\ [%l,%c]\ [%L,%p%%]
 "
-" " set dark background and color scheme
-set background=dark
-colorscheme vimbrant
-
 " set up some custom colors
 highlight clear SignColumn
 highlight VertSplit    ctermbg=236
@@ -55,20 +55,9 @@ highlight Pmenu        ctermbg=240 ctermfg=12
 highlight PmenuSel     ctermbg=3   ctermfg=1
 highlight SpellBad     ctermbg=0   ctermfg=1
 
-" set up color column to onyl call out lines that are greater than 100
-" characters
-highlight ColorColumn  ctermbg=7
-highlight ColorColumn  guibg=Gray
-call matchadd('ColorColumn', '\%101v', 100)
-
-" map <leader>no noh<cr> matchadd('ColorColumn', '\%101v', 100)
-
-
 " highlight the status bar when in insert mode
-if version >= 700
-  au InsertEnter * hi StatusLine ctermfg=235 ctermbg=2
-  au InsertLeave * hi StatusLine ctermbg=240 ctermfg=12
-endif
+au InsertEnter * hi StatusLine ctermfg=235 ctermbg=2
+au InsertLeave * hi StatusLine ctermbg=240 ctermfg=12
 
 " highlight trailing spaces in annoying red
 highlight ExtraWhitespace ctermbg=1 guibg=red
@@ -125,12 +114,6 @@ map <leader>d :!clear && git diff %<cr>
 " add a require 'pry' and binding.pry at current cursor location
 map <leader>bp :s/\(^.*\n\)/require 'pry'\rbinding.pry\r\1/g<cr>:noh<cr>3k==2.2j:w<cr>
 
-" easy pop in for showing javascript methods
-map <leader>jsm :s/\(^.*\n\)/this.logger.debug(`Available methods: ${Object.getOwnPropertyNames(someObj)}`);\r\1/g<cr>:noh<cr>3k==2.2j:w<cr>
-
-" replace function(*args) with fat arrows =>
-map <leader>jsf :%s/(\(.*\)function\(.*)\)/(\1\2 =>/g<cr>
-
 " clean up require 'pry' and binding.pry in file mapped to undo-binding-pry ie
 " ubp
 map <leader>ubp :g/require 'pry'\_s\+binding.pry\_s\+/,+1d<cr>
@@ -150,9 +133,6 @@ noremap <C-l> :nohlsearch<CR>
 " toggle spell check with <F5>
 map <F5> :setlocal spell! spelllang=en_us<cr>
 imap <F5> <ESC>:setlocal spell! spelllang=en_us<cr>
-
-" add :Plain command for converting text to plaintext
-command! Plain execute "%s/â€™/'/ge | %s/[â€œâ€]/\"/ge | %s/â€”/-/ge"
 
 " execute current file
 map <leader>e :call ExecuteFile(expand("%"))<cr>
@@ -185,18 +165,6 @@ autocmd BufReadPost *
       \ if line("'\"") > 0 && line("'\"") <= line("$") |
       \   exe "normal g`\"" |
       \ endif
-
-" multi-purpose tab key (auto-complete)
-function! InsertTabWrapper()
-  let col = col('.') - 1
-  if !col || getline('.')[col - 1] !~ '\k'
-    return "\<tab>"
-  else
-    return "\<c-p>"
-  endif
-endfunction
-inoremap <tab> <c-r>=InsertTabWrapper()<cr>
-inoremap <s-tab> <c-n>
 
 " rename current file, via Gary Bernhardt
 function! RenameFile()
@@ -309,46 +277,6 @@ map <leader>rt :call Ctag()<cr>
 " remove trailing white space before save
 autocmd BufWritePre * :%s/\s\+$//e
 
-" for Go
-let g:tagbar_type_go = {
-      \ 'ctagstype' : 'go',
-      \ 'kinds'     : [
-      \ 'p:package',
-      \ 'i:imports:1',
-      \ 'c:constants',
-      \ 'v:variables',
-      \ 't:types',
-      \ 'n:interfaces',
-      \ 'w:fields',
-      \ 'e:embedded',
-      \ 'm:methods',
-      \ 'r:constructor',
-      \ 'f:functions'
-      \ ],
-      \ 'sro' : '.',
-      \ 'kind2scope' : {
-      \ 't' : 'ctype',
-      \ 'n' : 'ntype'
-      \ },
-      \ 'scope2kind' : {
-      \ 'ctype' : 't',
-      \ 'ntype' : 'n'
-      \ },
-      \ 'ctagsbin'  : 'gotags',
-      \ 'ctagsargs' : '-sort -silent'
-      \ }
-" vim-go options
-let g:go_fmt_autosave = 0
-
-
-nmap <F8> :TagbarToggle<CR>
-"airline
-let g:airline_powerline_fonts = 1
-let g:airline_theme="bubblegum"
-
-" Get rid of handlebars incorrect syntax errors
-let g:syntastic_filetype_map = { 'html.handlebars': 'handlebars' }
-
 "utilsnips:
 let g:UltiSnipsExpandTrigger="<c-k>"
 let g:UltiSnipsJumpForwardTrigger="<c-k>"
@@ -394,9 +322,3 @@ function! IndentJSON()
 endfunction
 
 map <leader>js :call IndentJSON() <cr>
-
-" nginx
-au BufRead,BufNewFile *.nginx set ft=nginx
-au BufRead,BufNewFile */etc/nginx/* set ft=nginx
-au BufRead,BufNewFile */usr/local/nginx/conf/* set ft=nginx
-au BufRead,BufNewFile nginx.conf set ft=nginx

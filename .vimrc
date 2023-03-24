@@ -4,6 +4,10 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'vimoutliner/vimoutliner'
+Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
 
 call plug#end()
 
@@ -36,12 +40,10 @@ set clipboard=unnamed             " use the system clipboard
 set wildmenu                      " enable bash style tab completion
 set wildmode=list:longest,full
 set backspace=indent,eol,start    " adding this to solve when backspace stops working
+set list listchars=tab:▷▷⋮             " show tabs as arrows
 
 runtime macros/matchit.vim        " use % to jump between start/end of methods
 
-" put git status, column/row number, total lines, and percentage in status
-set statusline=%F%m%r%h%w\ %{fugitive#statusline()}\ [%l,%c]\ [%L,%p%%]
-"
 " set up some custom colors
 highlight clear SignColumn
 highlight VertSplit    ctermbg=236
@@ -69,6 +71,9 @@ autocmd BufWinLeave * call clearmatches()
 
 " set leader key to comma
 let mapleader = ","
+
+"fzf search
+nnoremap <leader>ff :GFiles<Cr>
 
 " silver searcher config
 let g:ackprg = 'ag --nogroup --nocolor --column'

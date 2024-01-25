@@ -60,3 +60,5 @@ alias cloud_sql_proxy=/Users/anthonyross/binaries/cloud_sql_proxy
 alias k=kubectl
 
 alias ngrok="/Applications/ngrok"
+
+alias ctag_ruby="ctags -R --languages=ruby --exclude=.git --exclude=log --exclude=tmp . $(bundle list --paths)"

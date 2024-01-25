@@ -13,7 +13,19 @@ Plug 'udalov/kotlin-vim'
 Plug 'ruanyl/vim-gh-line'
 Plug 'preservim/nerdtree'
 Plug 'leafgarland/typescript-vim'
-
+Plug 'tpope/vim-liquid'
+Plug 'udalov/kotlin-vim'
+Plug 'peitalin/vim-jsx-typescript'
+Plug 'StanAngeloff/php.vim'
+Plug 'phpactor/phpactor' ,  {'do': 'composer install', 'for': 'php'}
+Plug 'roxma/vim-hug-neovim-rpc'
+" Require ncm2 and this plugin
+Plug 'ncm2/ncm2'
+Plug 'roxma/nvim-yarp'
+Plug 'phpactor/ncm2-phpactor'
+Plug 'github/copilot.vim'
+" Required for vim 8
+" Install this plugin
 call plug#end()
 
 
@@ -78,7 +90,7 @@ autocmd BufWinLeave * call clearmatches()
 let mapleader = ","
 
 "fzf search
-nnoremap <leader>ff :GFiles<Cr>
+nnoremap <leader>ff :GFiles --cached --others --exclude-standard<Cr>
 
 " silver searcher config
 let g:ackprg = 'ag --nogroup --nocolor --column'
@@ -332,3 +344,9 @@ function! IndentJSON()
 endfunction
 
 map <leader>js :call IndentJSON() <cr>
+
+
+" enable ncm2 for all buffers
+" autocmd BufEnter * call ncm2#enable_for_buffer()
+" IMPORTANT: :help Ncm2PopupOpen for more information
+" set completeopt=noinsert,menuone,noselect

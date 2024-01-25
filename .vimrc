@@ -24,6 +24,9 @@ Plug 'ncm2/ncm2'
 Plug 'roxma/nvim-yarp'
 Plug 'phpactor/ncm2-phpactor'
 Plug 'github/copilot.vim'
+Plug 'Quramy/tsuquyomi'
+Plug 'tpope/vim-rhubarb'
+
 " Required for vim 8
 " Install this plugin
 call plug#end()
@@ -342,6 +345,10 @@ let g:jsx_ext_required = 0
 function! IndentJSON()
   :%!jq
 endfunction
+
+" yank current github link to clipboard
+" nnoremap <Leader>gy :.GBrowse!<CR>
+xnoremap <Leader>gy :'<'>GBrowse!<CR>
 
 map <leader>js :call IndentJSON() <cr>
 

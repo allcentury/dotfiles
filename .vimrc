@@ -27,6 +27,9 @@ Plug 'github/copilot.vim'
 Plug 'Quramy/tsuquyomi'
 Plug 'tpope/vim-rhubarb'
 Plug 'vim-test/vim-test'
+Plug 'mfussenegger/nvim-dap'
+Plug 'mxsdev/nvim-dap-vscode-js'
+Plug 'rcarriga/nvim-dap-ui'
 " Required for vim 8
 " Install this plugin
 call plug#end()

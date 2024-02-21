@@ -26,7 +26,7 @@ Plug 'phpactor/ncm2-phpactor'
 Plug 'github/copilot.vim'
 Plug 'Quramy/tsuquyomi'
 Plug 'tpope/vim-rhubarb'
-
+Plug 'vim-test/vim-test'
 " Required for vim 8
 " Install this plugin
 call plug#end()
@@ -352,6 +352,10 @@ xnoremap <Leader>gy :'<'>GBrowse!<CR>
 
 map <leader>js :call IndentJSON() <cr>
 
+" vim test
+nmap <silent> <leader>tf :w<CR>:TestNearest<CR>
+nmap <silent> <leader>tl :w<CR>:TestLast<CR>
+let test#strategy = "basic"
 
 " enable ncm2 for all buffers
 " autocmd BufEnter * call ncm2#enable_for_buffer()

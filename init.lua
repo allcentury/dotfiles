@@ -56,6 +56,7 @@ require("lazy").setup({
   "folke/neodev.nvim",
   "neovim/nvim-lspconfig",
   'tpope/vim-fugitive',
+  'tpope/vim-rhubarb',
   {
 	  'nvim-telescope/telescope.nvim', tag = '0.1.6',
 	  dependencies = { 'nvim-lua/plenary.nvim' }

@@ -81,6 +81,11 @@ require("lazy").setup({
   },
   "github/copilot.vim",
   "nvim-treesitter/nvim-treesitter",
+  {
+	  "pmizio/typescript-tools.nvim",
+	  dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+	  opts = {},
+  }
 
 })
 
@@ -160,3 +165,11 @@ require'nvim-treesitter.configs'.setup {
     disable = { },
   },
 }
+
+local o = vim.o
+
+o.expandtab = true  -- expand tab input with spaces characters
+o.smartindent = true -- syntax aware indentations for newline inserts
+o.tabstop = 2 -- num of space characters per tab
+o.shiftwidth = 2 -- spaces per indentation level
+vim.wo.relativenumber = true

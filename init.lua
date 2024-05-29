@@ -58,8 +58,13 @@ require("lazy").setup({
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
   {
-	  'nvim-telescope/telescope.nvim', tag = '0.1.6',
-	  dependencies = { 'nvim-lua/plenary.nvim' }
+    "ibhagwan/fzf-lua",
+    -- optional for icon support
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      -- calling `setup` is optional for customization
+      require("fzf-lua").setup({})
+    end
   },
   {
 	  'numToStr/Comment.nvim',
@@ -144,15 +149,13 @@ require'lspconfig'.elixirls.setup{
 	cmd = { "/Users/aross/projects/elixir-ls/language_server.sh" }
 }
 
-
-local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
-vim.keymap.set('n', '<leader>fgt', builtin.git_files, {})
-vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
-vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
-vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
-vim.api.nvim_set_keymap('n', '<leader>fw', [[<Cmd>lua require('telescope.builtin').grep_string({ search = vim.fn.expand('<cword>') })<CR>]], { noremap = true, silent = true })
-
+local fzf = require('fzf-lua')
+vim.keymap.set('n', '<leader>ff', fzf.files, {})
+vim.keymap.set('n', '<leader>fgt', fzf.git_files, {})
+vim.keymap.set('n', '<leader>fg', fzf.live_grep, {})
+vim.keymap.set('n', '<leader>fb', fzf.buffers, {})
+vim.keymap.set('n', '<leader>fh', fzf.help_tags, {})
+vim.keymap.set('n', '<leader>fw', function() fzf.grep({ search = vim.fn.expand('<cword>') }) end, { noremap = true, silent = true })
 
 require("Comment").setup()
 

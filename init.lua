@@ -1,5 +1,16 @@
 
+vim.cmd('filetype plugin indent on')
+vim.o.autoindent = true
+vim.o.smartindent = true
+vim.o.tabstop = 2
+vim.o.shiftwidth = 2
+vim.o.expandtab = true
 vim.g.mapleader = ','
+
+-- Ensure Ruby filetype is recognized
+vim.api.nvim_exec([[
+  au BufRead,BufNewFile *.rb set filetype=ruby
+]], false)
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -14,8 +25,6 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Example using a list of specs with the default options
-vim.g.mapleader = "," -- Make sure to set `mapleader` before lazy so your mappings are correct
 
 local elixir_tools = {
   "elixir-tools/elixir-tools.nvim",
@@ -91,8 +100,8 @@ require("lazy").setup({
 	  "pmizio/typescript-tools.nvim",
 	  dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
 	  opts = {},
-  }
-
+  },
+  'vim-ruby/vim-ruby'
 })
 
 -- require'lspconfig'.kotlin_language_server.setup{}

@@ -103,7 +103,20 @@ require("lazy").setup({
 	  dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
 	  opts = {},
   },
-  'vim-ruby/vim-ruby'
+  'vim-ruby/vim-ruby',
+  {
+    "nvim-neotest/neotest",
+    dependencies = {
+      "nvim-neotest/nvim-nio",
+      "nvim-lua/plenary.nvim",
+      "antoinemadec/FixCursorHold.nvim",
+      "nvim-treesitter/nvim-treesitter"
+    }
+  },
+  { "folke/neodev.nvim", opts = {} },
+  "jfpedroza/neotest-elixir",
+  "olimorris/neotest-rspec",
+  "nvim-neotest/neotest-jest",
 })
 
 -- require'lspconfig'.kotlin_language_server.setup{}
@@ -179,6 +192,9 @@ require'nvim-treesitter.configs'.setup {
     enable = true,
     disable = { },
   },
+  indent = {
+    enable = true,
+  },
 }
 
 require'nvim-web-devicons'.setup {
@@ -238,3 +254,17 @@ if vim.fn.has("termguicolors") == 1 then
   vim.opt.termguicolors = true
 end
 
+
+require("neotest").setup({
+  adapters = {
+    require("neotest-elixir"),
+    require("neotest-rspec"),
+    require("neotest-jest"),
+  },
+})
+
+-- notest setup and keybindings
+vim.api.nvim_set_keymap('n', '<leader>tf', [[<Cmd>lua require('neotest').run.run(vim.fn.expand('%'))<CR>]], { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>tn', [[<Cmd>lua require('neotest').run.run()<CR>]], { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>ts', [[<Cmd>lua require('neotest').summary.toggle()<CR>]], { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>to', [[<Cmd>lua require('neotest').output.open({ enter = true })<CR>]], { noremap = true, silent = true })

@@ -63,7 +63,6 @@ require("lazy").setup({
 	  "folke/neoconf.nvim", 
 	  cmd = "Neoconf" 
   },
-  "folke/neodev.nvim",
   "neovim/nvim-lspconfig",
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
@@ -110,8 +109,21 @@ require("lazy").setup({
   "vim-test/vim-test",
 })
 
--- require'lspconfig'.kotlin_language_server.setup{}
+require("neodev").setup({})
+-- then setup your lsp server as usual
 local nvim_lsp = require('lspconfig')
+
+-- example to setup lua_ls and enable call snippets
+nvim_lsp.lua_ls.setup({
+  settings = {
+    Lua = {
+      completion = {
+        callSnippet = "Replace"
+      }
+    }
+  }
+})
+
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -165,6 +177,17 @@ require'lspconfig'.elixirls.setup{
 }
 
 local fzf = require('fzf-lua')
+
+-- require('fzf-lua').setup({})
+require('fzf-lua').setup {
+  winopts = {
+    preview = {
+      default = 'bat',  -- Use 'bat' for syntax-highlighted previews
+    },
+  },
+}
+
+
 vim.keymap.set('n', '<leader>ff', fzf.files, {})
 vim.keymap.set('n', '<leader>fgt', fzf.git_files, {})
 vim.keymap.set('n', '<leader>fg', fzf.live_grep, {})
@@ -189,56 +212,56 @@ require'nvim-treesitter.configs'.setup {
 }
 
 require'nvim-web-devicons'.setup {
- -- your personnal icons can go here (to override)
- -- you can specify color or cterm_color instead of specifying both of them
- -- DevIcon will be appended to `name`
- override = {
-  zsh = {
-    icon = "",
-    color = "#428850",
-    cterm_color = "65",
-    name = "Zsh"
-  }
- };
- -- globally enable different highlight colors per icon (default to true)
- -- if set to false all icons will have the default icon's color
- color_icons = true;
- -- globally enable default icons (default to false)
- -- will get overriden by `get_icons` option
- default = true;
- -- globally enable "strict" selection of icons - icon will be looked up in
- -- different tables, first by filename, and if not found by extension; this
- -- prevents cases when file doesn't have any extension but still gets some icon
- -- because its name happened to match some extension (default to false)
- strict = true;
- -- same as `override` but specifically for overrides by filename
- -- takes effect when `strict` is true
- override_by_filename = {
-  [".gitignore"] = {
-    icon = "",
-    color = "#f1502f",
-    name = "Gitignore"
-  }
- };
- -- same as `override` but specifically for overrides by extension
- -- takes effect when `strict` is true
- override_by_extension = {
-  ["log"] = {
-    icon = "",
-    color = "#81e043",
-    name = "Log"
-  }
- };
- -- same as `override` but specifically for operating system
- -- takes effect when `strict` is true
- override_by_operating_system = {
-  ["apple"] = {
-    icon = "",
-    color = "#A2AAAD",
-    cterm_color = "248",
-    name = "Apple",
-  },
- };
+  -- your personnal icons can go here (to override)
+  -- you can specify color or cterm_color instead of specifying both of them
+  -- DevIcon will be appended to `name`
+  override = {
+    zsh = {
+      icon = "",
+      color = "#428850",
+      cterm_color = "65",
+      name = "Zsh"
+    }
+  };
+  -- globally enable different highlight colors per icon (default to true)
+  -- if set to false all icons will have the default icon's color
+  color_icons = true;
+  -- globally enable default icons (default to false)
+  -- will get overriden by `get_icons` option
+  default = true;
+  -- globally enable "strict" selection of icons - icon will be looked up in
+  -- different tables, first by filename, and if not found by extension; this
+  -- prevents cases when file doesn't have any extension but still gets some icon
+  -- because its name happened to match some extension (default to false)
+  strict = true;
+  -- same as `override` but specifically for overrides by filename
+  -- takes effect when `strict` is true
+  override_by_filename = {
+    [".gitignore"] = {
+      icon = "",
+      color = "#f1502f",
+      name = "Gitignore"
+    }
+  };
+  -- same as `override` but specifically for overrides by extension
+  -- takes effect when `strict` is true
+  override_by_extension = {
+    ["log"] = {
+      icon = "",
+      color = "#81e043",
+      name = "Log"
+    }
+  };
+  -- same as `override` but specifically for operating system
+  -- takes effect when `strict` is true
+  override_by_operating_system = {
+    ["apple"] = {
+      icon = "",
+      color = "#A2AAAD",
+      cterm_color = "248",
+      name = "Apple",
+    },
+  };
 }
 
 if vim.fn.has("termguicolors") == 1 then

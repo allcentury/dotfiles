@@ -171,9 +171,21 @@ for _, lsp in ipairs(servers) do
 end
 
 
-require'lspconfig'.elixirls.setup{
+require('lspconfig').elixirls.setup{
 	on_attach = on_attach,
 	cmd = { "/Users/aross/projects/elixir-ls/language_server.sh" }
+}
+
+require('lspconfig').ruby_lsp.setup{
+  on_attach = on_attach,
+  cmd = { "bundle", "exec", "ruby-lsp" },
+  settings = {
+    rubyLsp = {
+     diagnostics = {
+       enable = true,
+     },
+    }
+  }
 }
 
 local fzf = require('fzf-lua')

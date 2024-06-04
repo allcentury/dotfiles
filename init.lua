@@ -84,16 +84,10 @@ require("lazy").setup({
 	  lazy = false,
   },
   {
-	  -- add dracula
-	  { "Mofiqul/dracula.nvim" },
-
-	  -- Configure LazyVim to load dracula
-	  {
-		  "LazyVim/LazyVim",
-		  opts = {
-			  colorscheme = "dracula",
-		  },
-	  },
+  "Mofiqul/dracula.nvim",
+    config = function()
+      vim.cmd("colorscheme dracula")
+    end,
   },
   "github/copilot.vim",
   "nvim-treesitter/nvim-treesitter",
@@ -173,7 +167,7 @@ end
 
 require('lspconfig').elixirls.setup{
 	on_attach = on_attach,
-	cmd = { "/Users/aross/projects/elixir-ls/language_server.sh" }
+	cmd = { "/Users/aross/projects/elixir-ls/release/language_server.sh" }
 }
 
 require('lspconfig').ruby_lsp.setup{

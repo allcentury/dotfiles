@@ -27,36 +27,6 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 
-local elixir_tools = {
-  "elixir-tools/elixir-tools.nvim",
-  version = "*",
-  event = { "BufReadPre", "BufNewFile" },
-  config = function()
-    local elixir = require("elixir")
-    local elixirls = require("elixir.elixirls")
-
-    elixir.setup {
-      nextls = {enable = true},
-      credo = {},
-      elixirls = {
-        enable = true,
-        settings = elixirls.settings {
-          dialyzerEnabled = false,
-          enableTestLenses = false,
-        },
-        on_attach = function(client, bufnr)
-          vim.keymap.set("n", "<space>fp", ":ElixirFromPipe<cr>", { buffer = true, noremap = true })
-          vim.keymap.set("n", "<space>tp", ":ElixirToPipe<cr>", { buffer = true, noremap = true })
-          vim.keymap.set("v", "<space>em", ":ElixirExpandMacro<cr>", { buffer = true, noremap = true })
-        end,
-      }
-    }
-  end,
-  dependencies = {
-    "nvim-lua/plenary.nvim",
-  },
-}
-
 require("lazy").setup({
   "folke/which-key.nvim",
   { 
@@ -274,6 +244,10 @@ if vim.fn.has("termguicolors") == 1 then
   vim.opt.termguicolors = true
 end
 
+-- vim test set up
+
+
+
 vim.g["test#neovim#term_position"] = "vert botright 30"
 vim.g["test#strategy"] = "vimux"
 
@@ -283,3 +257,23 @@ vim.api.nvim_set_keymap('n', '<leader>T', ':TestFile<CR>', { noremap = true, sil
 vim.api.nvim_set_keymap('n', '<leader>a', ':TestSuite<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>l', ':TestLast<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>g', ':TestVisit<CR>', { noremap = true, silent = true })
+
+-- Function to run Bazel test
+function _G.RunBazelTest(...)
+  local command = 'bazel test'
+  local args = table.concat({...}, ' ')
+  if args ~= '' then
+    command = command .. ' ' .. args
+  end
+  return command
+end
+
+-- Set Kotlin-specific test settings
+vim.api.nvim_exec([[
+  augroup KotlinTestSettings
+    autocmd!
+    autocmd FileType kotlin lua vim.g['test#custom_strategies'] = { bazel = _G.RunBazelTest }
+    autocmd FileType kotlin let test#strategy = 'bazel'
+    autocmd FileType kotlin let g:test#kotlin#gradle#executable = "bazel test"
+  augroup END
+]], false)

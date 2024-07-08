@@ -71,6 +71,25 @@ require("lazy").setup({
   "preservim/vimux",
   "spiegela/vimix",
   "vim-test/vim-test",
+  {
+    'cameron-wags/rainbow_csv.nvim',
+    config = true,
+    ft = {
+      'csv',
+      'tsv',
+      'csv_semicolon',
+      'csv_whitespace',
+      'csv_pipe',
+      'rfc_csv',
+      'rfc_semicolon'
+    },
+    cmd = {
+      'RainbowDelim',
+      'RainbowDelimSimple',
+      'RainbowDelimQuoted',
+      'RainbowMultiDelim'
+    }
+  }
 })
 
 require("neodev").setup({})
@@ -277,3 +296,4 @@ vim.api.nvim_exec([[
     autocmd FileType kotlin let g:test#kotlin#gradle#executable = "bazel test"
   augroup END
 ]], false)
+

@@ -90,7 +90,11 @@ require("lazy").setup({
       'RainbowMultiDelim'
     }
   }
+  'rust-lang/rust.vim',
+  'saecki/crates.nvim'
 })
+
+require('crates').setup()
 
 require("neodev").setup({})
 -- then setup your lsp server as usual
@@ -170,6 +174,9 @@ require('lspconfig').ruby_lsp.setup{
     }
   }
 }
+
+-- Configure rust-analyzer
+require'lspconfig'.rust_analyzer.setup{}
 
 local fzf = require('fzf-lua')
 

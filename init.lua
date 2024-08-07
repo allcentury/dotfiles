@@ -8,6 +8,16 @@ vim.o.tabstop = 2 -- num of space characters per tab
 vim.o.shiftwidth = 2 -- spaces per indentation level
 vim.wo.relativenumber = true
 
+-- Create an autocommand group
+local group = vim.api.nvim_create_augroup('TrimWhitespaceGroup', { clear = true })
+
+-- Define the autocommand to trim trailing whitespace on save
+vim.api.nvim_create_autocmd('BufWritePre', {
+  group = group,
+  pattern = '*',
+  command = [[%s/\s\+$//e]],
+})
+
 -- Ensure Ruby filetype is recognized
 vim.api.nvim_exec([[
   au BufRead,BufNewFile *.rb set filetype=ruby

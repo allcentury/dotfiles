@@ -1,4 +1,4 @@
-
+local vim = _G.vim
 vim.cmd('filetype plugin indent on')
 vim.o.autoindent = true
 vim.g.mapleader = ','
@@ -26,12 +26,11 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-
 require("lazy").setup({
   "folke/which-key.nvim",
-  { 
-	  "folke/neoconf.nvim", 
-	  cmd = "Neoconf" 
+  {
+	  "folke/neoconf.nvim",
+	  cmd = "Neoconf"
   },
   "neovim/nvim-lspconfig",
   'tpope/vim-fugitive',
@@ -127,6 +126,7 @@ local on_attach = function(client, bufnr)
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
   buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'gdv', '<Cmd>vsplit | lua vim.lsp.buf.definition()<CR>', opts)
   buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
   buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
   buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
@@ -144,6 +144,12 @@ local on_attach = function(client, bufnr)
   buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
 
 end
+
+local rust_attach = function(client, bufnr)
+  on_attach(client, bufnr)
+  vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+end
+
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
@@ -176,7 +182,9 @@ require('lspconfig').ruby_lsp.setup{
 }
 
 -- Configure rust-analyzer
-require'lspconfig'.rust_analyzer.setup{}
+require'lspconfig'.rust_analyzer.setup({
+  on_attach = rust_attach,
+})
 
 local fzf = require('fzf-lua')
 

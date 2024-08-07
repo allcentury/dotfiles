@@ -89,9 +89,9 @@ require("lazy").setup({
       'RainbowDelimQuoted',
       'RainbowMultiDelim'
     }
-  }
+  },
   'rust-lang/rust.vim',
-  'saecki/crates.nvim'
+  'saecki/crates.nvim',
 })
 
 require('crates').setup()

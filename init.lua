@@ -101,6 +101,7 @@ require("lazy").setup({
   },
   'rust-lang/rust.vim',
   'saecki/crates.nvim',
+  'andymass/vim-matchup',
 })
 
 require('crates').setup()
@@ -120,6 +121,15 @@ nvim_lsp.lua_ls.setup({
   }
 })
 
+function CopyDiagnosticsToClipboard()
+  local diagnostics = vim.diagnostic.get(0)
+  local message = ""
+  for _, diagnostic in ipairs(diagnostics) do
+    message = message .. diagnostic.message .. "\n"
+  end
+  vim.fn.setreg("+", message)  -- Copy to the system clipboard
+  print("Diagnostics copied to clipboard")
+end
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -147,11 +157,12 @@ local on_attach = function(_client, bufnr)
   buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  buf_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float(nil, { focusable = false })<CR>', opts)
   buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
   buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
   buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
   buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+  buf_set_keymap("n", "<space>ce", '<cmd>lua CopyDiagnosticsToClipboard()<CR>', opts)
 
 end
 
@@ -218,7 +229,22 @@ vim.keymap.set('n', '<leader>fw', function() fzf.grep({ search = vim.fn.expand('
 require("Comment").setup()
 
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = "all", -- install parsers for all supported languages
+  ensure_installed = {
+    "vimdoc",
+    "vim",
+    "javascript",
+    "lua",
+    "typescript",
+    "tsx",
+    "json",
+    "html",
+    "css",
+    "ruby",
+    "yaml",
+    "elixir",
+    "rust",
+    "markdown",
+  },
   sync_install = false,
   auto_install = true,
   ignore_install = { },
@@ -289,9 +315,6 @@ if vim.fn.has("termguicolors") == 1 then
 end
 
 -- vim test set up
-
-
-
 vim.g["test#neovim#term_position"] = "vert botright 30"
 vim.g["test#strategy"] = "vimux"
 
@@ -322,3 +345,13 @@ vim.api.nvim_exec([[
   augroup END
 ]], false)
 
+
+-- copilot setup
+vim.keymap.set('i', '<C-L>', '<Plug>(copilot-accept-word)')
+
+-- matchup
+require'nvim-treesitter.configs'.setup {
+  matchup = {
+    enable = true,              -- mandatory, false will disable the whole extension
+  },
+}

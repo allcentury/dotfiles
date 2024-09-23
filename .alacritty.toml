@@ -1,0 +1,40 @@
+# Colors (Dracula)
+
+# Default colors
+[colors.primary]
+background = '#282a36'
+foreground = '#f8f8f2'
+
+# Normal colors
+[colors.normal]
+black   = '#000000'
+red     = '#ff5555'
+green   = '#50fa7b'
+yellow  = '#f1fa8c'
+blue    = '#bd93f9'
+magenta = '#ff79c6'
+cyan    = '#8be9fd'
+white   = '#bbbbbb'
+
+# Bright colors
+[colors.bright]
+black   = '#555555'
+red     = '#ff5555'
+green   = '#50fa7b'
+yellow  = '#f1fa8c'
+blue    = '#caa9fa'
+magenta = '#ff79c6'
+cyan    = '#8be9fd'
+white   = '#ffffff'
+
+[font]
+normal = { family = "InconsolataGo Nerd Font Mono", style = "Regular" }
+bold = { family = "InconsolataGo Nerd Font Mono", style = "Bold" }
+italic = { family = "InconsolataGo Nerd Font Mono", style = "Italic" }
+bold_italic = { family = "InconsolataGo Nerd Font Mono", style = "Bold Italic" }
+
+# Optional: You can specify the font size if needed
+size = 14.0
+
+[selection]
+save_to_clipboard = true

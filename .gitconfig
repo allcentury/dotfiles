@@ -1,10 +1,10 @@
 [init]
   templatedir = ~/.git_template
-	defaultBranch = main
+  defaultBranch = main
 [pull]
   ff = only
 [push]
-	default = current
+  default = current
 [color]
   ui = auto
 [alias]
@@ -27,7 +27,7 @@
   edit = !vim `git ls-files -m` -p
   log-author = "!f() { git log --date=short --pretty=format:\"%ad:%an:%d:%B\" --branches --since=1.months.ago --author=$1; }; f "
 [core]
-	excludesfile = /Users/anthonyross/.gitignore_global
+  excludesfile = /Users/anthonyross/.gitignore_global
   autocrlf = input
   editor = vim
 [commit]
@@ -37,7 +37,7 @@
 [include]
   path = ~/.gitconfig.local
 [user]
-	name = Anthony Ross
-	email = anthony.s.ross@gmail.com
+  name = Anthony Ross
+  email = anthony.s.ross@gmail.com
 [url "ssh://git@github.com/"]
-	insteadOf = https://github.com/
+  insteadOf = https://github.com/

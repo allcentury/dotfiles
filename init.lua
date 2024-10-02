@@ -1,3 +1,6 @@
+----------------------------------
+      -- Vim configuration
+----------------------------------
 local vim = _G.vim
 vim.cmd('filetype plugin indent on')
 vim.o.autoindent = true
@@ -8,9 +11,11 @@ vim.o.tabstop = 2 -- num of space characters per tab
 vim.o.shiftwidth = 2 -- spaces per indentation level
 vim.wo.relativenumber = true
 
--- Create an autocommand group
-local group = vim.api.nvim_create_augroup('TrimWhitespaceGroup', { clear = true })
 
+----------------------------------
+      -- Autocommands
+----------------------------------
+local group = vim.api.nvim_create_augroup('TrimWhitespaceGroup', { clear = true })
 -- Define the autocommand to trim trailing whitespace on save
 vim.api.nvim_create_autocmd('BufWritePre', {
   group = group,
@@ -23,6 +28,9 @@ vim.api.nvim_exec([[
   au BufRead,BufNewFile *.rb set filetype=ruby
 ]], false)
 
+----------------------------------
+      -- Plugins
+----------------------------------
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -114,6 +122,15 @@ require("lazy").setup({
     "samjwill/nvim-unception",
     lazy = false,
     init = function() vim.g.unception_block_while_host_edits = true end
+  },
+  {
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    build = "cd app && yarn install",
+    init = function()
+      vim.g.mkdp_filetypes = { "markdown" }
+    end,
+    ft = { "markdown" },
   }
 })
 
@@ -268,6 +285,9 @@ require'nvim-treesitter.configs'.setup {
   indent = {
     enable = true,
   },
+  matchup = {
+    enable = true,
+  },
 }
 
 require'nvim-web-devicons'.setup {
@@ -362,12 +382,6 @@ vim.api.nvim_exec([[
 -- copilot setup
 vim.keymap.set('i', '<C-L>', '<Plug>(copilot-accept-word)')
 
--- matchup
-require'nvim-treesitter.configs'.setup {
-  matchup = {
-    enable = true,              -- mandatory, false will disable the whole extension
-  },
-}
 require("gist").setup({
   private = false, -- All gists will be private, you won't be prompted again
   clipboard = "+", -- The registry to use for copying the Gist URL

@@ -131,6 +131,10 @@ require("lazy").setup({
       vim.g.mkdp_filetypes = { "markdown" }
     end,
     ft = { "markdown" },
+  },
+  {
+    'nvim-telescope/telescope.nvim', tag = '0.1.8',
+    dependencies = { 'nvim-lua/plenary.nvim' }
   }
 })
 
@@ -394,3 +398,37 @@ require("gist").setup({
     }
   }
 })
+
+-- Load custom Telescope csearch plugin
+require('plugins.telescope_csearch')
+
+local builtin = require('telescope.builtin')
+-- vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
+-- vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
+-- vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
+-- vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
+
+-- Map custom commands for csearch_files and csearch_grep
+-- vim.api.nvim_set_keymap('n', '<leader>csf', ":lua require('plugins.telescope_csearch').csearch_files()<CR>", { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap('n', '<leader>csg', ":lua require('plugins.telescope_csearch').csearch_grep()<CR>", { noremap = true, silent = true })
+
+
+-- execute a file if we know how to
+-- Define a function to create Vimux run command mappings based on file type
+local function set_filetype_run_command(filetype, command)
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = filetype,
+    callback = function()
+      -- "preservim/vimux",
+      vim.api.nvim_buf_set_keymap(0, "n", "<leader>e", ":w<CR>:VimuxRunCommand('" .. command .. " ' .. expand('%:p'))<CR>", { noremap = true, silent = true })
+    end
+  })
+end
+
+-- Set run command for Python files
+set_filetype_run_command("python", "python3")
+
+-- Set run command for Ruby files
+set_filetype_run_command("ruby", "ruby")
+
+

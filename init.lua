@@ -10,7 +10,9 @@ vim.o.smartindent = true -- syntax aware indentations for newline inserts
 vim.o.tabstop = 2 -- num of space characters per tab
 vim.o.shiftwidth = 2 -- spaces per indentation level
 vim.wo.relativenumber = true
-
+-- disable netrw to use nvim-tree
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
 
 ----------------------------------
       -- Autocommands
@@ -135,9 +137,12 @@ require("lazy").setup({
   {
     'nvim-telescope/telescope.nvim', tag = '0.1.8',
     dependencies = { 'nvim-lua/plenary.nvim' }
-  }
+  },
+  "nvim-tree/nvim-tree.lua",
 })
 
+
+require('nvim-tree').setup()
 require('crates').setup()
 
 require("neodev").setup({})
@@ -252,13 +257,14 @@ require('fzf-lua').setup {
   },
 }
 
+-- Right now i'm using telescope for file search so i'm disabling these mappings for fzf
 
-vim.keymap.set('n', '<leader>ff', fzf.files, {})
-vim.keymap.set('n', '<leader>fgt', fzf.git_files, {})
-vim.keymap.set('n', '<leader>fg', fzf.live_grep, {})
-vim.keymap.set('n', '<leader>fb', fzf.buffers, {})
-vim.keymap.set('n', '<leader>fh', fzf.help_tags, {})
-vim.keymap.set('n', '<leader>fw', function() fzf.grep({ search = vim.fn.expand('<cword>') }) end, { noremap = true, silent = true })
+-- vim.keymap.set('n', '<leader>ff', fzf.files, {})
+-- vim.keymap.set('n', '<leader>fgt', fzf.git_files, {})
+-- vim.keymap.set('n', '<leader>fg', fzf.live_grep, {})
+-- vim.keymap.set('n', '<leader>fb', fzf.buffers, {})
+-- vim.keymap.set('n', '<leader>fh', fzf.help_tags, {})
+-- vim.keymap.set('n', '<leader>fw', function() fzf.grep({ search = vim.fn.expand('<cword>') }) end, { noremap = true, silent = true })
 
 require("Comment").setup()
 
@@ -399,19 +405,21 @@ require("gist").setup({
   }
 })
 
--- Load custom Telescope csearch plugin
-require('plugins.telescope_csearch')
+require('plugins.telescope_csearch').setup({
+  index_path = '~/.csearchindex'
+})
+
+-- require('plugins.telescope_csearch').csearch_grep()
 
 local builtin = require('telescope.builtin')
--- vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
--- vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
--- vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
--- vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
+vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
+vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
+vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
+vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
 
--- Map custom commands for csearch_files and csearch_grep
--- vim.api.nvim_set_keymap('n', '<leader>csf', ":lua require('plugins.telescope_csearch').csearch_files()<CR>", { noremap = true, silent = true })
--- vim.api.nvim_set_keymap('n', '<leader>csg', ":lua require('plugins.telescope_csearch').csearch_grep()<CR>", { noremap = true, silent = true })
-
+vim.keymap.set('n', '<leader>csg', function()
+  require('plugins.telescope_csearch').csearch()
+end, { desc = 'CSearch grep' })
 
 -- execute a file if we know how to
 -- Define a function to create Vimux run command mappings based on file type
@@ -430,5 +438,3 @@ set_filetype_run_command("python", "python3")
 
 -- Set run command for Ruby files
 set_filetype_run_command("ruby", "ruby")
-
-

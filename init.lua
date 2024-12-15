@@ -139,6 +139,18 @@ require("lazy").setup({
     dependencies = { 'nvim-lua/plenary.nvim' }
   },
   "nvim-tree/nvim-tree.lua",
+  {
+    "allcentury/telescope_csearch.nvim",
+    requires = { "nvim-telescope/telescope.nvim" },
+    config = function()
+      require('plugins.telescope_csearch').setup({
+        index_path = '~/.csearchindex'
+      })
+    end,
+    cond = function()
+      return vim.fn.executable('csearch')
+    end
+  }
 })
 
 
@@ -405,10 +417,10 @@ require("gist").setup({
   }
 })
 
-require('plugins.telescope_csearch').setup({
-  index_path = '~/.csearchindex'
-})
-
+-- require('plugins.telescope_csearch').setup({
+--   index_path = '~/.csearchindex'
+-- })
+--
 -- require('plugins.telescope_csearch').csearch_grep()
 
 local builtin = require('telescope.builtin')
@@ -417,9 +429,17 @@ vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live gr
 vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
 
-vim.keymap.set('n', '<leader>csg', function()
+vim.keymap.set('n', '<leader>cs', function()
   require('plugins.telescope_csearch').csearch()
 end, { desc = 'CSearch grep' })
+
+vim.keymap.set('n', '<leader>csw', function()
+  require('plugins.telescope_csearch').csearch({
+    default_text = vim.fn.expand('<cword>')
+  })
+end, { desc = 'CSearch word under cursor' })
+
+vim.keymap.set('n', '<leader>fw', function() fzf.grep({ search = vim.fn.expand('<cword>') }) end, { noremap = true, silent = true })
 
 -- execute a file if we know how to
 -- Define a function to create Vimux run command mappings based on file type

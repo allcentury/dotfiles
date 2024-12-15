@@ -144,7 +144,7 @@ require("lazy").setup({
     "allcentury/telescope_csearch.nvim",
     requires = { "nvim-telescope/telescope.nvim" },
     config = function()
-      require('plugins.telescope_csearch').setup({
+      require('telescope_csearch').setup({
         index_path = '~/.csearchindex'
       })
     end,
@@ -425,11 +425,11 @@ vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' 
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
 
 vim.keymap.set('n', '<leader>cs', function()
-  require('plugins.telescope_csearch').csearch()
+  require('telescope_csearch').csearch()
 end, { desc = 'CSearch grep' })
 
 vim.keymap.set('n', '<leader>csw', function()
-  require('plugins.telescope_csearch').csearch({
+  require('telescope_csearch').csearch({
     default_text = vim.fn.expand('<cword>')
   })
 end, { desc = 'CSearch word under cursor' })

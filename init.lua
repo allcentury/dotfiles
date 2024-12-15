@@ -13,6 +13,7 @@ vim.wo.relativenumber = true
 -- disable netrw to use nvim-tree
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
+vim.opt.clipboard = "unnamedplus"
 
 ----------------------------------
       -- Autocommands
@@ -416,12 +417,6 @@ require("gist").setup({
     }
   }
 })
-
--- require('plugins.telescope_csearch').setup({
---   index_path = '~/.csearchindex'
--- })
---
--- require('plugins.telescope_csearch').csearch_grep()
 
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })

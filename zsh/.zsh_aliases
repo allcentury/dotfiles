@@ -1,4 +1,4 @@
-dotPath="~/dotfiles"
+dotPath="$HOME/dotfiles"
 # alias ll="exa -abghHliS"
 alias bower='noglob bower'
 alias mrm='rake db:migrate && rake db:rollback && rake db:migrate'
@@ -59,9 +59,9 @@ alias cloud_sql_proxy=/Users/anthonyross/binaries/cloud_sql_proxy
 ### kubernetes
 alias k=kubectl
 
-alias ngrok="/Applications/ngrok"
-
 alias ctag_ruby="ctags -R --languages=ruby --exclude=.git --exclude=log --exclude=tmp . $(bundle list --paths)"
 
 # convert mov to gif
 alias mov_2_gif="$dotPath/scripts/mov_2_gif.sh"
+
+alias claude-brex="AWS_PROFILE=Dev-LimitedUser ANTHROPIC_MODEL=us.anthropic.claude-sonnet-4-20250514-v1:0 CLAUDE_CODE_USE_BEDROCK=1 AWS_REGION=us-west-2 claude"

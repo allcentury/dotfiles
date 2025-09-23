@@ -79,7 +79,7 @@ require("lazy").setup({
       vim.cmd("colorscheme dracula")
     end,
   },
-  "github/copilot.vim",
+  -- "github/copilot.vim",
   "nvim-treesitter/nvim-treesitter",
   {
 	  "pmizio/typescript-tools.nvim",
@@ -91,6 +91,7 @@ require("lazy").setup({
   "preservim/vimux",
   "spiegela/vimix",
   "vim-test/vim-test",
+  "tpope/vim-surround",
   {
     'cameron-wags/rainbow_csv.nvim',
     config = true,
@@ -151,7 +152,20 @@ require("lazy").setup({
     cond = function()
       return vim.fn.executable('csearch')
     end
-  }
+  },
+  {
+  "pmizio/typescript-tools.nvim",
+  dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    opts = {},
+  },
+  {
+    "olimorris/codecompanion.nvim",
+    config = true,
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+  },
 })
 
 
@@ -226,7 +240,7 @@ end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { "kotlin_language_server", "pyright", "rust_analyzer", "ts_ls" }
+local servers = { "kotlin_language_server", "pyright", "rust_analyzer" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,
@@ -235,6 +249,16 @@ for _, lsp in ipairs(servers) do
     }
   }
 end
+
+-- Setup `typescript-tools.nvim`
+require('typescript-tools').setup({
+  on_attach = on_attach,
+  settings = {
+    tsserver_max_memory = 8192, -- Increase memory allocation
+    complete_function_calls = true, -- Enable auto-completion of function parameters
+    tsserver_plugins = {}, -- Load any custom TypeScript plugins
+  }
+})
 
 
 require('lspconfig').elixirls.setup{
@@ -254,6 +278,8 @@ require('lspconfig').ruby_lsp.setup{
   }
 }
 
+--[[ require('lspconfig').biome.setup{}
+]]
 -- Configure rust-analyzer
 require'lspconfig'.rust_analyzer.setup({
   on_attach = rust_attach,
@@ -381,29 +407,76 @@ vim.api.nvim_set_keymap('n', '<leader>a', ':TestSuite<CR>', { noremap = true, si
 vim.api.nvim_set_keymap('n', '<leader>l', ':TestLast<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>g', ':TestVisit<CR>', { noremap = true, silent = true })
 
--- Function to run Bazel test
-function _G.RunBazelTest(...)
-  local command = 'bazel test'
-  local args = table.concat({...}, ' ')
-  if args ~= '' then
-    command = command .. ' ' .. args
+-- Configure vim-test to work with Kotlin Bazel tests
+vim.g["test#kotlin#runner"] = "bazel" -- Use our custom Bazel runner
+vim.g["test#kotlin#patterns"] = {
+  test = {".*Test.kt", ".*Tests.kt", ".*IntegrationTest.kt"},
+  namespace = {".*"}
+}
+
+-- Custom test transformers for Kotlin with Bazel
+vim.g["test#custom_transformers"] = {}
+vim.g["test#custom_transformers"].kotlin_bazel = function(cmd)
+  -- Extract the file path and test name from the command
+  local file_path = cmd:match('"([^"]+)"')
+  local test_name = cmd:match('#([^%s"]+)')
+
+  if not file_path then
+    return cmd
   end
-  return command
+
+  -- Convert file path to Bazel target format
+  -- Expected format: //package/path:target
+
+  -- Extract package path (e.g., deposits/banking_service)
+  local package_path = file_path:match('brex/credit_card/([^/]+/[^/]+)')
+  if not package_path then
+    return cmd -- Fallback if we can't identify the package
+  end
+
+  -- Determine if it's a unit test or integration test
+  local is_integration_test = file_path:match('int_test') ~= nil
+  local test_type_path = is_integration_test and "/banking_service_int_test" or "/src/test"
+
+  -- Get the class name (the file name without .kt extension)
+  local class_name = file_path:match("([^/]+).kt$")
+  if not class_name then
+    return cmd
+  end
+
+  -- Parse the actual package from the file content
+  local file_content = vim.fn.system('cat "' .. file_path .. '"')
+  local package_name = file_content:match("package%s+([^%s;]+)")
+  if not package_name then
+    return cmd -- Fallback if we can't extract the package
+  end
+
+  -- Build the Bazel target
+  local target = "//" .. package_path .. test_type_path
+
+  -- For nearest test (specific test method)
+  if test_name then
+    return "bazel test " .. target .. " --test_filter=" .. class_name .. "." .. test_name
+  else
+    -- For test file (entire test class)
+    return "bazel test " .. target .. " --test_filter=" .. class_name
+  end
 end
 
 -- Set Kotlin-specific test settings
 vim.api.nvim_exec([[
   augroup KotlinTestSettings
     autocmd!
-    autocmd FileType kotlin lua vim.g['test#custom_strategies'] = { bazel = _G.RunBazelTest }
-    autocmd FileType kotlin let test#strategy = 'bazel'
-    autocmd FileType kotlin let g:test#kotlin#gradle#executable = "bazel test"
+    autocmd FileType kotlin let test#kotlin#bazel#executable = "bash -c"
+    autocmd FileType kotlin let test#kotlin#bazel#file_pattern = '\vTest\\.kt$|Tests\\.kt$|IntegrationTest\\.kt$'
+    autocmd FileType kotlin let test#transformation = 'kotlin_bazel'
+    autocmd FileType kotlin let test#strategy = 'vimux'
   augroup END
 ]], false)
 
 
 -- copilot setup
-vim.keymap.set('i', '<C-L>', '<Plug>(copilot-accept-word)')
+-- vim.keymap.set('i', '<C-L>', '<Plug>(copilot-accept-word)')
 
 require("gist").setup({
   private = false, -- All gists will be private, you won't be prompted again
@@ -416,6 +489,37 @@ require("gist").setup({
       prev_file = "<C-p>"
     }
   }
+})
+
+local anthropic_model = "claude-3-7-sonnet-20250219"
+
+require("codecompanion").setup({
+  strategies = {
+    chat = {
+      adapter = "anthropic",
+    },
+    inline = {
+      adapter = "anthropic",
+    }
+  },
+  opts = {
+    log_level = "DEBUG",
+  },
+  adapters = {
+    anthropic = function()
+      local adapter = require("codecompanion.adapters").extend("anthropic", {
+        url = "https://llm.staging.brexapps.io/gateway/anthropic/v1/messages",
+        opts = {
+          model = anthropic_model,
+        },
+        env = {
+          api_key = "cmd:op read op://Employee/llm_gateway_open_ai/credential --no-newline",
+        },
+      })
+      adapter.schema.model.default = anthropic_model
+      return adapter
+    end,
+  },
 })
 
 local builtin = require('telescope.builtin')
@@ -453,3 +557,4 @@ set_filetype_run_command("python", "python3")
 
 -- Set run command for Ruby files
 set_filetype_run_command("ruby", "ruby")
+vim.g["copilot_workspace_folders"] = { "~/brex/credit_card" }

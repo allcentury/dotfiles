@@ -1,5 +1,5 @@
 # Path to your oh-my-zsh installation.
-export ZSH=$HOME/dotfiles/.oh-my-zsh
+export ZSH=$HOME/.oh-my-zsh
 
 bindkey '^r' history-incremental-search-backward
 
@@ -55,7 +55,7 @@ source $ZSH/oh-my-zsh.sh
 export PATH="/usr/local/bin::$PATH:opt/X11/bin:/usr/local/git/bin"
 export MANPATH="/usr/local/man:$MANPATH"
 
-fpath=(~/dotfiles/.zsh/completion $fpath)
+fpath=(~/.zsh/completion $fpath)
 # completion
 autoload -Uz compinit && compinit -i
 #
@@ -74,7 +74,7 @@ autoload -Uz compinit && compinit -i
 # For a full list of active aliases, run `alias`.
 
 # aliases
-source ~/dotfiles/.zsh_aliases
+source ~/.zsh_aliases
 
 # Rust
 PATH=$PATH:$HOME/.cargo/bin

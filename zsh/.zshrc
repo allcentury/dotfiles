@@ -3,10 +3,6 @@ export ZSH=$HOME/.oh-my-zsh
 
 bindkey '^r' history-incremental-search-backward
 
-# CHRUBY
-source /usr/local/share/chruby/chruby.sh
-source /usr/local/share/chruby/auto.sh
-
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
@@ -45,7 +41,7 @@ DISABLE_AUTO_TITLE="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git ruby go bundler common-aliases git-extras)
+plugins=(git)
 source $ZSH/oh-my-zsh.sh
 
 # change this based on promptline
@@ -109,7 +105,6 @@ if [ -f '/Users/anthonyross/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/anthonyross/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/anthonyross/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -134,8 +129,6 @@ export NVM_DIR="$HOME/.nvm"
 # tabtab source for packages
 # uninstall by removing these lines
 [[ -f ~/.config/tabtab/__tabtab.zsh ]] && . ~/.config/tabtab/__tabtab.zsh || true
-
-eval "$(pyenv init -)"
 
 # java
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home

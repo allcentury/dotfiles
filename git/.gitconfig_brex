@@ -1,0 +1,26 @@
+[user]
+    email = aross@brex.com
+
+[core]
+    fsmonitor = true
+    untrackedCache = true
+    pager = cat
+
+[push]
+    default = simple
+    autoSetupRemote = true
+
+[alias]
+    staged = diff --cached
+    unstaged = diff
+
+[pager]
+    log  = diff-so-fancy | less
+    show = diff-so-fancy | less
+    diff = less -FX
+
+[grep]
+    lineNumber = true
+
+[rebase]
+    autosquash = true

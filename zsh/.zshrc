@@ -79,6 +79,9 @@ source ~/.zsh_aliases
 # Rust
 PATH=$PATH:$HOME/.cargo/bin
 
+# Load Brex work environment if it exists
+[[ -f ~/.zshrc_brex ]] && source ~/.zshrc_brex
+
 #GO
 PATH=$PATH:$(go env GOPATH)/bin
 GOPATH=$(go env GOPATH)

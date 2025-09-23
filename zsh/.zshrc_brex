@@ -1,0 +1,41 @@
+# Brex-specific ZSH configuration
+
+# Brex-specific PATH additions
+export PATH=/Users/aross/.zplug/bin:/Users/aross/local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/aross/Library/pnpm:/Users/aross/.cargo/bin:/opt/homebrew/bin:$PATH
+
+# Go paths for Brex development
+export PATH=$PATH:$(go env GOPATH)/bin
+
+# ZSH theme for work
+ZSH_THEME="dracula"
+
+# Update mode
+zstyle ':omz:update' mode reminder
+
+# zplug initialization
+source ~/.zplug/init.zsh
+
+# ASDF version manager
+. /opt/homebrew/opt/asdf/libexec/asdf.sh
+
+# Work aliases
+alias bcc='cd ~/brex/credit_card'
+alias psql-start='brew services start postgresql'
+alias snowsql='/Applications/SnowSQL.app/Contents/MacOS/snowsql'
+
+# Work environment variables
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+export DISABLE_SPRING=true
+export BREX_DEV_PLATFORM=local
+export BREX_BAZEL_USE_RBE_WITH_INTELLIJ_ON_MAC=1
+
+# SDKMAN
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+# pnpm
+export PNPM_HOME="/Users/aross/Library/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+
+# Load work environment file
+[[ -f ~/.env ]] && source ~/.env

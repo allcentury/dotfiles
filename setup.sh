@@ -82,14 +82,14 @@ setup_environment() {
       fi
 
       # Copy brex-specific files
-      if [[ -f "$DOTFILES_DIR/overrides/.zshrc_brex" ]]; then
+      if [[ -f "$DOTFILES_DIR/zsh/.zshrc_brex" ]]; then
         c_echo "Copying Brex ZSH overrides..."
-        cp "$DOTFILES_DIR/overrides/.zshrc_brex" ~/.zshrc_brex
+        cp "$DOTFILES_DIR/zsh/.zshrc_brex" ~/.zshrc_brex
       fi
 
-      if [[ -f "$DOTFILES_DIR/overrides/.gitconfig_brex" ]]; then
+      if [[ -f "$DOTFILES_DIR/git/.gitconfig_brex" ]]; then
         c_echo "Copying Brex Git overrides..."
-        cp "$DOTFILES_DIR/overrides/.gitconfig_brex" ~/.gitconfig_brex
+        cp "$DOTFILES_DIR/git/.gitconfig_brex" ~/.gitconfig_brex
       fi
       ;;
     *)

@@ -57,6 +57,47 @@ install_for_osx(){
   symlink_files
 }
 
+setup_environment() {
+  c_echo "Setting up environment-specific configurations..."
+
+  # Prompt for environment type
+  echo "Which environment are you setting up?"
+  echo "1) Personal"
+  echo "2) Brex (work)"
+  read -p "Enter choice [1-2]: " choice
+
+  case $choice in
+    1)
+      c_echo "Setting up personal environment..."
+      # For personal, we don't need to add anything extra
+      ;;
+    2)
+      c_echo "Setting up Brex work environment..."
+
+      # Add brex-specific sourcing to .zshrc
+      if ! grep -q "source ~/.zshrc_brex" ~/.zshrc; then
+        echo "" >> ~/.zshrc
+        echo "# Brex work environment" >> ~/.zshrc
+        echo "source ~/.zshrc_brex" >> ~/.zshrc
+      fi
+
+      # Copy brex-specific files
+      if [[ -f "$DOTFILES_DIR/overrides/.zshrc_brex" ]]; then
+        c_echo "Copying Brex ZSH overrides..."
+        cp "$DOTFILES_DIR/overrides/.zshrc_brex" ~/.zshrc_brex
+      fi
+
+      if [[ -f "$DOTFILES_DIR/overrides/.gitconfig_brex" ]]; then
+        c_echo "Copying Brex Git overrides..."
+        cp "$DOTFILES_DIR/overrides/.gitconfig_brex" ~/.gitconfig_brex
+      fi
+      ;;
+    *)
+      c_echo "Invalid choice, defaulting to personal..."
+      ;;
+  esac
+}
+
 symlink_files() {
   c_echo "Symlinking dot files from organized folders..."
 
@@ -84,6 +125,9 @@ symlink_files() {
   c_echo "Linking Alacritty files..."
   mkdir -p ~/.config/alacritty
   ln -sf "$DOTFILES_DIR/alacritty/.alacritty.toml" ~/.config/alacritty/alacritty.toml
+
+  # Setup environment-specific configurations
+  setup_environment
 }
 
 install_for_linux(){

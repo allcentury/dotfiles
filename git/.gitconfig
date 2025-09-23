@@ -35,7 +35,7 @@
 [fetch]
   prune = true
 [include]
-  path = ~/.gitconfig.local
+  path = ~/.gitconfig_brex
 [user]
   name = Anthony Ross
   email = anthony.s.ross@gmail.com

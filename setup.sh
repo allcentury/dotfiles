@@ -150,7 +150,25 @@ install_for_osx(){
   brew install tmux
 
   # install oh-my-zsh
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+  c_echo "Installing oh-my-zsh"
+  if [[ ! -d ~/.oh-my-zsh ]]; then
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+  else
+    c_echo "oh-my-zsh is already installed"
+  fi
+
+  # install zplug
+  c_echo "Installing zplug"
+  export ZPLUG_HOME=~/.zplug
+  if [[ ! -d "$ZPLUG_HOME" ]]; then
+    git clone https://github.com/zplug/zplug $ZPLUG_HOME
+  else
+    c_echo "zplug is already installed"
+  fi
+
+  # Add GitHub to known_hosts to avoid SSH prompts
+  mkdir -p ~/.ssh
+  ssh-keyscan github.com >> ~/.ssh/known_hosts 2>/dev/null
 
   symlink_files
 }
@@ -250,23 +268,49 @@ install_for_linux(){
   c_echo "Linux detected, updating packages..."
   sudo apt-get -y update        # Fetches the list of available updates
   sudo apt-get -y upgrade       # Strictly upgrades the current packages
-  sudo apt-get -y dist-upgrade  # Installs updates (new ones)
-  c_echo "Installing Git..."
-  sudo apt-get -y install git-core
-  c_echo "Removing system vim and replacing it with gtk"
-  sudo apt-get -y purge vim gvim vim-gtk
-  sudo apt-get -y install vim-gtk
-  c_echo "Installing tmux..."
-  sudo apt-get -y install tmux
-  c_echo "Installing silver searcher"
-  sudo apt-get -y install silversearcher-ag
-  c_echo "Installing zsh"
-  sudo apt-get -y install zsh
+
+  c_echo "Installing essential packages..."
+  sudo apt-get -y install \
+    git \
+    curl \
+    wget \
+    zsh \
+    tmux \
+    neovim \
+    build-essential \
+    ripgrep \
+    locales
+
+  # Set up proper locale to avoid Unicode issues
+  sudo locale-gen en_US.UTF-8
+  export LANG=en_US.UTF-8
+  export LC_ALL=en_US.UTF-8
+
   c_echo "Setting zsh as default shell"
-  chsh -s /bin/zsh
+  if [[ "$SHELL" != "/usr/bin/zsh" ]]; then
+    chsh -s /usr/bin/zsh
+  else
+    c_echo "zsh is already the default shell"
+  fi
+
   c_echo "Installing oh-my-zsh"
-  sudo apt-get -y install wget
-  ( exec wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O - )
+  if [[ ! -d ~/.oh-my-zsh ]]; then
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" "" --unattended
+  else
+    c_echo "oh-my-zsh is already installed"
+  fi
+
+  c_echo "Installing zplug"
+  export ZPLUG_HOME=~/.zplug
+  if [[ ! -d "$ZPLUG_HOME" ]]; then
+    git clone https://github.com/zplug/zplug $ZPLUG_HOME
+  else
+    c_echo "zplug is already installed"
+  fi
+
+  # Add GitHub to known_hosts to avoid SSH prompts
+  mkdir -p ~/.ssh
+  ssh-keyscan github.com >> ~/.ssh/known_hosts 2>/dev/null
 
   symlink_files
 }

@@ -42,6 +42,23 @@ DISABLE_AUTO_TITLE="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git)
+
+# zplug initialization
+if [[ -f ~/.zplug/init.zsh ]]; then
+  source ~/.zplug/init.zsh
+
+  # Install dracula theme via zplug
+  zplug "dracula/zsh", as:theme
+
+  # Auto-install plugins without prompting
+  if ! zplug check --verbose; then
+      zplug install
+  fi
+
+  # Load zplug
+  zplug load
+fi
+
 source $ZSH/oh-my-zsh.sh
 
 # change this based on promptline

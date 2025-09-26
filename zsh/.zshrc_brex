@@ -6,17 +6,11 @@ export PATH=/Users/aross/.zplug/bin:/Users/aross/local/bin:/opt/homebrew/bin:/op
 # Go paths for Brex development
 export PATH=$PATH:$(go env GOPATH)/bin
 
-# ZSH theme for work
-ZSH_THEME="dracula"
-
 # Update mode
 zstyle ':omz:update' mode reminder
 
-# zplug initialization
-source ~/.zplug/init.zsh
-
-# ASDF version manager
-. /opt/homebrew/opt/asdf/libexec/asdf.sh
+# ASDF version manager (only if installed)
+[[ -f /opt/homebrew/opt/asdf/libexec/asdf.sh ]] && . /opt/homebrew/opt/asdf/libexec/asdf.sh
 
 # Work aliases
 alias bcc='cd ~/brex/credit_card'

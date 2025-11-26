@@ -151,3 +151,4 @@ export NVM_DIR="$HOME/.nvm"
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home
 
 export EDITOR=vim
+export CP_HOME_DIR=/tmp/cp

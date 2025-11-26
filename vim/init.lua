@@ -32,6 +32,68 @@ vim.api.nvim_exec([[
 ]], false)
 
 ----------------------------------
+      -- Diagnostics Configuration
+----------------------------------
+-- Configure diagnostics to be more obvious
+vim.diagnostic.config({
+  virtual_text = {
+    prefix = '●',
+    source = "always",
+    spacing = 4,
+  },
+  signs = true,
+  underline = { severity = { min = vim.diagnostic.severity.ERROR } }, -- Only underline errors
+  update_in_insert = false,
+  severity_sort = true,
+  float = {
+    border = 'rounded',
+    source = 'always',
+    header = '',
+    prefix = '',
+    focusable = false,
+    style = 'minimal',
+  },
+})
+
+-- Auto-show diagnostics in a floating window on cursor hold
+vim.api.nvim_create_autocmd("CursorHold", {
+  callback = function()
+    local opts = {
+      focusable = false,
+      close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
+      border = 'rounded',
+      source = 'always',
+      prefix = ' ',
+      scope = 'cursor',
+    }
+    vim.diagnostic.open_float(nil, opts)
+  end
+})
+
+-- Optionally adjust how quickly the float appears (default is 4000ms = 4s)
+vim.opt.updatetime = 1000  -- Show diagnostic float after 1 second of holding cursor
+
+-- Define diagnostic signs for the gutter (modern approach)
+local signs = { Error = "󰅚 ", Warn = "󰀪 ", Hint = "󰌶 ", Info = " " }
+for type, icon in pairs(signs) do
+  local hl = "DiagnosticSign" .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+end
+
+-- Enhanced hover and signature help with borders
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+  vim.lsp.handlers.hover, {
+    border = "rounded"
+  }
+)
+
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
+  vim.lsp.handlers.signature_help, {
+    border = "rounded"
+  }
+)
+
+----------------------------------
       -- Plugins
 ----------------------------------
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -54,6 +116,43 @@ require("lazy").setup({
 	  cmd = "Neoconf"
   },
   "neovim/nvim-lspconfig",
+  -- Mason for LSP/tool management
+  {
+    "williamboman/mason.nvim",
+    config = function()
+      require("mason").setup()
+    end,
+  },
+  {
+    "williamboman/mason-lspconfig.nvim",
+    dependencies = { "williamboman/mason.nvim" },
+  },
+  {
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    dependencies = { "williamboman/mason.nvim" },
+  },
+  -- Completion plugins
+  {
+    "hrsh7th/nvim-cmp",
+    dependencies = {
+      "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-path",
+      "hrsh7th/cmp-cmdline",
+      "L3MON4D3/LuaSnip",
+      "saadparwaiz1/cmp_luasnip",
+      "rafamadriz/friendly-snippets",
+      "onsails/lspkind.nvim",
+    },
+  },
+  -- Formatting and linting
+  {
+    "nvimtools/none-ls.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+  },
+  {
+    "nvimtools/none-ls-extras.nvim",
+  },
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
   "nvim-tree/nvim-web-devicons",
@@ -81,11 +180,6 @@ require("lazy").setup({
   },
   -- "github/copilot.vim",
   "nvim-treesitter/nvim-treesitter",
-  {
-	  "pmizio/typescript-tools.nvim",
-	  dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-	  opts = {},
-  },
   'vim-ruby/vim-ruby',
   { "folke/neodev.nvim", opts = {} },
   "preservim/vimux",
@@ -153,19 +247,6 @@ require("lazy").setup({
       return vim.fn.executable('csearch')
     end
   },
-  {
-  "pmizio/typescript-tools.nvim",
-  dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-    opts = {},
-  },
-  {
-    "olimorris/codecompanion.nvim",
-    config = true,
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-    },
-  },
 })
 
 
@@ -173,6 +254,135 @@ require('nvim-tree').setup()
 require('crates').setup()
 
 require("neodev").setup({})
+
+----------------------------------
+      -- Mason Setup
+----------------------------------
+require("mason").setup()
+require("mason-lspconfig").setup({
+  ensure_installed = {
+    "lua_ls",
+    "ts_ls",  -- TypeScript/JavaScript
+    "pyright",
+    "rust_analyzer",
+  },
+  automatic_installation = true,
+})
+
+require("mason-tool-installer").setup({
+  ensure_installed = {
+    "prettier",
+    "eslint_d",
+    "stylua",
+  },
+})
+
+----------------------------------
+      -- nvim-cmp Setup
+----------------------------------
+local cmp = require('cmp')
+local lspkind = require('lspkind')
+local luasnip = require('luasnip')
+
+-- Load friendly snippets
+require("luasnip.loaders.from_vscode").lazy_load()
+
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      luasnip.lsp_expand(args.body)
+    end,
+  },
+  window = {
+    completion = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered(),
+  },
+  completion = {
+    autocomplete = {
+      require('cmp.types').cmp.TriggerEvent.TextChanged
+    },
+  },
+  experimental = {
+    ghost_text = true,  -- Show preview of completion
+  },
+  mapping = cmp.mapping.preset.insert({
+    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.abort(),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+  }),
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
+  }, {
+    { name = 'buffer' },
+    { name = 'path' },
+  }),
+  formatting = {
+    format = lspkind.cmp_format({
+      mode = 'symbol_text',
+      maxwidth = 50,
+      ellipsis_char = '...',
+      menu = {
+        buffer = "[BUF]",
+        nvim_lsp = "[LSP]",
+        luasnip = "[SNIP]",
+        path = "[PATH]",
+      },
+    }),
+  },
+})
+
+-- Use buffer source for `/` and `?`
+cmp.setup.cmdline({ '/', '?' }, {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = 'buffer' }
+  }
+})
+
+-- Use cmdline & path source for ':'
+cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+    { name = 'path' }
+  }, {
+    { name = 'cmdline' }
+  })
+})
+
+----------------------------------
+      -- none-ls Setup
+----------------------------------
+local null_ls = require("null-ls")
+
+null_ls.setup({
+  sources = {
+    null_ls.builtins.formatting.prettier,
+    null_ls.builtins.formatting.stylua,
+    -- Disable eslint_d for now - uncomment when you have an ESLint config
+    -- require("none-ls.diagnostics.eslint_d"),
+  },
+})
 -- then setup your lsp server as usual
 local nvim_lsp = require('lspconfig')
 
@@ -199,12 +409,17 @@ end
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
-local on_attach = function(_client, bufnr)
+local on_attach = function(client, bufnr)
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
   --Enable completion triggered by <c-x><c-o>
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Enable inlay hints if supported (TypeScript)
+  if client.server_capabilities.inlayHintProvider then
+    vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+  end
 
   -- Mappings.
   local opts = { noremap=true, silent=true }
@@ -238,36 +453,53 @@ local rust_attach = function(client, bufnr)
 end
 
 
+-- Set up nvim-cmp capabilities
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
 local servers = { "kotlin_language_server", "pyright", "rust_analyzer" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,
+    capabilities = capabilities,
     flags = {
       debounce_text_changes = 150,
     }
   }
 end
 
--- Setup `typescript-tools.nvim`
-require('typescript-tools').setup({
-  on_attach = on_attach,
-  settings = {
-    tsserver_max_memory = 8192, -- Increase memory allocation
-    complete_function_calls = true, -- Enable auto-completion of function parameters
-    tsserver_plugins = {}, -- Load any custom TypeScript plugins
+-- Setup TypeScript LSP (ts_ls)
+local function organize_imports()
+  local params = {
+    command = "_typescript.organizeImports",
+    arguments = { vim.api.nvim_buf_get_name(0) },
+    title = "",
   }
+  vim.lsp.buf.execute_command(params)
+end
+
+nvim_lsp.ts_ls.setup({
+  on_attach = on_attach,
+  capabilities = capabilities,
+  commands = {
+    OrganizeImports = {
+      organize_imports,
+      description = "Organize Imports"
+    }
+  },
 })
 
 
 require('lspconfig').elixirls.setup{
 	on_attach = on_attach,
+	capabilities = capabilities,
 	cmd = { "/Users/aross/projects/elixir-ls/release/language_server.sh" }
 }
 
 require('lspconfig').ruby_lsp.setup{
   on_attach = on_attach,
+  capabilities = capabilities,
   cmd = { "bundle", "exec", "ruby-lsp" },
   settings = {
     rubyLsp = {
@@ -283,6 +515,7 @@ require('lspconfig').ruby_lsp.setup{
 -- Configure rust-analyzer
 require'lspconfig'.rust_analyzer.setup({
   on_attach = rust_attach,
+  capabilities = capabilities,
 })
 
 local fzf = require('fzf-lua')
@@ -416,53 +649,6 @@ vim.g["test#kotlin#patterns"] = {
 
 -- Custom test transformers for Kotlin with Bazel
 vim.g["test#custom_transformers"] = {}
-vim.g["test#custom_transformers"].kotlin_bazel = function(cmd)
-  -- Extract the file path and test name from the command
-  local file_path = cmd:match('"([^"]+)"')
-  local test_name = cmd:match('#([^%s"]+)')
-
-  if not file_path then
-    return cmd
-  end
-
-  -- Convert file path to Bazel target format
-  -- Expected format: //package/path:target
-
-  -- Extract package path (e.g., deposits/banking_service)
-  local package_path = file_path:match('brex/credit_card/([^/]+/[^/]+)')
-  if not package_path then
-    return cmd -- Fallback if we can't identify the package
-  end
-
-  -- Determine if it's a unit test or integration test
-  local is_integration_test = file_path:match('int_test') ~= nil
-  local test_type_path = is_integration_test and "/banking_service_int_test" or "/src/test"
-
-  -- Get the class name (the file name without .kt extension)
-  local class_name = file_path:match("([^/]+).kt$")
-  if not class_name then
-    return cmd
-  end
-
-  -- Parse the actual package from the file content
-  local file_content = vim.fn.system('cat "' .. file_path .. '"')
-  local package_name = file_content:match("package%s+([^%s;]+)")
-  if not package_name then
-    return cmd -- Fallback if we can't extract the package
-  end
-
-  -- Build the Bazel target
-  local target = "//" .. package_path .. test_type_path
-
-  -- For nearest test (specific test method)
-  if test_name then
-    return "bazel test " .. target .. " --test_filter=" .. class_name .. "." .. test_name
-  else
-    -- For test file (entire test class)
-    return "bazel test " .. target .. " --test_filter=" .. class_name
-  end
-end
-
 -- Set Kotlin-specific test settings
 vim.api.nvim_exec([[
   augroup KotlinTestSettings
@@ -491,34 +677,31 @@ require("gist").setup({
   }
 })
 
-local anthropic_model = "claude-3-7-sonnet-20250219"
-
-require("codecompanion").setup({
-  strategies = {
-    chat = {
-      adapter = "anthropic",
+-- Configure Telescope to respect .gitignore
+require('telescope').setup({
+  defaults = {
+    file_ignore_patterns = {
+      "node_modules",
+      ".git/",
     },
-    inline = {
-      adapter = "anthropic",
-    }
+    vimgrep_arguments = {
+      "rg",
+      "--color=never",
+      "--no-heading",
+      "--with-filename",
+      "--line-number",
+      "--column",
+      "--smart-case",
+      "--hidden",  -- Search hidden files
+      "--glob=!.git/",  -- But exclude .git
+      "--glob=!node_modules/",  -- Exclude node_modules
+    },
   },
-  opts = {
-    log_level = "DEBUG",
-  },
-  adapters = {
-    anthropic = function()
-      local adapter = require("codecompanion.adapters").extend("anthropic", {
-        url = "https://llm.staging.brexapps.io/gateway/anthropic/v1/messages",
-        opts = {
-          model = anthropic_model,
-        },
-        env = {
-          api_key = "cmd:op read op://Employee/llm_gateway_open_ai/credential --no-newline",
-        },
-      })
-      adapter.schema.model.default = anthropic_model
-      return adapter
-    end,
+  pickers = {
+    find_files = {
+      hidden = true,  -- Show hidden files
+      find_command = { "rg", "--files", "--hidden", "--glob", "!.git/*", "--glob", "!node_modules/*" },
+    },
   },
 })
 
@@ -557,4 +740,35 @@ set_filetype_run_command("python", "python3")
 
 -- Set run command for Ruby files
 set_filetype_run_command("ruby", "ruby")
-vim.g["copilot_workspace_folders"] = { "~/brex/credit_card" }
+
+-- Convert selected lines to SQL IN clause
+-- useful if you're copying from a csv (rows) into an empty vim buffer
+function ConvertToSqlIn()
+  -- Get the visual selection range
+  local start_line = vim.fn.line("'<")
+  local end_line = vim.fn.line("'>")
+
+  -- Get the lines
+  local lines = vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false)
+
+  -- Wrap each line in quotes and join with commas
+  local quoted = {}
+  for _, line in ipairs(lines) do
+    local trimmed = line:match("^%s*(.-)%s*$")  -- trim whitespace
+    if trimmed ~= "" then
+      table.insert(quoted, "'" .. trimmed .. "'")
+    end
+  end
+
+  -- Build the SQL query
+  local sql = "("
+              .. table.concat(quoted, ", ")
+              .. ")"
+
+  -- Replace the selection with the SQL query
+  vim.api.nvim_buf_set_lines(0, start_line - 1, end_line, false, {sql})
+end
+
+-- Create a keymap (use in visual mode: select lines, then press <leader>sq)
+vim.keymap.set('v', '<leader>sq', ':<C-u>lua ConvertToSqlIn()<CR>',
+  { noremap = true, silent = true, desc = 'Convert to SQL IN query' })

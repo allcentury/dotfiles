@@ -13,7 +13,6 @@ zstyle ':omz:update' mode reminder
 [[ -f /opt/homebrew/opt/asdf/libexec/asdf.sh ]] && . /opt/homebrew/opt/asdf/libexec/asdf.sh
 
 # Work aliases
-alias bcc='cd ~/brex/credit_card'
 alias psql-start='brew services start postgresql'
 alias snowsql='/Applications/SnowSQL.app/Contents/MacOS/snowsql'
 

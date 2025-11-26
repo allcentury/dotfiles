@@ -57,7 +57,9 @@ vim.diagnostic.config({
 
 -- Auto-show diagnostics in a floating window on cursor hold
 vim.api.nvim_create_autocmd("CursorHold", {
+  pattern = "*",
   callback = function()
+    -- Only show if there are diagnostics on the current line
     local opts = {
       focusable = false,
       close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
@@ -438,7 +440,8 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float(nil, { focusable = false })<CR>', opts)
+  buf_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float(nil, { focusable = false, border = "rounded" })<CR>', opts)
+  buf_set_keymap('n', 'gl', '<cmd>lua vim.diagnostic.open_float(nil, { focusable = false, border = "rounded" })<CR>', opts)  -- Alternate keybind
   buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
   buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
   buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)

@@ -181,7 +181,20 @@ require("lazy").setup({
     end,
   },
   -- "github/copilot.vim",
-  "nvim-treesitter/nvim-treesitter",
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = {
+      ensure_installed = {
+        "vimdoc", "vim", "javascript", "lua", "typescript", "tsx",
+        "json", "html", "css", "ruby", "yaml", "elixir", "rust", "markdown",
+      },
+      sync_install = false,
+      auto_install = true,
+      highlight = { enable = true },
+      indent = { enable = true },
+      matchup = { enable = true },
+    },
+  },
   'vim-ruby/vim-ruby',
   { "folke/neodev.nvim", opts = {} },
   "preservim/vimux",
@@ -385,11 +398,8 @@ null_ls.setup({
     -- require("none-ls.diagnostics.eslint_d"),
   },
 })
--- then setup your lsp server as usual
-local nvim_lsp = require('lspconfig')
-
--- example to setup lua_ls and enable call snippets
-nvim_lsp.lua_ls.setup({
+-- LSP server configs using vim.lsp.config (nvim 0.11+)
+vim.lsp.config('lua_ls', {
   settings = {
     Lua = {
       completion = {
@@ -459,18 +469,20 @@ end
 -- Set up nvim-cmp capabilities
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
--- Use a loop to conveniently call 'setup' on multiple servers and
--- map buffer local keybindings when the language server attaches
-local servers = { "kotlin_language_server", "pyright", "rust_analyzer" }
-for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
-    flags = {
-      debounce_text_changes = 150,
-    }
-  }
-end
+-- Common config for all LSP servers
+vim.lsp.config('*', {
+  on_attach = on_attach,
+  capabilities = capabilities,
+})
+
+-- Per-server configs
+vim.lsp.config('kotlin_language_server', {
+  flags = { debounce_text_changes = 150 },
+})
+
+vim.lsp.config('pyright', {
+  flags = { debounce_text_changes = 150 },
+})
 
 -- Setup TypeScript LSP (ts_ls)
 local function organize_imports()
@@ -482,9 +494,7 @@ local function organize_imports()
   vim.lsp.buf.execute_command(params)
 end
 
-nvim_lsp.ts_ls.setup({
-  on_attach = on_attach,
-  capabilities = capabilities,
+vim.lsp.config('ts_ls', {
   commands = {
     OrganizeImports = {
       organize_imports,
@@ -493,32 +503,28 @@ nvim_lsp.ts_ls.setup({
   },
 })
 
+vim.lsp.config('elixirls', {
+  cmd = { "/Users/aross/projects/elixir-ls/release/language_server.sh" },
+})
 
-require('lspconfig').elixirls.setup{
-	on_attach = on_attach,
-	capabilities = capabilities,
-	cmd = { "/Users/aross/projects/elixir-ls/release/language_server.sh" }
-}
-
-require('lspconfig').ruby_lsp.setup{
-  on_attach = on_attach,
-  capabilities = capabilities,
+vim.lsp.config('ruby_lsp', {
   cmd = { "bundle", "exec", "ruby-lsp" },
   settings = {
     rubyLsp = {
-     diagnostics = {
-       enable = true,
-     },
+      diagnostics = { enable = true },
     }
-  }
-}
+  },
+})
 
---[[ require('lspconfig').biome.setup{}
-]]
--- Configure rust-analyzer
-require'lspconfig'.rust_analyzer.setup({
+vim.lsp.config('rust_analyzer', {
   on_attach = rust_attach,
-  capabilities = capabilities,
+  flags = { debounce_text_changes = 150 },
+})
+
+-- Enable all configured servers
+vim.lsp.enable({
+  'lua_ls', 'kotlin_language_server', 'pyright', 'ts_ls',
+  'elixirls', 'ruby_lsp', 'rust_analyzer',
 })
 
 local fzf = require('fzf-lua')
@@ -543,37 +549,7 @@ require('fzf-lua').setup {
 
 require("Comment").setup()
 
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = {
-    "vimdoc",
-    "vim",
-    "javascript",
-    "lua",
-    "typescript",
-    "tsx",
-    "json",
-    "html",
-    "css",
-    "ruby",
-    "yaml",
-    "elixir",
-    "rust",
-    "markdown",
-  },
-  sync_install = false,
-  auto_install = true,
-  ignore_install = { },
-  highlight = {
-    enable = true,
-    disable = { },
-  },
-  indent = {
-    enable = true,
-  },
-  matchup = {
-    enable = true,
-  },
-}
+-- treesitter is configured in lazy.nvim plugin spec above
 
 require'nvim-web-devicons'.setup {
   -- your personnal icons can go here (to override)

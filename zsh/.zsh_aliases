@@ -64,3 +64,6 @@ alias k=kubectl
 alias mov_2_gif="$dotPath/scripts/mov_2_gif.sh"
 
 alias claude-brex="AWS_PROFILE=Dev-LimitedUser ANTHROPIC_MODEL=us.anthropic.claude-sonnet-4-20250514-v1:0 CLAUDE_CODE_USE_BEDROCK=1 AWS_REGION=us-west-2 claude"
+
+alias g=git
+alias gst="git status"

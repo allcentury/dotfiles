@@ -41,23 +41,7 @@ DISABLE_AUTO_TITLE="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
-
-# zplug initialization
-if [[ -f ~/.zplug/init.zsh ]]; then
-  source ~/.zplug/init.zsh
-
-  # Install dracula theme via zplug
-  zplug "dracula/zsh", as:theme
-
-  # Auto-install plugins without prompting
-  if ! zplug check --verbose; then
-      zplug install
-  fi
-
-  # Load zplug
-  zplug load
-fi
+plugins=()
 
 source $ZSH/oh-my-zsh.sh
 
@@ -65,12 +49,10 @@ source $ZSH/oh-my-zsh.sh
 # source ~/.shell_prompt.sh
 
 # User configuration
-export PATH="/usr/local/bin::$PATH:opt/X11/bin:/usr/local/git/bin"
+export PATH="/usr/local/bin:$PATH:opt/X11/bin:/usr/local/git/bin"
 export MANPATH="/usr/local/man:$MANPATH"
 
 fpath=(~/.zsh/completion $fpath)
-# completion
-autoload -Uz compinit && compinit -i
 #
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -95,11 +77,6 @@ PATH=$PATH:$HOME/.cargo/bin
 # Load Brex work environment if it exists
 [[ -f ~/.zshrc_brex ]] && source ~/.zshrc_brex
 
-#GO
-PATH=$PATH:$(go env GOPATH)/bin
-GOPATH=$(go env GOPATH)
-
-
 PATH=$PATH:$HOME/Library/Android/sdk
 PATH=$PATH:$HOME/Library/Android/sdk/platform-tools
 PATH=/usr/local/opt/libxml2/bin:$PATH
@@ -110,45 +87,23 @@ HELPDIR=/usr/local/share/zsh/help
 # PERL_MB_OPT="--install_base \"/Users/anthonyross/perl5\""; export PERL_MB_OPT;
 # PERL_MM_OPT="INSTALL_BASE=/Users/anthonyross/perl5"; export PERL_MM_OPT;
 
-RUBY_CONFIGURE_OPTS="--llvm-config=/path/to/llvm-config"
-
-export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  # Added by n-install (see http://git.io/n-install-repo).
-
 # completion for kubectl
 # source <(kubectl completion zsh)
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/anthonyross/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/anthonyross/Downloads/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/anthonyross/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/anthonyross/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/anthonyross/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/Users/anthonyross/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/Users/anthonyross/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/Users/anthonyross/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# tabtab source for packages
-# uninstall by removing these lines
-[[ -f ~/.config/tabtab/__tabtab.zsh ]] && . ~/.config/tabtab/__tabtab.zsh || true
-
 # java
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-18.0.2.jdk/Contents/Home
+
+# docker (colima)
+export DOCKER_HOST="unix://${HOME}/.colima/default/docker.sock"
 
 export EDITOR=vim
 export CP_HOME_DIR=/tmp/cp
+alias dog=~/.asdf/installs/python/3.9.17/bin/dog
+export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+
+export ROOTLY_AUTH_HEADER=$ROOTLY_AUTH_HEADER
+
+set -a # auto export
+source ~/.env
+set +a # stop auto exporting

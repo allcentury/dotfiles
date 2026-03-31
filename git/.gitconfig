@@ -8,6 +8,7 @@
 [color]
   ui = auto
 [alias]
+  push-please = push --force-with-lease
   aa = add --all
   ap = add --patch
   ca = commit --amend
@@ -38,6 +39,6 @@
   path = ~/.gitconfig_brex
 [user]
   name = Anthony Ross
-  email = anthony.s.ross@gmail.com
+	email = aross@brex.com
 [url "ssh://git@github.com/"]
   insteadOf = https://github.com/

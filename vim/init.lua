@@ -764,12 +764,13 @@ function ConvertToSqlIn()
   end
 
   -- Build the SQL query
-  local sql = "("
-              .. table.concat(quoted, ", ")
-              .. ")"
+  local sql = "(\n"
+              .. table.concat(quoted, ",\n")
+              .. "\n)"
+  local sql_lines = vim.split(sql, "\n")
 
   -- Replace the selection with the SQL query
-  vim.api.nvim_buf_set_lines(0, start_line - 1, end_line, false, {sql})
+  vim.api.nvim_buf_set_lines(0, start_line - 1, end_line, false, sql_lines)
 end
 
 -- Create a keymap (use in visual mode: select lines, then press <leader>sq)

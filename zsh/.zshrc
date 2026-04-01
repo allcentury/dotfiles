@@ -90,9 +90,6 @@ HELPDIR=/usr/local/share/zsh/help
 # completion for kubectl
 # source <(kubectl completion zsh)
 
-# java
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-18.0.2.jdk/Contents/Home
-
 # docker (colima)
 export DOCKER_HOST="unix://${HOME}/.colima/default/docker.sock"
 

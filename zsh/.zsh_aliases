@@ -66,4 +66,15 @@ alias mov_2_gif="$dotPath/scripts/mov_2_gif.sh"
 alias claude-brex="AWS_PROFILE=Dev-LimitedUser ANTHROPIC_MODEL=us.anthropic.claude-sonnet-4-20250514-v1:0 CLAUDE_CODE_USE_BEDROCK=1 AWS_REGION=us-west-2 claude"
 
 alias g=git
+
 alias gst="git status"
+
+# List all worktrees
+alias gwl='git worktree list'
+
+# Jump to a worktree interactively (uses fzf)
+gw() {
+  local dir
+  dir=$(git worktree list --porcelain | grep '^worktree ' | sed 's/worktree //' | fzf --prompt="worktree> ")
+  [ -n "$dir" ] && cd "$dir"
+}

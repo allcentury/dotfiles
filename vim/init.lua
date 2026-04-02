@@ -258,6 +258,9 @@ require('crates').setup()
 
 require("neodev").setup({})
 
+-- experimental use of buffers instead of pagers, etc.
+require('vim._core.ui2').enable({})
+
 ----------------------------------
       -- Mason Setup
 ----------------------------------

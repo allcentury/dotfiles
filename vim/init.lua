@@ -171,17 +171,9 @@ require("lazy").setup({
   -- "github/copilot.vim",
   {
     "nvim-treesitter/nvim-treesitter",
-    opts = {
-      ensure_installed = {
-        "vimdoc", "vim", "javascript", "lua", "typescript", "tsx",
-        "json", "html", "css", "ruby", "yaml", "elixir", "rust", "markdown",
-      },
-      sync_install = false,
-      auto_install = true,
-      highlight = { enable = true },
-      indent = { enable = true },
-      matchup = { enable = true },
-    },
+    branch = "main",
+    lazy = false,
+    build = ":TSUpdate",
   },
   'vim-ruby/vim-ruby',
   { "folke/neodev.nvim", opts = {} },
@@ -234,7 +226,7 @@ require("lazy").setup({
     ft = { "markdown" },
   },
   {
-    'nvim-telescope/telescope.nvim', tag = '0.1.8',
+    'nvim-telescope/telescope.nvim',
     dependencies = { 'nvim-lua/plenary.nvim' }
   },
   "nvim-tree/nvim-tree.lua",
@@ -259,7 +251,9 @@ require('crates').setup()
 require("neodev").setup({})
 
 -- experimental use of buffers instead of pagers, etc.
-require('vim._core.ui2').enable({})
+-- NOTE: ui2 cmdline has a treesitter query bug with "tab" node type in 0.12.0
+-- require('vim._core.ui2').enable({})
+-- require('vim._core.ui2').enable({ cmdline = false })
 
 ----------------------------------
       -- Mason Setup
@@ -540,7 +534,25 @@ require('fzf-lua').setup {
 
 require("Comment").setup()
 
--- treesitter is configured in lazy.nvim plugin spec above
+----------------------------------
+      -- Tree-sitter (nvim 0.12+)
+----------------------------------
+-- Install parsers (including bundled ones to keep queries in sync)
+require('nvim-treesitter').install({
+  "c", "lua", "vim", "vimdoc", "markdown", "markdown_inline", "query",
+  "typescript", "tsx", "ruby", "rust", "go", "elixir",
+  "kotlin", "java", "python", "javascript", "json",
+  "html", "css", "yaml",
+})
+
+-- Auto-enable highlighting and indentation for all supported filetypes
+vim.api.nvim_create_autocmd("FileType", {
+  callback = function(args)
+    if pcall(vim.treesitter.start, args.buf) then
+      vim.bo[args.buf].indentexpr = "v:lua.vim.treesitter.indentexpr()"
+    end
+  end,
+})
 
 require'nvim-web-devicons'.setup {
   -- your personnal icons can go here (to override)

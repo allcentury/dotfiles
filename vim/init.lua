@@ -542,7 +542,7 @@ require('nvim-treesitter').install({
   "c", "lua", "vim", "vimdoc", "markdown", "markdown_inline", "query",
   "typescript", "tsx", "ruby", "rust", "go", "elixir",
   "kotlin", "java", "python", "javascript", "json",
-  "html", "css", "yaml",
+  "html", "css", "yaml", "embedded_template",
 })
 
 -- Auto-enable highlighting and indentation for all supported filetypes

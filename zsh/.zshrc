@@ -104,3 +104,11 @@ export ROOTLY_AUTH_HEADER=$ROOTLY_AUTH_HEADER
 set -a # auto export
 source ~/.env
 set +a # stop auto exporting
+
+export PATH="$HOME/.asdf/shims:$PATH"
+# fix python compatability issue for brexctl
+export DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib
+source ~/.safe-chain/scripts/init-posix.sh # Safe-chain Zsh initialization script
+
+# safe-chain: ensure binary is found before asdf/mise shims
+export PATH="/Users/aross/.safe-chain/bin:$PATH"

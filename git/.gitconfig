@@ -31,6 +31,7 @@
   excludesfile = /Users/anthonyross/.gitignore_global
   autocrlf = input
   editor = vim
+  hooksPath = /Users/aross/.githooks
 [commit]
   template = ~/.gitmessage
 [fetch]
@@ -39,6 +40,6 @@
   path = ~/.gitconfig_brex
 [user]
   name = Anthony Ross
-	email = aross@brex.com
+  email = aross@brex.com
 [url "ssh://git@github.com/"]
   insteadOf = https://github.com/

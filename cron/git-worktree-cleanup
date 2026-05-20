@@ -1,0 +1,84 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+#
+# Cleans up git worktrees whose GitHub PR has been merged or closed.
+# Intended to run on a cron schedule. Skips worktrees with uncommitted changes.
+#
+
+SEARCH_DIRS = [
+  File.expand_path("~/code"),
+  File.expand_path("~/src")
+].freeze
+
+def log(msg)
+  puts "[worktree-cleanup] #{Time.now.strftime('%Y-%m-%d %H:%M:%S')} #{msg}"
+end
+
+def git(repo, *args)
+  out = `git -C #{repo.shellescape} #{args.join(" ")} 2>/dev/null`.strip
+  $?.success? ? out : nil
+end
+
+def pr_state(repo_path, branch)
+  remote = git(repo_path, "remote", "get-url", "origin")
+  return nil unless remote
+
+  state = `gh pr view #{branch.shellescape} --repo #{remote.shellescape} --json state --jq '.state' 2>/dev/null`.strip
+  $?.success? ? state : nil
+end
+
+def parse_worktrees(repo_root)
+  output = git(repo_root, "worktree", "list", "--porcelain")
+  return [] unless output
+
+  worktrees = []
+  current = {}
+
+  output.each_line do |line|
+    line.chomp!
+    if line.start_with?("worktree ")
+      current = { path: line.sub("worktree ", "") }
+    elsif line.start_with?("branch refs/heads/")
+      current[:branch] = line.sub("branch refs/heads/", "")
+    elsif line.empty? && current[:path]
+      worktrees << current
+      current = {}
+    end
+  end
+  worktrees << current if current[:path]
+
+  worktrees
+end
+
+require "shellwords"
+
+SEARCH_DIRS.each do |search_dir|
+  next unless Dir.exist?(search_dir)
+
+  Dir.glob(File.join(search_dir, "**/.git"), File::FNM_DOTMATCH).select { |g|
+    g.count("/") - search_dir.count("/") <= 3 && File.directory?(g)
+  }.each do |gitdir|
+    repo_root = File.dirname(gitdir)
+
+    parse_worktrees(repo_root).each do |wt|
+      next if wt[:path] == repo_root
+      next unless wt[:branch]
+      next if %w[main master].include?(wt[:branch])
+
+      state = pr_state(wt[:path], wt[:branch])
+      next unless %w[MERGED CLOSED].include?(state)
+
+      log "Removing #{wt[:path]} (branch: #{wt[:branch]}, PR: #{state})"
+
+      if system("git", "-C", repo_root, "worktree", "remove", wt[:path], [:out, :err] => "/dev/null")
+        system("git", "-C", repo_root, "branch", "-d", wt[:branch], [:out, :err] => "/dev/null")
+        log "  Done."
+      else
+        log "  Skipped (uncommitted changes?)."
+      end
+    end
+  end
+end
+
+log "Cleanup complete."

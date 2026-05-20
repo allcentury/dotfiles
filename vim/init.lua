@@ -242,6 +242,116 @@ require("lazy").setup({
       return vim.fn.executable('csearch')
     end
   },
+  {
+    "goolord/alpha-nvim",
+    event = "VimEnter",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      local alpha = require("alpha")
+      local dashboard = require("alpha.themes.dashboard")
+
+      local header = {
+        [[ _______________________________________________________ ]],
+        [[|                                                       |]],
+        [[|    _________                     ___                  |]],
+        [[|   |:::::::::|                   | _ )_ _ _____ __     |]],
+        [[|   |:::::::::|                   | _ \ '_/ -_) \ /     |]],
+        [[|   |_________|                   |___/_| \___|/_\_\    |]],
+        [[|                                                       |]],
+        [[|                                                       |]],
+        [[|                                                       |]],
+        [[|                                                       |]],
+        [[|                                  o o o   o o o        |]],
+        [[|                                o       o       o      |]],
+        [[|                               o       o o       o     |]],
+        [[|                              o       o   o       o    |]],
+        [[|                               o       o o       o     |]],
+        [[|                                o       o       o      |]],
+        [[|                                  o o o   o o o        |]],
+        [[|_______________________________________________________|]],
+      }
+
+      -- Brex-ish brand palette: orange B/x with cream r/e accents
+      vim.api.nvim_set_hl(0, "BrexB", { fg = "#FF5A1F", bold = true })
+      vim.api.nvim_set_hl(0, "BrexR", { fg = "#F5F1EB", bold = true })
+      vim.api.nvim_set_hl(0, "BrexE", { fg = "#F5F1EB", bold = true })
+      vim.api.nvim_set_hl(0, "BrexX", { fg = "#FF5A1F", bold = true })
+
+      -- Mastercard venn: red + yellow circles with orange overlap
+      vim.api.nvim_set_hl(0, "MasterRed",    { fg = "#EB001B", bold = true })
+      vim.api.nvim_set_hl(0, "MasterYellow", { fg = "#F79E1B", bold = true })
+      vim.api.nvim_set_hl(0, "MasterOrange", { fg = "#FF5F00", bold = true })
+
+      -- Color the whole card BrexB orange by default, then layer specific
+      -- regions on top: cream "Brex" wordmark, and the Mastercard venn.
+      local function build_hl(lines)
+        local hl = {}
+        for i, line in ipairs(lines) do
+          hl[i] = { { "BrexB", 0, #line } }
+        end
+
+        -- Cream "Brex" wordmark (figlet-small style on rows 3-6, cols 34-51)
+        for i = 3, 6 do
+          if hl[i] then
+            table.insert(hl[i], { "BrexE", 34, 52 })
+          end
+        end
+
+        -- Mastercard venn on rows 11-17 (cycle-wheel style, 7 rows × 21 cols).
+        -- Left circle (red), 5-col overlap (orange), right circle (yellow).
+        for i = 11, 17 do
+          if hl[i] then
+            table.insert(hl[i], { "MasterRed",    31, 39 })
+            table.insert(hl[i], { "MasterOrange", 39, 44 })
+            table.insert(hl[i], { "MasterYellow", 44, 52 })
+          end
+        end
+
+        return hl
+      end
+
+      dashboard.section.header.val = header
+      dashboard.section.header.opts = {
+        position = "center",
+        hl = build_hl(header),
+      }
+
+      -- Wrap dashboard.button to match card width (57) so buttons line up
+      -- with the card edges instead of using alpha's 50-char default.
+      local function btn(sc, txt, keybind)
+        local b = dashboard.button(sc, txt, keybind)
+        b.opts.width = 57
+        return b
+      end
+
+      dashboard.section.buttons.val = {
+        btn("f", "  Find file",     ":Telescope find_files<CR>"),
+        btn("r", "  Recent files",  ":Telescope oldfiles<CR>"),
+        btn("g", "  Live grep",     ":Telescope live_grep<CR>"),
+        btn("b", "  Buffers",       ":Telescope buffers<CR>"),
+        btn("e", "  New file",      ":ene <BAR> startinsert<CR>"),
+        btn("t", "  File tree",     ":NvimTreeToggle<CR>"),
+        btn("c", "  Config",        ":e ~/dotfiles/vim/init.lua<CR>"),
+        btn("l", "󰒲  Lazy",          ":Lazy<CR>"),
+        btn("q", "  Quit",          ":qa<CR>"),
+      }
+
+      dashboard.section.footer.val = function()
+        local stats = require("lazy").stats()
+        return string.format("  %d plugins loaded in %.0fms", stats.loaded, stats.startuptime)
+      end
+
+      alpha.setup(dashboard.opts)
+
+      -- Refresh footer once lazy finishes so plugin count is accurate
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "VeryLazy",
+        callback = function()
+          pcall(vim.cmd, "AlphaRedraw")
+        end,
+      })
+    end,
+  },
 })
 
 

@@ -3,7 +3,6 @@
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
->>>>>>> 3395ce2 (Update nvim for 0.12 config):.zshrc
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -124,7 +123,7 @@ HELPDIR=/usr/local/share/zsh/help
 # docker (colima)
 export DOCKER_HOST="unix://${HOME}/.colima/default/docker.sock"
 
-export EDITOR=vim
+export EDITOR=vnvim
 export CP_HOME_DIR=/tmp/cp
 alias dog=~/.asdf/installs/python/3.9.17/bin/dog
 export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"
@@ -139,11 +138,10 @@ set +a # stop auto exporting
 export PATH="$HOME/.asdf/shims:$PATH"
 # fix python compatability issue for brexctl
 export DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib
-source ~/.safe-chain/scripts/init-posix.sh # Safe-chain Zsh initialization script
 
 # safe-chain: ensure binary is found before asdf/mise shims
 export PATH="/Users/aross/.safe-chain/bin:$PATH"
-=======
+
 zplug 'dracula/zsh', as:theme
 
 # Install plugins if there are plugins that have not been installed
@@ -195,3 +193,4 @@ if [ -f ~/.env ]; then
   source ~/.env
 fi
 export PATH="$HOME/.local/bin:$PATH"
+source ~/.safe-chain/scripts/init-posix.sh # Safe-chain Zsh initialization script

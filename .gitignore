@@ -3,3 +3,5 @@
 iterm/
 .DS_Store
 .env
+.claude/*
+.tool-versions

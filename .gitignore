@@ -2,3 +2,4 @@
 .vim/.netrwhist
 iterm/
 .DS_Store
+.env

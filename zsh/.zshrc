@@ -68,7 +68,7 @@ RPROMPT="[%D{%y/%m/%f} | %D{%L:%M:%S}]"
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
-export PATH="/usr/local/bin:$PATH:opt/X11/bin:/usr/local/git/bin"
+export PATH="/usr/local/bin:$PATH:/opt/X11/bin:/usr/local/git/bin"
 export MANPATH="/usr/local/man:$MANPATH"
 
 fpath=(~/.zsh/completion $fpath)
@@ -77,11 +77,7 @@ fpath=(~/.zsh/completion $fpath)
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
 export EDITOR='nvim'
-# else
-#   export EDITOR='mvim'
-# fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -107,8 +103,6 @@ PATH=$PATH:$HOME/.cargo/bin
 # Load Brex work environment if it exists
 [[ -f ~/.zshrc_brex ]] && source ~/.zshrc_brex
 
-PATH=$PATH:$HOME/Library/Android/sdk
-PATH=$PATH:$HOME/Library/Android/sdk/platform-tools
 PATH=/usr/local/opt/libxml2/bin:$PATH
 
 autoload run-help
@@ -123,24 +117,16 @@ HELPDIR=/usr/local/share/zsh/help
 # docker (colima)
 export DOCKER_HOST="unix://${HOME}/.colima/default/docker.sock"
 
-export EDITOR=vnvim
 export CP_HOME_DIR=/tmp/cp
 alias dog=~/.asdf/installs/python/3.9.17/bin/dog
-export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
-
-export ROOTLY_AUTH_HEADER=$ROOTLY_AUTH_HEADER
 
 set -a # auto export
 source ~/.env
 set +a # stop auto exporting
 
-export PATH="$HOME/.asdf/shims:$PATH"
 # fix python compatability issue for brexctl
 export DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib
-
-# safe-chain: ensure binary is found before asdf/mise shims
-export PATH="/Users/aross/.safe-chain/bin:$PATH"
 
 zplug 'dracula/zsh', as:theme
 
@@ -171,17 +157,7 @@ export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
 
 alias rust-analyzer="/opt/homebrew/Cellar/rust-analyzer/2024-07-29/bin/rust-analyzer"
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/anthonyross/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/anthonyross/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/anthonyross/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/anthonyross/google-cloud-sdk/completion.zsh.inc'; fi
-
-alias sql-proxy="/Users/anthonyross/cloud-sql-proxy"
 export PAGER=bat
-
-# import env vars
-source ~/.env
 
 # asdf
 export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
@@ -189,8 +165,4 @@ export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 # npm
 export PATH="$(npm config get prefix)/bin:$PATH"
 
-if [ -f ~/.env ]; then
-  source ~/.env
-fi
-export PATH="$HOME/.local/bin:$PATH"
 source ~/.safe-chain/scripts/init-posix.sh # Safe-chain Zsh initialization script

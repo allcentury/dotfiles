@@ -2,6 +2,20 @@
 
 These dotfiles are a WIP, I will update the readme with install instructions once stable.
 
+### Install
+
+Full bootstrap (packages, oh-my-zsh, zplug, submodules, then symlinks):
+
+```
+./install/install.sh
+```
+
+Just (re)create the symlinks, no package installs:
+
+```
+./install/symlink.sh
+```
+
 Current font:
 
 * InconsolataLGCNerdFontMono-Regular - https://www.nerdfonts.com/font-downloads

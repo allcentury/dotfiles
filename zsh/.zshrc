@@ -144,9 +144,6 @@ zplug load
 # Added by Amplify CLI binary installer
 export PATH="$HOME/.amplify/bin:$PATH"
 
-# Set JAVA_HOME
-. ~/.asdf/plugins/java/set-java-home.zsh
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 export ANDROID_HOME=$HOME/Library/Android/sdk && export PATH=$PATH:$ANDROID_HOME/emulator && export PATH=$PATH:$ANDROID_HOME/platform-tools

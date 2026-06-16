@@ -51,6 +51,7 @@ install_for_osx() {
   brew install zsh
   brew install tmux
   brew install zplug
+  brew install asdf
 
   c_echo "Installing oh-my-zsh"
   if [[ ! -d ~/.oh-my-zsh ]]; then
@@ -116,6 +117,21 @@ install_for_linux() {
     c_echo "zplug is already installed"
   fi
 
+  c_echo "Installing asdf"
+  if command -v asdf >/dev/null 2>&1; then
+    c_echo "asdf is already installed"
+  else
+    # asdf 0.16+ ships as a single Go binary (matches the shims-on-PATH setup in .zshrc).
+    asdf_version="v0.16.7"
+    asdf_arch="$(uname -m)"
+    case "$asdf_arch" in
+      x86_64)         asdf_arch="amd64" ;;
+      aarch64|arm64)  asdf_arch="arm64" ;;
+    esac
+    curl -fsSL "https://github.com/asdf-vm/asdf/releases/download/${asdf_version}/asdf-${asdf_version}-linux-${asdf_arch}.tar.gz" \
+      | sudo tar -xz -C /usr/local/bin asdf
+  fi
+
   # Add GitHub to known_hosts to avoid SSH prompts
   mkdir -p ~/.ssh
   ssh-keyscan github.com >> ~/.ssh/known_hosts 2>/dev/null
@@ -132,6 +148,15 @@ c_echo "  > Updating all git submodules..."
 git submodule init
 git submodule update
 git config alias.supdate 'submodule update --remote --merge'
+
+# Install tmux plugin manager (tpm); .tmux.conf loads plugins from here.
+c_echo "  > Installing tmux plugin manager (tpm)..."
+TPM_DIR=~/.tmux/plugins/tpm
+if [[ ! -d "$TPM_DIR" ]]; then
+  git clone https://github.com/tmux-plugins/tpm "$TPM_DIR"
+else
+  c_echo "tpm is already installed"
+fi
 
 # Symlink all the dotfiles into place.
 "$INSTALL_DIR/symlink.sh"

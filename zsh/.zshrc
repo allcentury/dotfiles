@@ -159,7 +159,6 @@ export PAGER=bat
 # asdf
 export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 
-# npm
-export PATH="$(npm config get prefix)/bin:$PATH"
-
 source ~/.safe-chain/scripts/init-posix.sh # Safe-chain Zsh initialization script
+
+export PATH="/opt/homebrew/bin/:$PATH"

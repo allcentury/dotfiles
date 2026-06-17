@@ -19,7 +19,6 @@ alias snowsql='/Applications/SnowSQL.app/Contents/MacOS/snowsql'
 # Work environment variables
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 export DISABLE_SPRING=true
-export BREX_DEV_PLATFORM=local
 export BREX_BAZEL_USE_RBE_WITH_INTELLIJ_ON_MAC=1
 
 # SDKMAN

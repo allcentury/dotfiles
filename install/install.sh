@@ -52,6 +52,8 @@ install_for_osx() {
   brew install tmux
   brew install zplug
   brew install asdf
+  brew install ripgrep        # used by Telescope find_files / live_grep
+  brew install tree-sitter-cli # CLI nvim-treesitter shells out to for `tree-sitter build`
 
   c_echo "Installing oh-my-zsh"
   if [[ ! -d ~/.oh-my-zsh ]]; then

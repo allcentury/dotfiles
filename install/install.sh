@@ -54,6 +54,7 @@ install_for_osx() {
   brew install asdf
   brew install ripgrep        # used by Telescope find_files / live_grep
   brew install tree-sitter-cli # CLI nvim-treesitter shells out to for `tree-sitter build`
+  brew install git-delta      # syntax-highlighting pager for git diffs (see git/.gitconfig)
 
   c_echo "Installing oh-my-zsh"
   if [[ ! -d ~/.oh-my-zsh ]]; then
@@ -90,6 +91,7 @@ install_for_linux() {
     neovim \
     build-essential \
     ripgrep \
+    git-delta \
     locales
 
   # Set up proper locale to avoid Unicode issues

@@ -145,6 +145,19 @@ require("lazy").setup({
   },
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
+  {
+    "sindrets/diffview.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons" },
+    -- Lazy-load on the commands and keymaps below.
+    cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewFileHistory", "DiffviewToggleFiles" },
+    keys = {
+      { "<leader>dd", "<cmd>DiffviewOpen<cr>",          desc = "Diffview: working tree diff" },
+      { "<leader>dc", "<cmd>DiffviewClose<cr>",         desc = "Diffview: close" },
+      { "<leader>dh", "<cmd>DiffviewFileHistory %<cr>", desc = "Diffview: history of current file" },
+      { "<leader>dH", "<cmd>DiffviewFileHistory<cr>",   desc = "Diffview: repo history" },
+    },
+    opts = {},
+  },
   "nvim-tree/nvim-web-devicons",
   {
     "ibhagwan/fzf-lua",

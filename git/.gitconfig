@@ -5,6 +5,7 @@
   ff = only
 [push]
   default = current
+  autoSetupRemote = true
 [color]
   ui = auto
 [alias]
@@ -32,6 +33,11 @@
   autocrlf = input
   editor = vim
   hooksPath = /Users/aross/.githooks
+  pager = delta
+[interactive]
+  diffFilter = delta --color-only
+[delta]
+  navigate = true      # use n / N to move between diff sections
 [commit]
   template = ~/.gitmessage
 [fetch]

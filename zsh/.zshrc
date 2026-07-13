@@ -91,8 +91,31 @@ export EDITOR='nvim'
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 #
-export ZPLUG_HOME=/opt/homebrew/opt/zplug
-source $ZPLUG_HOME/init.zsh
+# zplug: find it wherever it lives on this machine (Homebrew on macOS,
+# git clone under ~/.zplug on Linux/RDE). Fall back to a git clone so a
+# fresh box bootstraps itself.
+if [[ -z "$ZPLUG_HOME" ]]; then
+  for _zp in \
+    "$HOME/.zplug" \
+    /opt/homebrew/opt/zplug \
+    /usr/local/opt/zplug \
+    /usr/share/zplug; do
+    if [[ -f "$_zp/init.zsh" ]]; then
+      export ZPLUG_HOME="$_zp"
+      break
+    fi
+  done
+fi
+
+if [[ -z "$ZPLUG_HOME" || ! -f "$ZPLUG_HOME/init.zsh" ]]; then
+  export ZPLUG_HOME="$HOME/.zplug"
+  if [[ ! -f "$ZPLUG_HOME/init.zsh" ]] && command -v git >/dev/null 2>&1; then
+    echo "[zshrc] zplug not found; cloning to $ZPLUG_HOME..."
+    git clone --depth 1 https://github.com/zplug/zplug "$ZPLUG_HOME"
+  fi
+fi
+
+[[ -f "$ZPLUG_HOME/init.zsh" ]] && source "$ZPLUG_HOME/init.zsh"
 
 # aliases
 source ~/.zsh_aliases
@@ -122,31 +145,36 @@ alias dog=~/.asdf/installs/python/3.9.17/bin/dog
 export PATH="$HOME/.local/bin:$PATH"
 
 set -a # auto export
-source ~/.env
+[[ -f ~/.env ]] && source ~/.env
 set +a # stop auto exporting
 
-# fix python compatability issue for brexctl
-export DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib
+# fix python compatability issue for brexctl (macOS only)
+[[ "$OSTYPE" == darwin* ]] && export DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib
 
-zplug 'dracula/zsh', as:theme
+# zplug plugins — only if zplug actually loaded
+if (( $+functions[zplug] )); then
+    zplug 'dracula/zsh', as:theme
 
-# Install plugins if there are plugins that have not been installed
-if ! zplug check --verbose; then
-    printf "Install? [y/N]: "
-    if read -q; then
-        echo; zplug install
+    # Install plugins if there are plugins that have not been installed
+    if ! zplug check --verbose; then
+        printf "Install? [y/N]: "
+        if read -q; then
+            echo; zplug install
+        fi
     fi
-fi
 
-# Then, source plugins and add commands to $PATH
-zplug load
+    # Then, source plugins and add commands to $PATH
+    zplug load
+fi
 
 # Added by Amplify CLI binary installer
 export PATH="$HOME/.amplify/bin:$PATH"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-export ANDROID_HOME=$HOME/Library/Android/sdk && export PATH=$PATH:$ANDROID_HOME/emulator && export PATH=$PATH:$ANDROID_HOME/platform-tools
+if [[ "$OSTYPE" == darwin* ]]; then
+  export ANDROID_HOME=$HOME/Library/Android/sdk && export PATH=$PATH:$ANDROID_HOME/emulator && export PATH=$PATH:$ANDROID_HOME/platform-tools
+fi
 
 # # conda
 
@@ -162,3 +190,6 @@ export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 source ~/.safe-chain/scripts/init-posix.sh # Safe-chain Zsh initialization script
 
 export PATH="/opt/homebrew/bin/:$PATH"
+
+# added by Snowflake SnowSQL installer v1.2
+export PATH=/Applications/SnowSQL.app/Contents/MacOS:$PATH

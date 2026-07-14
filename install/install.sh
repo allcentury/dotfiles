@@ -78,6 +78,7 @@ install_for_osx() {
 
 install_for_linux() {
   c_echo "Linux detected, updating packages..."
+  sudo add-apt-repository ppa:aos1/diff-so-fancy
   sudo apt-get -y update        # Fetches the list of available updates
   sudo apt-get -y upgrade       # Strictly upgrades the current packages
 
@@ -92,6 +93,7 @@ install_for_linux() {
     build-essential \
     ripgrep \
     git-delta \
+    diff-so-fancy \
     locales
 
   # Set up proper locale to avoid Unicode issues
@@ -139,6 +141,8 @@ install_for_linux() {
   # Add GitHub to known_hosts to avoid SSH prompts
   mkdir -p ~/.ssh
   ssh-keyscan github.com >> ~/.ssh/known_hosts 2>/dev/null
+
+
 }
 
 case "$OSTYPE" in

@@ -118,7 +118,7 @@ fi
 [[ -f "$ZPLUG_HOME/init.zsh" ]] && source "$ZPLUG_HOME/init.zsh"
 
 # aliases
-source ~/.zsh_aliases
+source ~/dotfiles/zsh/.zsh_aliases
 
 # Rust
 PATH=$PATH:$HOME/.cargo/bin

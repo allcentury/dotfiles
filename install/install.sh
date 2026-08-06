@@ -54,7 +54,7 @@ install_for_osx() {
   brew install asdf
   brew install ripgrep        # used by Telescope find_files / live_grep
   brew install tree-sitter-cli # CLI nvim-treesitter shells out to for `tree-sitter build`
-  brew install git-delta      # syntax-highlighting pager for git diffs (see git/.gitconfig)
+  brew install bat            # cat clone with syntax highlighting; used as $PAGER (see zsh/.zshrc)
 
   c_echo "Installing oh-my-zsh"
   if [[ ! -d ~/.oh-my-zsh ]]; then
@@ -78,7 +78,6 @@ install_for_osx() {
 
 install_for_linux() {
   c_echo "Linux detected, updating packages..."
-  sudo add-apt-repository ppa:aos1/diff-so-fancy
   sudo apt-get -y update        # Fetches the list of available updates
   sudo apt-get -y upgrade       # Strictly upgrades the current packages
 
@@ -92,8 +91,7 @@ install_for_linux() {
     neovim \
     build-essential \
     ripgrep \
-    git-delta \
-    diff-so-fancy \
+    bat \
     locales
 
   # Set up proper locale to avoid Unicode issues
@@ -150,6 +148,25 @@ case "$OSTYPE" in
   linux*)   install_for_linux ;;
   *)        c_echo "unknown: $OSTYPE" ;;
 esac
+
+# Install diff-so-fancy via npm (git pager, see git/.gitconfig).
+# npm comes from the asdf-managed node in .tool-versions, so ensure that's
+# present first. Guarded because a missing node shouldn't abort the install.
+c_echo "  > Installing diff-so-fancy via npm..."
+if command -v asdf >/dev/null 2>&1; then
+  asdf plugin add nodejs 2>/dev/null || true
+  asdf install nodejs 2>/dev/null || true
+fi
+if command -v npm >/dev/null 2>&1; then
+  if command -v diff-so-fancy >/dev/null 2>&1; then
+    c_echo "    > (Skipping) diff-so-fancy already installed."
+  else
+    npm install -g diff-so-fancy
+    command -v asdf >/dev/null 2>&1 && asdf reshim nodejs 2>/dev/null || true
+  fi
+else
+  c_echo "    > (Skipping) npm not found; run 'npm install -g diff-so-fancy' after node is set up."
+fi
 
 # Pull down vim plugins, oh-my-zsh, etc.
 c_echo "  > Updating all git submodules..."

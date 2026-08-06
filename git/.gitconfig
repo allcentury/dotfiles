@@ -8,6 +8,19 @@
   autoSetupRemote = true
 [color]
   ui = auto
+[color "diff-highlight"]
+  oldNormal = red bold
+  oldHighlight = red bold 52
+  newNormal = green bold
+  newHighlight = green bold 22
+[color "diff"]
+  meta = 11
+  frag = magenta bold
+  func = 146 bold
+  commit = yellow bold
+  old = red bold
+  new = green bold
+  whitespace = red reverse
 [alias]
   push-please = push --force-with-lease
   aa = add --all
@@ -29,15 +42,13 @@
   edit = !vim `git ls-files -m` -p
   log-author = "!f() { git log --date=short --pretty=format:\"%ad:%an:%d:%B\" --branches --since=1.months.ago --author=$1; }; f "
 [core]
-  excludesfile = /Users/anthonyross/.gitignore_global
+  excludesfile = ~/.gitignore_global
   autocrlf = input
   editor = vim
-  hooksPath = /Users/aross/.githooks
-  pager = delta
+  hooksPath = ~/.githooks
+  pager = diff-so-fancy | less --tabs=4 -RF
 [interactive]
-  diffFilter = delta --color-only
-[delta]
-  navigate = true      # use n / N to move between diff sections
+  diffFilter = diff-so-fancy --patch
 [commit]
   template = ~/.gitmessage
 [fetch]

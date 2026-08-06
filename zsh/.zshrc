@@ -182,7 +182,12 @@ export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
 
 alias rust-analyzer="/opt/homebrew/Cellar/rust-analyzer/2024-07-29/bin/rust-analyzer"
 
-export PAGER=bat
+# Prefer bat as the pager; on Debian the binary is named `batcat`.
+if command -v bat >/dev/null 2>&1; then
+  export PAGER=bat
+elif command -v batcat >/dev/null 2>&1; then
+  export PAGER=batcat
+fi
 
 # asdf
 export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"

@@ -123,8 +123,6 @@ source ~/.zsh_aliases
 # Rust
 PATH=$PATH:$HOME/.cargo/bin
 
-# Load Brex work environment if it exists
-[[ -f ~/.zshrc_brex ]] && source ~/.zshrc_brex
 
 PATH=/usr/local/opt/libxml2/bin:$PATH
 
@@ -201,3 +199,6 @@ export PATH=/Applications/SnowSQL.app/Contents/MacOS:$PATH
 
 # set JAVA_HOME
 . ~/.asdf/plugins/java/set-java-home.zsh
+
+# Load Brex work environment if it exists
+[[ -f ~/.zshrc_brex ]] && source ~/.zshrc_brex

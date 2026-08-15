@@ -1,0 +1,104 @@
+#!/usr/bin/env bash
+#
+# mux — thin wrapper around tmuxinator for per-project tmux layouts.
+#
+# Usage:
+#   mux                                        Launch this project's session (tmuxinator local)
+#   mux init [--name NAME] [--windows a,b,c]   Scaffold ./.tmuxinator.yml from the dotfiles template
+#   mux --help                                 Show this help
+#
+# The scaffolded file is meant to be committed to the project's repo root —
+# each project gets its own layout instead of one generic config for everything.
+
+set -euo pipefail
+
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+TEMPLATE="$DOTFILES_DIR/tmux/tmuxinator.yml.template"
+CONFIG_FILE=".tmuxinator.yml"
+DEFAULT_WINDOWS="edit,server,scratch"
+
+usage() {
+  cat <<'EOF'
+mux — thin wrapper around tmuxinator for per-project tmux layouts
+
+Usage:
+  mux                                        Launch this project's session (tmuxinator local)
+  mux init [--name NAME] [--windows a,b,c]   Scaffold ./.tmuxinator.yml from the dotfiles template
+  mux --help                                 Show this help
+
+Workflow:
+  1. In a new project:  mux init --name myapp --windows edit,server,scratch
+  2. Edit ./.tmuxinator.yml to add real per-window commands, then commit it.
+  3. From then on, just run:  mux
+
+Defaults when flags are omitted:
+  --name     current directory's basename
+  --windows  edit,server,scratch
+EOF
+}
+
+window_line() {
+  local name="$1"
+  if [[ "$name" == "edit" ]]; then
+    echo "  - edit: nvim ."
+  else
+    echo "  - ${name}:"
+  fi
+}
+
+cmd_init() {
+  local name="" windows="$DEFAULT_WINDOWS" force=0
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --name) name="$2"; shift 2 ;;
+      --windows) windows="$2"; shift 2 ;;
+      --force) force=1; shift ;;
+      -h|--help) usage; exit 0 ;;
+      *) echo "mux init: unknown argument: $1" >&2; exit 1 ;;
+    esac
+  done
+
+  [[ -n "$name" ]] || name="$(basename "$PWD")"
+
+  if [[ -f "$CONFIG_FILE" && "$force" -ne 1 ]]; then
+    echo "mux init: $CONFIG_FILE already exists (use --force to overwrite)" >&2
+    exit 1
+  fi
+
+  local windows_yaml=""
+  IFS=',' read -ra window_names <<< "$windows"
+  for w in "${window_names[@]}"; do
+    windows_yaml+="$(window_line "$w")"$'\n'
+  done
+
+  {
+    while IFS= read -r line || [[ -n "$line" ]]; do
+      line="${line//\{\{NAME\}\}/$name}"
+      if [[ "$line" == *'{{WINDOWS}}'* ]]; then
+        printf '%s' "$windows_yaml"
+      else
+        printf '%s\n' "$line"
+      fi
+    done < "$TEMPLATE"
+  } > "$CONFIG_FILE"
+
+  echo "Wrote $CONFIG_FILE (name=$name, windows=$windows)"
+  echo "Review/edit it, then commit it to the project repo. Launch anytime with: mux"
+}
+
+cmd_run() {
+  if [[ ! -f "$CONFIG_FILE" ]]; then
+    echo "mux: no $CONFIG_FILE in $(pwd)" >&2
+    echo "Run 'mux init' to scaffold one." >&2
+    exit 1
+  fi
+  exec tmuxinator local
+}
+
+case "${1:-}" in
+  -h|--help) usage ;;
+  init) shift; cmd_init "$@" ;;
+  "") cmd_run ;;
+  *) echo "mux: unknown argument: $1" >&2; usage >&2; exit 1 ;;
+esac
